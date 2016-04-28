@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Foodamental</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_my_main_page">MyMainPage</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="Inscription">Inscription</string>
+    <string name="camera">Lancer la camera</string>
+
+    <string name="reslabel">produit1</string>
+    <string name="resbtn">Ajouter produit</string>
+    <string name="test">Tester</string>
+    <string-array name="mon_frigo">
+        <item>Tomate</item>
+        <item>Canette</item>
+        <item>Yahourt</item>
+    </string-array>
+</resources>
