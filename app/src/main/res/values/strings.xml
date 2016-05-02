@@ -18,4 +18,6 @@
         <item>Yahourt</item>
     </string-array>
     <string name="title_activity_recipes">Recipes</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_parametres">Parametres</string>
 </resources>

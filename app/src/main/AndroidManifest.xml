@@ -30,7 +30,25 @@
         <activity
             android:name=".Recipes"
             android:label="@string/title_activity_recipes"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Profile"
+            android:label="@string/title_activity_profile"
+            android:parentActivityName=".MyMainPage"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.foodamental.MyMainPage" />
+        </activity>
+        <activity
+            android:name=".Parametres"
+            android:label="@string/title_activity_parametres"
+            android:parentActivityName=".MyMainPage"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.foodamental.MyMainPage" />
+        </activity>
     </application>
 
 </manifest>

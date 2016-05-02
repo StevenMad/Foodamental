@@ -124,9 +124,11 @@ public class MyMainPage extends AppCompatActivity
             Intent intent = new Intent(this,Recipes.class);
             startActivity(intent);
         } else if (id == R.id.nav_profil) {
-
+            Intent intent = new Intent(this,Profile.class);
+            startActivity(intent);
         } else if (id == R.id.nav_param) {
-
+            Intent intent = new Intent(this,Parametres.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
