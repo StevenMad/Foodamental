@@ -17,4 +17,5 @@
         <item>Canette</item>
         <item>Yahourt</item>
     </string-array>
+    <string name="title_activity_recipes">Recipes</string>
 </resources>

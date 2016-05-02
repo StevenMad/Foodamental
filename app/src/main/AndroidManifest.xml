@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.foodamental">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -25,10 +25,12 @@
         <activity
             android:name=".MyMainPage"
             android:label="@string/title_activity_my_main_page"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Courses">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Courses" />
+        <activity
+            android:name=".Recipes"
+            android:label="@string/title_activity_recipes"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
