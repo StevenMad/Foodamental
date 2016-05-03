@@ -48,7 +48,6 @@ public class MyMainPage extends AppCompatActivity
             char[] inputReadBuffer = new char[1024];
             String s = "";
             int charRead;
-
             while ((charRead=reader.read(inputReadBuffer))>0)
             {
                 String readString = String.copyValueOf(inputReadBuffer,0,charRead);
