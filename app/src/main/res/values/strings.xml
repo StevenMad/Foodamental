@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Foodamental</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Add Alert</string>
     <string name="title_activity_my_main_page">MyMainPage</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -12,6 +12,12 @@
     <string name="reslabel">produit1</string>
     <string name="resbtn">Ajouter produit</string>
     <string name="test">Tester</string>
+    <string name="menu_help">help</string>
+    <string name="menu_about">about</string>
+    <string name="menu_settings">setting</string>
+    <string name="title_activity_setting_page">titleSetting</string>
+    <string name="toast_settings" >yes</string>
+    <string name="action_recette">compte recette</string>
     <string-array name="mon_frigo">
         <item>Tomate</item>
         <item>Canette</item>
