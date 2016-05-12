@@ -37,16 +37,17 @@
         android:layout_height="wrap_content"
         android:text="request"
         android:id="@+id/buttonRequest"
+        android:onClick="sendRequest"
+        android:layout_marginTop="49dp"
         android:layout_below="@+id/textView"
-        android:onClick="haveRequest"
-        android:layout_alignEnd="@+id/scan_button" />
+        android:layout_alignStart="@+id/textView" />
 
     <TextView
-        android:id="@+id/request"
+        android:id="@+id/textRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textIsSelectable="true"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/scan_button" />
+        android:layout_below="@id/buttonRequest" />
 
 </RelativeLayout>
