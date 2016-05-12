@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -44,6 +45,7 @@ public class MyMainPage extends AppCompatActivity
 
         //addContentView(textView1,this.getLayoutInflater());
         TextView textView = (TextView) findViewById(R.id.textView);
+        final TextView mTextView = (TextView) findViewById(R.id.request);
         Intent intent = getIntent();
 
         //recupération du json à la création
@@ -172,4 +174,5 @@ public class MyMainPage extends AppCompatActivity
         }
 
     }
+
 }
