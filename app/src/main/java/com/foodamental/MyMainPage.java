@@ -20,6 +20,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -140,7 +149,56 @@ public class MyMainPage extends AppCompatActivity
 
     public void openCamera(View view)
     {
-        Intent intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
-        startActivity(intent);
+        new IntentIntegrator(this).initiateScan();
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+// nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanningResult != null) {
+
+// nous récupérons le contenu du code barre
+            String scanContent = scanningResult.getContents();
+
+// nous récupérons le format du code barre
+            String scanFormat = scanningResult.getFormatName();
+
+            TextView scan_format = (TextView) findViewById(R.id.scan_format);
+            TextView scan_content = (TextView) findViewById(R.id.scan_content);
+
+// nous affichons le résultat dans nos TextView
+
+            scan_format.setText("FORMAT: " + scanFormat);
+            scan_content.setText("CONTENT: " + scanContent);
+        }
+        else{
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Aucune donnée reçu!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+    }
+    public void sendRequest(View view){
+        final TextView mTextView = (TextView) findViewById(R.id.textRequest);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://fr.openfoodfacts.org/produit/20061173/";
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        mTextView.setText("Response is: "+ response.substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mTextView.setText("That didn't work!");
+            }
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
     }
 }
