@@ -68,24 +68,6 @@ public class Recipes extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_frigo) {
-            Intent intent = new Intent(this,Courses.class);
-            startActivity(intent);
-        }else if (id == R.id.nav_recettes) {
-            Intent intent = new Intent(this,Recipes.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_profil) {
-            Intent intent = new Intent(this,Profile.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_param) {
-            Intent intent = new Intent(this,Parametres.class);
-            startActivity(intent);
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return MyMenu.onNavigationItemSelected(this,this,item);
     }
 }
