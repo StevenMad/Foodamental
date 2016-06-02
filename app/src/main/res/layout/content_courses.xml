@@ -8,23 +8,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/edit_text"
         android:text="@string/reslabel"
-        android:background="#EEE"
+        android:background="@color/colorAccent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignBottom="@+id/button"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/button" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/resbtn"
         android:id="@+id/button"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_marginRight="69dp"
-        android:layout_marginEnd="69dp"
-        android:onClick="addProduit"/>
+        android:onClick="addProduit"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="40dp" />
 
     <Spinner
         android:layout_width="wrap_content"
