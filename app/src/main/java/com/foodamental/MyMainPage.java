@@ -2,6 +2,7 @@ package com.foodamental;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -47,10 +48,14 @@ public class MyMainPage extends AppCompatActivity
         setContentView(R.layout.activity_my_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         //addContentView(textView1,this.getLayoutInflater());
         TextView textView = (TextView) findViewById(R.id.textView);
         Intent intent = getIntent();
+
+        /*-----DB----*/
+        DBHelper dbhelp = new DBHelper(this);
+        dbhelp.updateFoodUser(1);
+        /*-----------*/
 
 
         //recupération du json à la création

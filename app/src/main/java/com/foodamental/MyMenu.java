@@ -32,6 +32,9 @@ public class MyMenu {
         } else if (id == R.id.nav_param) {
             Intent intent = new Intent(context,Parametres.class);
             context.startActivity(intent);
+        } else if (id == R.id.nav_db) {
+            Intent intent = new Intent(context,DBActivity.class);
+            context.startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) act.findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
