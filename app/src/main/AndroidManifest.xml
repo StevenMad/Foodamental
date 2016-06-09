@@ -28,7 +28,10 @@
             android:name=".MyMainPage"
             android:label="@string/title_activity_my_main_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Courses" />
+        <activity
+            android:name=".Courses"
+            android:label="Courses"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Recipes"
             android:label="@string/title_activity_recipes"

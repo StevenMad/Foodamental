@@ -2,6 +2,7 @@ package com.foodamental;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -47,10 +48,14 @@ public class MyMainPage extends AppCompatActivity
         setContentView(R.layout.activity_my_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         //addContentView(textView1,this.getLayoutInflater());
         TextView textView = (TextView) findViewById(R.id.textView);
         Intent intent = getIntent();
+
+        /*-----DB----*/
+        DBHelper dbhelp = new DBHelper(this);
+        dbhelp.updateFoodUser(1);
+        /*-----------*/
 
 
         //recupération du json à la création
@@ -126,26 +131,7 @@ public class MyMainPage extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_frigo) {
-            Intent intent = new Intent(this,Courses.class);
-            startActivity(intent);
-        }else if (id == R.id.nav_recettes) {
-            Intent intent = new Intent(this,Recipes.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_profil) {
-            Intent intent = new Intent(this,Profile.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_param) {
-            Intent intent = new Intent(this,Parametres.class);
-            startActivity(intent);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return MyMenu.onNavigationItemSelected(this,this,item);
     }
 
     public void openCamera(View view)
