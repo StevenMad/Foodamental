@@ -19,6 +19,11 @@
             android:title="Profil" />
 
         <item
+            android:id="@+id/nav_db"
+            android:title="Base locale"
+            />
+
+        <item
             android:id="@+id/nav_param"
             android:icon="@drawable/ic_menu_manage"
             android:title="Paramètres" />
