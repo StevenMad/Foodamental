@@ -2,6 +2,7 @@ package com.foodamental;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,15 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,10 +48,15 @@ public class MyMainPage extends AppCompatActivity
         setContentView(R.layout.activity_my_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         //addContentView(textView1,this.getLayoutInflater());
         TextView textView = (TextView) findViewById(R.id.textView);
         Intent intent = getIntent();
+
+        /*-----DB----*/
+        DBHelper dbhelp = new DBHelper(this);
+        dbhelp.updateFoodUser(1);
+        /*-----------*/
+
 
         //recupération du json à la création
         try {
@@ -50,7 +65,6 @@ public class MyMainPage extends AppCompatActivity
             char[] inputReadBuffer = new char[1024];
             String s = "";
             int charRead;
-
             while ((charRead=reader.read(inputReadBuffer))>0)
             {
                 String readString = String.copyValueOf(inputReadBuffer,0,charRead);
@@ -117,28 +131,60 @@ public class MyMainPage extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        }else if (id == R.id.nav_courses) {
-            Intent intent = new Intent(this,Courses.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_menu3) {
-
-        } else if (id == R.id.nav_param) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return MyMenu.onNavigationItemSelected(this,this,item);
     }
 
     public void openCamera(View view)
     {
-        Intent intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
-        startActivity(intent);
+        new IntentIntegrator(this).initiateScan();
     }
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+// nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanningResult != null) {
+
+// nous récupérons le contenu du code barre
+            String scanContent = scanningResult.getContents();
+
+// nous récupérons le format du code barre
+            String scanFormat = scanningResult.getFormatName();
+
+            sendRequest(scanContent);
+
+// nous affichons le résultat dans nos TextView
+
+
+
+        }
+        else{
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Aucune donnée reçu!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+    }
+    public void sendRequest(String codeBar){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://fr.openfoodfacts.org/produit/";
+        url += codeBar;
+        final TextView scan_content = (TextView) findViewById(R.id.scan_content);
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        scan_content.setText("CONTENT: " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                scan_content.setText("That didn't work!");
+            }
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+    }
+
 }
