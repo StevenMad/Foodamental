@@ -20,7 +20,7 @@ public class DBAdapter {
 	//	Constants & Data
 	/////////////////////////////////////////////////////////////////////
 	// For logging:
-	private static final String TAG = "DBAdapter";
+	private static final String TAG = "";
 	
 	// DB Fields
 	public static final String KEY_ROWID = "_id";
