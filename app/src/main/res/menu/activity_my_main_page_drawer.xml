@@ -19,7 +19,7 @@
             android:title="Profil" />
 
         <item
-            android:id="@+id/nav_db"
+            android:id="@+id/nav_bd"
             android:title="Base locale"
             />
 
