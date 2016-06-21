@@ -32,22 +32,20 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String FOODB_COLUMN_EMAIL = "email";
 
     public DBHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     // Create the data base
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(
-                "create table FoodUser" +
-                        "(" +
-                        "id integer primary key," +
-                        "username text," +
-                        "password text" +
-                        "birthday text" +
-                        "email text" +
-                        ")"
-        );
+        String CREATE_USER_TABLE = "CREATE TABLE" + FOODB_TABLE_NAME + "("
+                + FOODB_COLUMN_ID + " INTEGER PRIMARY KEY,"
+                + FOODB_COLUMN_USERNAME + " TEXT,"
+                + FOODB_COLUMN_PASSWORD + " TEXT,"
+                + FOODB_COLUMN_BIRTHDAY + " TEXT,"
+                + FOODB_COLUMN_EMAIL + " TEXT,"
+                + ")";
+        db.execSQL(CREATE_USER_TABLE);
     }
 
     @Override
@@ -152,10 +150,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 new String[] {String.valueOf(user.getId())});
         db.close();
     }
-}
 
-
-    /*
     public boolean updateFoodUser(Integer id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -187,6 +182,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return users;
     }
+
 }
 
-     */
+
