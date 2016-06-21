@@ -24,7 +24,9 @@
         android:layout_centerHorizontal="true"
         android:clickable="true"
         android:onClick="onClick_AddRecord"
-        android:enabled="true" />
+        android:enabled="true"
+        android:contextClickable="false"
+        android:nestedScrollingEnabled="false" />
 
     <Button
         android:layout_width="wrap_content"
