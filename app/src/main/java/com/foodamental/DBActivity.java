@@ -1,13 +1,15 @@
 package com.foodamental;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-//this is the class the show the content of the db
+
 public class DBActivity extends AppCompatActivity {
     int start_id;
     DBHelper db;

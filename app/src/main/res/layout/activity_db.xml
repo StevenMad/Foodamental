@@ -18,35 +18,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ADD"
+        android:text="Data Base"
         android:id="@+id/button2"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:clickable="true"
-        android:onClick="onClick_AddRecord"
-        android:enabled="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DEL"
-        android:id="@+id/button3"
-        android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="62dp"
-        android:onClick="onClick_ClearAll"
         android:enabled="true"
-        android:clickable="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Display"
-        android:id="@+id/button4"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="onClick_DisplayRecords"
-        android:enabled="true"
-        android:clickable="true" />
+        android:contextClickable="false"
+        android:nestedScrollingEnabled="false" />
 
 </RelativeLayout>
