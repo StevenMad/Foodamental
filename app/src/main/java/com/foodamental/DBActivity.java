@@ -31,4 +31,9 @@ public class DBActivity extends AppCompatActivity {
         tv.setText(s);
         //tv.setText(rs.getString(rs.getColumnIndex(db.FOODB_COLUMN_USERNAME)));
     }
+    
+    public void executer()
+    {
+        
+    }
 }
