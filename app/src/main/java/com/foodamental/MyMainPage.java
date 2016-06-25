@@ -1,5 +1,6 @@
 package com.foodamental;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,10 +26,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,8 +44,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import cz.msebera.android.httpclient.Header;
+
 public class MyMainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    static final String URL = "http://fr.openfoodfacts.org/api/v0/produit/";
+    public static String responseRequest ="vide";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +75,9 @@ public class MyMainPage extends AppCompatActivity
             char[] inputReadBuffer = new char[1024];
             String s = "";
             int charRead;
-            while ((charRead=reader.read(inputReadBuffer))>0)
-            {
-                String readString = String.copyValueOf(inputReadBuffer,0,charRead);
-                s+=readString;
+            while ((charRead = reader.read(inputReadBuffer)) > 0) {
+                String readString = String.copyValueOf(inputReadBuffer, 0, charRead);
+                s += readString;
             }
             reader.close();
             JSONObject json = new JSONObject(s);
@@ -81,7 +90,7 @@ public class MyMainPage extends AppCompatActivity
             e.printStackTrace();
             return;
         } catch (JSONException e) {
-            Toast.makeText(MyMainPage.this,"text is not in json format",Toast.LENGTH_LONG).show();
+            Toast.makeText(MyMainPage.this, "text is not in json format", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
@@ -121,7 +130,7 @@ public class MyMainPage extends AppCompatActivity
         String hist = null;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this,AlertPage.class);
+            Intent intent = new Intent(this, AlertPage.class);
             startActivity(intent);
         }
 
@@ -131,13 +140,13 @@ public class MyMainPage extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        return MyMenu.onNavigationItemSelected(this,this,item);
+        return MyMenu.onNavigationItemSelected(this, this, item);
     }
 
-    public void openCamera(View view)
-    {
+    public void openCamera(View view) {
         new IntentIntegrator(this).initiateScan();
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
 // nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
@@ -152,38 +161,27 @@ public class MyMainPage extends AppCompatActivity
 
             sendRequest(scanContent);
 
+
 // nous affichons le résultat dans nos TextView
 
 
-
-        }
-        else{
+        } else {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Aucune donnée reçu!", Toast.LENGTH_SHORT);
             toast.show();
         }
 
     }
-    public void sendRequest(String codeBar){
+
+    public void sendRequest(String codeBar) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://fr.openfoodfacts.org/produit/";
-        url += codeBar;
+        String url = this.URL;
+        url += codeBar + ".json";
         final TextView scan_content = (TextView) findViewById(R.id.scan_content);
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        scan_content.setText("CONTENT: " + response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                scan_content.setText("That didn't work!");
-            }
-        });
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
+        Intent intentProduct = new Intent(this, ProductActivity.class);
+        intentProduct.putExtra("url", url);
+        startActivity(intentProduct);
+
 
     }
 
