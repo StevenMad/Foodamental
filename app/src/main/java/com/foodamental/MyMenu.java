@@ -2,10 +2,13 @@ package com.foodamental;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 /**
  * Created by Madhow on 30/05/2016.
@@ -23,18 +26,24 @@ public class MyMenu {
         if (id == R.id.nav_frigo) {
             Intent intent = new Intent(context,Courses.class);
             context.startActivity(intent);
-        }else if (id == R.id.nav_recettes) {
-            Intent intent = new Intent(context,Recipes.class);
-            context.startActivity(intent);
-        } else if (id == R.id.nav_profil) {
-            Intent intent = new Intent(context,Profile.class);
-            context.startActivity(intent);
-        } else if (id == R.id.nav_param) {
-            Intent intent = new Intent(context,Parametres.class);
-            context.startActivity(intent);
-        } else if (id == R.id.nav_db) {
-            Intent intent = new Intent(context,DBActivity.class);
-            context.startActivity(intent);
+        }else {
+            if (id == R.id.nav_recettes) {
+                Intent intent = new Intent(context, Recipes.class);
+                context.startActivity(intent);
+            } else {
+                if (id == R.id.nav_profil) {
+                    Intent intent = new Intent(context, Profile.class);
+                    context.startActivity(intent);
+                } else {
+                    if (id == R.id.nav_param) {
+                        Intent intent = new Intent(context, Parametres.class);
+                        context.startActivity(intent);
+                    } else if (id == R.id.nav_bd) {
+                        Intent intent = new Intent(context, DBActivity.class);
+                        context.startActivity(intent);
+                    }
+                }
+            }
         }
         DrawerLayout drawer = (DrawerLayout) act.findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
