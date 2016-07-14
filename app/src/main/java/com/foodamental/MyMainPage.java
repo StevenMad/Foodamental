@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -64,7 +65,15 @@ public class MyMainPage extends AppCompatActivity
 
         /*-----DB----*/
         DBHelper dbhelp = new DBHelper(this);
-        dbhelp.updateFoodUser(1);
+        FoodUser fooduser = new FoodUser();
+        fooduser.setEmail("toto");
+        fooduser.setBirthday("3325454");
+        fooduser.setPassword("ererer");
+        fooduser.setUsername("mmlmllm");
+        dbhelp.addUser(fooduser);
+        int result = dbhelp.getALLUser().size();
+        Log.i("data","taille est " + result + "");
+        // dbhelp.updateFoodUser(1);
         /*-----------*/
 
 
