@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.analytics.ecommerce.Product;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.loopj.android.http.AsyncHttpClient;
@@ -51,11 +52,15 @@ public class MyMainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static final String URL = "http://fr.openfoodfacts.org/api/v0/produit/";
-    public static String responseRequest ="vide";
+    private static Context context;
+    private static DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this.getApplicationContext();
+        dbHelper = new DBHelper();
+        DatabaseManager.initializeInstance(dbHelper);
         setContentView(R.layout.activity_my_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,14 +69,25 @@ public class MyMainPage extends AppCompatActivity
         Intent intent = getIntent();
 
         /*-----DB----*/
-        DBHelper dbhelp = new DBHelper(this);
-        FoodUser fooduser = new FoodUser();
-        fooduser.setEmail("toto");
-        fooduser.setBirthday("3325454");
-        fooduser.setPassword("ererer");
-        fooduser.setUsername("mmlmllm");
-        dbhelp.addUser(fooduser);
-        int result = dbhelp.getALLUser().size();
+        UserDB userdb = new UserDB();
+        FoodUser user = new FoodUser();
+
+        user.setUsername("brioche");
+        user.setEmail("toto");
+        user.setPassword("mmlmllm");
+        userdb.addUser(user);
+        int result1 = userdb.getALLUser().size();
+
+        Log.i("data","taille user est " + result1 + "");
+        ProductDB productdb = new ProductDB();
+
+        ProductObject product = new ProductObject();
+        product.setId(233233);
+        product.setName("brioche");
+        product.setBrand("toto");
+        product.setImage("mmlmllm");
+        productdb.addProduct(product);
+        int result = productdb.getALLProduct().size();
         Log.i("data","taille est " + result + "");
         // dbhelp.updateFoodUser(1);
         /*-----------*/
@@ -192,6 +208,9 @@ public class MyMainPage extends AppCompatActivity
         startActivity(intentProduct);
 
 
+    }
+    public static Context getContext(){
+        return context;
     }
 
 }

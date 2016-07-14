@@ -38,10 +38,7 @@ public class MyMenu {
                     if (id == R.id.nav_param) {
                         Intent intent = new Intent(context, Parametres.class);
                         context.startActivity(intent);
-                    } else if (id == R.id.nav_bd) {
-                        Intent intent = new Intent(context, DBActivity.class);
-                        context.startActivity(intent);
-                    }
+                    } 
                 }
             }
         }
