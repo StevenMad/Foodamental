@@ -12,4 +12,34 @@
     tools:context="com.foodamental.Recipes"
     tools:showIn="@layout/app_bar_recipes">
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Ingredient"
+        android:id="@+id/ingredientName"
+        android:layout_alignBottom="@+id/ingredientText"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text=""
+        android:ems="10"
+        android:id="@+id/ingredientText"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/button_send" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:id="@+id/button_send"
+        android:onClick="sendMessage"
+        android:layout_marginTop="53dp"
+        android:layout_below="@+id/ingredientName"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

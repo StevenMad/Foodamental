@@ -51,7 +51,6 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i("SQL", "requete is " +CREATE_USER_TABLE );
         db.execSQL(CREATE_USER_TABLE);
     }
-
     @Override
     // Upgrade the data base
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
