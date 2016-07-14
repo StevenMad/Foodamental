@@ -7,25 +7,33 @@ import java.util.List;
  */
 public class ProductObject {
 
+
+
+    private Integer id;
     private String name;
     private String image;
     private String brand;
-    List<String> ingredients;
 
-    public ProductObject(String name, String image, String brand, List<String> ingredients) {
+    public ProductObject() {
+
+    }
+    public ProductObject(String name,String brand, String image) {
         this.name = name;
         this.image = image;
         this.brand = brand;
-        this.ingredients = ingredients;
+    }
+
+    public ProductObject(Integer id, String name,String brand, String image ) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.brand = brand;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<String> getIngredients() {
-        return ingredients;
-    }
 
     public String getImage() {
         return image;
@@ -47,7 +55,13 @@ public class ProductObject {
         this.image = image;
     }
 
-    public void setIngredients(List<String> ingredients) {
-        this.ingredients = ingredients;
+
+    public Integer getId() {
+        return id;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 }

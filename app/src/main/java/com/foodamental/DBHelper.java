@@ -34,8 +34,16 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String FOODB_COLUMN_BIRTHDAY = "BIRTHDAY";
     public static final String FOODB_COLUMN_EMAIL = "EMAIL";
 
-    public DBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    public static final String PRODUCTDB_TABLE_NAME = "PRODUIT";
+    //FoodUser table Columns names
+    public static final String PRODUCTDB_COLUMN_ID = "ID";
+    public static final String PRODUCTDB_COLUMN_NAME = "NAME";
+    public static final String PRODUCTDB_COLUMN_BRAND = "BRAND";
+    public static final String PRODUCTDB_COLUMN_IMAGE_URL= "IMAGE_URL";
+    private static final String TAG = DBHelper.class.getSimpleName().toString();
+
+    public DBHelper() {
+        super(MyMainPage.getContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -48,185 +56,48 @@ public class DBHelper extends SQLiteOpenHelper {
                 + FOODB_COLUMN_BIRTHDAY + " TEXT,"
                 + FOODB_COLUMN_EMAIL + " TEXT"
                 + ")";
+        String CREATE_PRODUCT_TABLE = "CREATE TABLE " + PRODUCTDB_TABLE_NAME + "("
+                + PRODUCTDB_COLUMN_ID + " INTEGER PRIMARY KEY, "
+                + PRODUCTDB_COLUMN_NAME + " TEXT,"
+                + PRODUCTDB_COLUMN_BRAND + " TEXT,"
+                + PRODUCTDB_COLUMN_IMAGE_URL + " TEXT"
+                + ")";
         Log.i("SQL", "requete is " +CREATE_USER_TABLE );
         db.execSQL(CREATE_USER_TABLE);
+        db.execSQL(CREATE_PRODUCT_TABLE);
     }
     @Override
     // Upgrade the data base
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d(TAG, String.format("SQLiteDatabase.onUpgrade(%d -> %d)", oldVersion, newVersion));
+
         // Drop older table if existed ;
         db.execSQL("DROP TABLE IF EXISTS FoodUser");
+        db.execSQL("DROP TABLE IF EXISTS PRODUIT");
         // Create the new table ;
         onCreate(db);
     }
-
-    // Adding new user
-
-    public void addUser(FoodUser Fooduser) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-
-        values.put(FOODB_COLUMN_USERNAME, Fooduser.getUsername()); // user name
-        values.put(FOODB_COLUMN_PASSWORD, Fooduser.getPassword()); // user password
-        values.put(FOODB_COLUMN_BIRTHDAY, Fooduser.getBirthday()); // user birthday
-        values.put(FOODB_COLUMN_EMAIL, Fooduser.getEmail()); // user email
-
-        // Insert Row
-        db.insert(FOODB_TABLE_NAME, null, values);
-        db.close(); // close database connection
-    }
-
-    // Get one user
-    public FoodUser getFoodUser(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(FOODB_TABLE_NAME, new String[]{FOODB_COLUMN_ID, FOODB_COLUMN_USERNAME,
-                        FOODB_COLUMN_PASSWORD, FOODB_COLUMN_BIRTHDAY, FOODB_COLUMN_EMAIL}, FOODB_COLUMN_ID + "=?", new String[]{String.valueOf(id)},
-                null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        FoodUser contact = new FoodUser(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
-        // Return user
-        return contact;
-    }
-
-    // Getting All users
-
-    public List<FoodUser> getALLUser() {
-        List<FoodUser> userList = new ArrayList<FoodUser>();
-        // Select all Query
-        String selectQuery = "SELECT * FROM " + FOODB_TABLE_NAME;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        //looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                FoodUser user = new FoodUser();
-                user.setId(Integer.parseInt(cursor.getString(0)));
-                user.setUsername(cursor.getString(1));
-                user.setPassword(cursor.getString(2));
-                user.setBirthday(cursor.getString(3));
-                user.setEmail(cursor.getString(4));
-                // Adding contact to list
-                userList.add(user);
-            } while (cursor.moveToNext());
-        }
-        // return contact list
-        return userList;
-    }
-
-    //getting users Count
-    public int getUserCount() {
-        String countQuery = "SELECT * FROM" + FOODB_TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-        // return count
-        return cursor.getCount();
-    }
-
-    //Updating a user
-    public int updateUser(FoodUser user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(FOODB_COLUMN_USERNAME, user.getUsername());
-        values.put(FOODB_COLUMN_PASSWORD, user.getPassword());
-        values.put(FOODB_COLUMN_BIRTHDAY, user.getBirthday());
-        values.put(FOODB_COLUMN_EMAIL, user.getEmail());
-
-        //updating row
-        return db.update(FOODB_TABLE_NAME, values, FOODB_COLUMN_ID + " = ?",
-                new String[]{String.valueOf(user.getId())});
-    }
-
-    // Deleting a user
-    public void deleteUser(FoodUser user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(FOODB_TABLE_NAME, FOODB_COLUMN_ID + " = ? ",
-                new String[]{String.valueOf(user.getId())});
-        db.close();
-    }
-
-    public boolean updateFoodUser(Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("username", "Madhow");
-        cv.put("password", "Mike");
-        cv.put("birthday", "16/06/1992");
-        cv.put("email", "mm@foodamental.com");
-        db.update("FoodUser", cv, "id= ?", new String[]{Integer.toString(id)});
-        return true;
-    }
-
     public Cursor getData(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         Cursor res = db.rawQuery("select * from FoodUser where id=" + id + "", null);
+        DatabaseManager.getInstance().closeDatabase();
+
         return res;
     }
 
     public ArrayList<String> displayUsers() {
         ArrayList<String> users = new ArrayList<String>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         Cursor res = db.rawQuery("Select * from FoodUser", null);
         res.moveToFirst();
         while (res.isAfterLast() == false) {
             users.add(res.getString(res.getColumnIndex(FOODB_COLUMN_USERNAME)));
             res.moveToNext();
         }
+        DatabaseManager.getInstance().closeDatabase();
+
         return users;
     }
 
 
-    public ArrayList<Cursor> getData(String Query) {
-        //get writable database
-        SQLiteDatabase sqlDB = this.getWritableDatabase();
-        String[] columns = new String[]{"mesage"};
-        //an array list of cursor to save two cursors one has results from the query
-        //other cursor stores error message if any errors are triggered
-        ArrayList<Cursor> alc = new ArrayList<Cursor>(2);
-        MatrixCursor Cursor2 = new MatrixCursor(columns);
-        alc.add(null);
-        alc.add(null);
-
-        try {
-            String maxQuery = Query;
-            //execute the query results will be save in Cursor c
-            Cursor c = sqlDB.rawQuery(maxQuery, null);
-
-
-            //add value to cursor2
-            Cursor2.addRow(new Object[]{"Success"});
-
-            alc.set(1, Cursor2);
-            if (null != c && c.getCount() > 0) {
-
-
-                alc.set(0, c);
-                c.moveToFirst();
-
-                return alc;
-            }
-            return alc;
-        } catch (SQLException sqlEx) {
-            Log.d("printing exception", sqlEx.getMessage());
-            //if any exceptions are triggered save the error message to cursor an return the arraylist
-            Cursor2.addRow(new Object[]{"" + sqlEx.getMessage()});
-            alc.set(1, Cursor2);
-            return alc;
-        } catch (Exception ex) {
-
-            Log.d("printing exception", ex.getMessage());
-
-            //if any exceptions are triggered save the error message to cursor an return the arraylist
-            Cursor2.addRow(new Object[]{"" + ex.getMessage()});
-            alc.set(1, Cursor2);
-            return alc;
-        }
-
-    }
 }
