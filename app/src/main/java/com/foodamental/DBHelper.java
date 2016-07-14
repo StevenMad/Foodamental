@@ -28,11 +28,11 @@ public class DBHelper extends SQLiteOpenHelper {
     // Contacts table name
     public static final String FOODB_TABLE_NAME = "FoodUser";
     //FoodUser table Columns names
-    public static final String FOODB_COLUMN_ID = "id";
-    public static final String FOODB_COLUMN_USERNAME = "username";
-    public static final String FOODB_COLUMN_PASSWORD = "password";
-    public static final String FOODB_COLUMN_BIRTHDAY = "birthday";
-    public static final String FOODB_COLUMN_EMAIL = "email";
+    public static final String FOODB_COLUMN_ID = "ID";
+    public static final String FOODB_COLUMN_USERNAME = "USERNAME";
+    public static final String FOODB_COLUMN_PASSWORD = "PASSWORD";
+    public static final String FOODB_COLUMN_BIRTHDAY = "BIRTHDAY";
+    public static final String FOODB_COLUMN_EMAIL = "EMAIL";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,13 +41,14 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     // Create the data base
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_USER_TABLE = "CREATE TABLE" + FOODB_TABLE_NAME + "("
-                + FOODB_COLUMN_ID + " INTEGER PRIMARY KEY,"
+        String CREATE_USER_TABLE = "CREATE TABLE " + FOODB_TABLE_NAME + "("
+                + FOODB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FOODB_COLUMN_USERNAME + " TEXT,"
                 + FOODB_COLUMN_PASSWORD + " TEXT,"
                 + FOODB_COLUMN_BIRTHDAY + " TEXT,"
-                + FOODB_COLUMN_EMAIL + " TEXT,"
+                + FOODB_COLUMN_EMAIL + " TEXT"
                 + ")";
+        Log.i("SQL", "requete is " +CREATE_USER_TABLE );
         db.execSQL(CREATE_USER_TABLE);
     }
 
