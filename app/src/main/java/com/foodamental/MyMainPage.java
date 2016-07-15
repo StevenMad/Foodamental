@@ -45,7 +45,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -73,7 +76,13 @@ public class MyMainPage extends AppCompatActivity
         ProductDB db = new ProductDB();
         FrigoDB frigo = new FrigoDB();
         db.addProduct(new ProductObject((long) 344344, "fddf", "name","brand"));
-        frigo.addProduct(new FrigoObject((long) 32323,2, new Date() ));
+        frigo.addProduct(new FrigoObject((long) 344344,2, new Date() ));
+        List<ProductDTO> result = new ArrayList<>();
+        try {
+            result = frigo.getAllProduct();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         /*-----------*/
 
 

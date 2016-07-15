@@ -30,6 +30,15 @@ public class ProductDTO {
         return name;
     }
 
+    public ProductDTO(Long id, Integer category, Date datePerompt, String name, String image, String brand) {
+        this.id = id;
+        this.category = category;
+        this.datePerompt = datePerompt;
+        this.name = name;
+        this.image = image;
+        this.brand = brand;
+    }
+
     public String getImage() {
         return image;
     }

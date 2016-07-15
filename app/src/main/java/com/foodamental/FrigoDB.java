@@ -4,10 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.sql.Date;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -127,5 +128,20 @@ public class FrigoDB {
         DatabaseManager.getInstance().closeDatabase();
     }
 
+    public List<ProductDTO> getAllProduct() throws ParseException {
+        List<ProductDTO> listproduct = new ArrayList<>();
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT ID_FRIGO, CATEGORIE, DATEPEROMPT, NAME, IMAGE_URL, BRAND FROM FRIGO JOIN PRODUIT ON ID_PRODUCT = IDPRODUCT;";
+        Cursor cursor = db.rawQuery(selectQuery, null);
 
+        //looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ProductDTO product = new ProductDTO(Long.parseLong(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),(Date) dateFormat.parse(cursor.getString(2)),cursor.getString(3) ,cursor.getString(4) , cursor.getString(5));
+                // Adding contact to list
+                listproduct.add(product);
+            } while (cursor.moveToNext());
+        }
+        return listproduct;
+    }
 }
