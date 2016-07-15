@@ -36,14 +36,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String PRODUCTDB_TABLE_NAME = "PRODUIT";
     //FoodUser table Columns names
-    public static final String PRODUCTDB_COLUMN_ID = "ID";
+    public static final String PRODUCTDB_COLUMN_ID = "ID_PRODUCT";
     public static final String PRODUCTDB_COLUMN_NAME = "NAME";
     public static final String PRODUCTDB_COLUMN_BRAND = "BRAND";
     public static final String PRODUCTDB_COLUMN_IMAGE_URL= "IMAGE_URL";
 
     public static final String FRIGODB_TABLE_NAME = "FRIGO";
     //FoodUser table Columns names
-    public static final String FRIGODB_COLUMN_ID = "ID";
+    public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
     public static final String FRIGODB_COLUMN_ID_PRODUCT = "IDPRODUCT";
     public static final String FRIGODB_COLUMN_CATEGORIE = "CATEGORIE";
     public static final String FRIGODB_COLUMN_DATE_PEROMPT= "DATEPEROMPT";
@@ -72,10 +72,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 + ")";
         String CREATE_FRIGO_TABLE = "CREATE TABLE " + FRIGODB_TABLE_NAME + "("
                 + FRIGODB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FRIGODB_COLUMN_ID_PRODUCT + " INTEGER,"
+                + FRIGODB_COLUMN_ID_PRODUCT + " INTEGER, "
                 + FRIGODB_COLUMN_CATEGORIE + " INTEGER,"
-                + FRIGODB_COLUMN_DATE_PEROMPT + " TEXT"
-                + ")";
+                + FRIGODB_COLUMN_DATE_PEROMPT + " TEXT,"
+                +" FOREIGN KEY(" + FRIGODB_COLUMN_ID_PRODUCT +") REFERENCES PRODUIT(ID_PRODUCT) " + ")";
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_PRODUCT_TABLE);
         db.execSQL(CREATE_FRIGO_TABLE);

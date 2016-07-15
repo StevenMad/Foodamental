@@ -8,13 +8,18 @@ import java.util.Date;
  */
 public class FrigoObject {
 
-    private Integer id;
-    private Integer idProduct;
+    private Long id;
+    private Long idProduct;
     private Integer category;
     private Date datePerompt;
 
-    public FrigoObject(Integer id, Integer idProduct, Integer category, Date datePerompt) {
+    public FrigoObject(Long id, Long idProduct, Integer category, Date datePerompt) {
         this.id = id;
+        this.idProduct = idProduct;
+        this.category = category;
+        this.datePerompt = datePerompt;
+    }
+    public FrigoObject(Long idProduct, Integer category, Date datePerompt) {
         this.idProduct = idProduct;
         this.category = category;
         this.datePerompt = datePerompt;
@@ -23,11 +28,11 @@ public class FrigoObject {
     public FrigoObject() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public Integer getIdProduct() {
+    public Long getIdProduct() {
         return idProduct;
     }
 
@@ -39,11 +44,11 @@ public class FrigoObject {
         return datePerompt;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public void setIdProduct(Integer idProduct) {
+    public void setIdProduct(Long idProduct) {
         this.idProduct = idProduct;
     }
 

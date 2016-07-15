@@ -52,7 +52,6 @@ import cz.msebera.android.httpclient.Header;
 public class MyMainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static final String URL = "http://fr.openfoodfacts.org/api/v0/produit/";
     private static Context context;
     private static DBHelper dbHelper;
 
@@ -70,33 +69,11 @@ public class MyMainPage extends AppCompatActivity
         Intent intent = getIntent();
 
         /*-----DB----*/
-        UserDB userdb = new UserDB();
-        FoodUser user = new FoodUser();
-        FrigoDB frigodb = new FrigoDB();
-        FrigoObject frigo = new FrigoObject();
-        frigo.setIdProduct(34343443);
-        frigo.setCategory(323233);
-        Date date = new Date();
-        frigo.setDatePerompt( date);
-        frigodb.addProduct(frigo);
-        user.setUsername("brioche");
-        user.setEmail("toto");
-        user.setPassword("mmlmllm");
-        userdb.addUser(user);
-        int result1 = userdb.getALLUser().size();
-
-        Log.i("data","taille user est " + result1 + "");
-        ProductDB productdb = new ProductDB();
-
-        ProductObject product = new ProductObject();
-        product.setId(233233);
-        product.setName("brioche");
-        product.setBrand("toto");
-        product.setImage("mmlmllm");
-        productdb.addProduct(product);
-        int result = productdb.getALLProduct().size();
-        Log.i("data","taille est " + result + "");
-        // dbhelp.updateFoodUser(1);
+        DBHelper db1 = new DBHelper();
+        ProductDB db = new ProductDB();
+        FrigoDB frigo = new FrigoDB();
+        db.addProduct(new ProductObject((long) 344344, "fddf", "name","brand"));
+        frigo.addProduct(new FrigoObject((long) 32323,2, new Date() ));
         /*-----------*/
 
 
@@ -205,11 +182,10 @@ public class MyMainPage extends AppCompatActivity
 
     public void sendRequest(String codeBar) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = this.URL;
-        url += codeBar + ".json";
+
         final TextView scan_content = (TextView) findViewById(R.id.scan_content);
         Intent intentProduct = new Intent(this, ProductActivity.class);
-        intentProduct.putExtra("url", url);
+        intentProduct.putExtra("codebar", codeBar);
         startActivity(intentProduct);
 
 

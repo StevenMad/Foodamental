@@ -16,7 +16,7 @@ import java.util.List;
 public class FrigoDB {
     public static final String FRIGODB_TABLE_NAME = "FRIGO";
     //FoodUser table Columns names
-    public static final String FRIGODB_COLUMN_ID = "ID";
+    public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
     public static final String FRIGODB_COLUMN_ID_PRODUCT = "IDPRODUCT";
     public static final String FRIGODB_COLUMN_CATEGORIE = "CATEGORIE";
     public static final String FRIGODB_COLUMN_DATE_PEROMPT= "DATEPEROMPT";
@@ -60,7 +60,7 @@ public class FrigoDB {
         if (cursor != null)
             cursor.moveToFirst();
 
-        FrigoObject product = new FrigoObject(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), (Date) dateFormat.parse(cursor.getString(3)));
+        FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), (Date) dateFormat.parse(cursor.getString(3)));
         // Return user
         DatabaseManager.getInstance().closeDatabase();
 
@@ -80,7 +80,7 @@ public class FrigoDB {
         //looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                FrigoObject product = new FrigoObject(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), (Date) dateFormat.parse(cursor.getString(3)));
+                FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), (Date) dateFormat.parse(cursor.getString(3)));
                 // Adding contact to list
                 frigoList.add(product);
             } while (cursor.moveToNext());
@@ -126,4 +126,6 @@ public class FrigoDB {
                 new String[]{String.valueOf(frigo.getId())});
         DatabaseManager.getInstance().closeDatabase();
     }
+
+
 }
