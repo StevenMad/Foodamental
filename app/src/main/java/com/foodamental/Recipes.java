@@ -13,6 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class Recipes extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -70,4 +81,38 @@ public class Recipes extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         return MyMenu.onNavigationItemSelected(this,this,item);
     }
+
+    public void sendMessage(View view)
+    {
+        EditText ingredientText;
+        String ingredient;
+        ingredientText = (EditText) findViewById(R.id.ingredientText);
+        ingredient = ingredientText.getText().toString();
+        if((ingredient==""))
+        {
+            Toast.makeText(Recipes.this,"Un des champs n'a pas été rempli, Veuillez ré-essayer",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            sendRequest(ingredient);
+            Toast.makeText(Recipes.this,ingredient,Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void sendRequest(String ingredient)
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String[] listIngredient = ingredient.split(" ");
+        String query = "";
+        for(String s:listIngredient)
+        {
+            query+="&allowedIngredient[]="+s;
+        }
+        String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
+        final TextView scan_content = (TextView) findViewById(R.id.scan_content);
+        Intent intentProduct = new Intent(this, RecipeActivity.class);
+        intentProduct.putExtra("url", url);
+        startActivity(intentProduct);
+    }
+
 }
