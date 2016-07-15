@@ -45,6 +45,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -71,7 +72,13 @@ public class MyMainPage extends AppCompatActivity
         /*-----DB----*/
         UserDB userdb = new UserDB();
         FoodUser user = new FoodUser();
-
+        FrigoDB frigodb = new FrigoDB();
+        FrigoObject frigo = new FrigoObject();
+        frigo.setIdProduct(34343443);
+        frigo.setCategory(323233);
+        Date date = new Date();
+        frigo.setDatePerompt( date);
+        frigodb.addProduct(frigo);
         user.setUsername("brioche");
         user.setEmail("toto");
         user.setPassword("mmlmllm");
