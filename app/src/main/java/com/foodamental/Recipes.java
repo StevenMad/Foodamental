@@ -24,10 +24,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.List;
 
 public class Recipes extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    ProductDB productDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +42,19 @@ public class Recipes extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        productDb = new ProductDB();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        EditText ingredientText = (EditText) findViewById(R.id.ingredientText);
+        String s = "";
+        List<ProductObject> list = productDb.getALLProduct();
+        for(ProductObject p:list)
+        {
+            s+=p.toString()+" ";
+        }
+        ingredientText.setText(s);
+
     }
 
     @Override
