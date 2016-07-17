@@ -4,10 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.sql.Date;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 public class FrigoDB {
     public static final String FRIGODB_TABLE_NAME = "FRIGO";
     //FoodUser table Columns names
-    public static final String FRIGODB_COLUMN_ID = "ID";
+    public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
     public static final String FRIGODB_COLUMN_ID_PRODUCT = "IDPRODUCT";
     public static final String FRIGODB_COLUMN_CATEGORIE = "CATEGORIE";
     public static final String FRIGODB_COLUMN_DATE_PEROMPT= "DATEPEROMPT";
@@ -60,7 +61,7 @@ public class FrigoDB {
         if (cursor != null)
             cursor.moveToFirst();
 
-        FrigoObject product = new FrigoObject(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), (Date) dateFormat.parse(cursor.getString(3)));
+        FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), (Date) dateFormat.parse(cursor.getString(3)));
         // Return user
         DatabaseManager.getInstance().closeDatabase();
 
@@ -80,7 +81,7 @@ public class FrigoDB {
         //looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                FrigoObject product = new FrigoObject(Integer.parseInt(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), (Date) dateFormat.parse(cursor.getString(3)));
+                FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), (Date) dateFormat.parse(cursor.getString(3)));
                 // Adding contact to list
                 frigoList.add(product);
             } while (cursor.moveToNext());
@@ -125,5 +126,22 @@ public class FrigoDB {
         db.delete(FRIGODB_TABLE_NAME, FRIGODB_COLUMN_ID + " = ? ",
                 new String[]{String.valueOf(frigo.getId())});
         DatabaseManager.getInstance().closeDatabase();
+    }
+
+    public List<ProductDTO> getAllProduct() throws ParseException {
+        List<ProductDTO> listproduct = new ArrayList<>();
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT ID_FRIGO, CATEGORIE, DATEPEROMPT, NAME, IMAGE_URL, BRAND FROM FRIGO JOIN PRODUIT ON ID_PRODUCT = IDPRODUCT;";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ProductDTO product = new ProductDTO(Long.parseLong(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),(Date) dateFormat.parse(cursor.getString(2)),cursor.getString(3) ,cursor.getString(4) , cursor.getString(5));
+                // Adding contact to list
+                listproduct.add(product);
+            } while (cursor.moveToNext());
+        }
+        return listproduct;
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 public class ProductDB{
     public static final String PRODUCTDB_TABLE_NAME = "PRODUIT";
     //FoodUser table Columns names
-    public static final String PRODUCTDB_COLUMN_ID = "ID";
+    public static final String PRODUCTDB_COLUMN_ID = "ID_PRODUCT";
     public static final String PRODUCTDB_COLUMN_NAME = "NAME";
     public static final String PRODUCTDB_COLUMN_BRAND = "BRAND";
     public static final String PRODUCTDB_COLUMN_IMAGE_URL= "IMAGE_URL";
@@ -61,7 +61,7 @@ public class ProductDB{
         if (cursor != null)
             cursor.moveToFirst();
 
-        ProductObject product = new ProductObject(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+        ProductObject product = new ProductObject(Long.parseLong(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3));
         // Return user
         DatabaseManager.getInstance().closeDatabase();
 
@@ -81,7 +81,7 @@ public class ProductDB{
         //looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                ProductObject product = new ProductObject(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(2), cursor.getString(3) );
+                ProductObject product = new ProductObject(Long.parseLong(cursor.getString(0)),cursor.getString(1),cursor.getString(2), cursor.getString(3) );
                 // Adding contact to list
                 productList.add(product);
             } while (cursor.moveToNext());

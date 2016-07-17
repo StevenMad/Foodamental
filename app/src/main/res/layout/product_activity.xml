@@ -17,4 +17,28 @@
         android:layout_centerHorizontal="true"
         android:layout_weight="0.29" />
 
+    <FrameLayout
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.14">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="add"
+            android:id="@+id/buttonAdd"
+            android:layout_gravity="center"
+
+            android:background="@color/green"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+
+            android:id="@+id/buttonCancel"
+            android:layout_gravity="right|center_vertical"
+            android:background="@color/colorAccent"/>
+    </FrameLayout>
+
 </LinearLayout>

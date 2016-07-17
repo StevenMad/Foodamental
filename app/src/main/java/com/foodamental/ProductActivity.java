@@ -1,12 +1,15 @@
 package com.foodamental;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,19 +26,33 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 /**
  * Created by YOUSSEF on 17/06/2016.
  */
-public class ProductActivity extends Activity {
+public class ProductActivity extends Activity implements View.OnClickListener {
+
+    static final String URL = "http://fr.openfoodfacts.org/api/v0/produit/";
+
+    private ProductObject product;
+    private FrigoObject frigo;
+    private String codeBar;
+    static Button btn;
+    static Button btn2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_activity);
-        String url  = getIntent().getSerializableExtra("url").toString();
+        this.codeBar  = getIntent().getSerializableExtra("codebar").toString();
+        String url = this.URL;
+        url += codeBar + ".json";
         sendRequest(url);
-
+        btn = (Button) findViewById(R.id.buttonAdd);
+        btn2 = (Button) findViewById(R.id.buttonCancel);
+        btn.setOnClickListener(this);
+        btn2.setOnClickListener(this);
 
 
 
@@ -74,13 +91,18 @@ public class ProductActivity extends Activity {
 
 
             String status = json.getString("status_verbose");
-            if (status.equals("product not found"))
+            if (status.equals("product not found")) {
                 dataText.setText("result " + "pas de produit");
+                btn.setEnabled(false);
+
+            }
             else {
                 JSONObject produit = json.getJSONObject("product");
                 String name = produit.getString("product_name");
                 String brand = produit.getString("brands");
                 String image = produit.getString("image_url");
+                this.product = new ProductObject(Long.valueOf(this.codeBar), name,brand, image);
+                this.frigo = new FrigoObject(Long.valueOf(this.codeBar), 0, new Date());
                 dataText.setText("result " + name + " " + brand);
                 final ImageView imageView = (ImageView) findViewById(R.id.imageViewProduct);
                 new DownloadImageTask(imageView).execute(image);
@@ -90,6 +112,22 @@ public class ProductActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.buttonAdd) {
+            ProductDB dbproduct = new ProductDB();
+            FrigoDB dbfrigo = new FrigoDB();
+            dbproduct.addProduct(this.product);
+            dbfrigo.addProduct(this.frigo);
+
+        }
+
+        Intent intent = new Intent(ProductActivity.this, MyMainPage.class);
+        startActivity(intent);
+
+
     }
 
 }

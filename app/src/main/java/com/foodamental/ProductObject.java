@@ -9,7 +9,7 @@ public class ProductObject {
 
 
 
-    private Integer id;
+    private Long id;
     private String name;
     private String image;
     private String brand;
@@ -23,7 +23,7 @@ public class ProductObject {
         this.brand = brand;
     }
 
-    public ProductObject(Integer id, String name,String brand, String image ) {
+    public ProductObject(Long id, String name,String brand, String image ) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -56,11 +56,11 @@ public class ProductObject {
     }
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
