@@ -144,4 +144,25 @@ public class FrigoDB {
         }
         return listproduct;
     }
+
+
+    public List<ProductDTO> getDistinctProductList() throws ParseException
+    {
+        List<ProductDTO> list = getAllProduct();
+        List<ProductDTO> newList = new ArrayList<>();
+        boolean flag=false;
+        for(ProductDTO produit:list)
+        {
+            for(int i=0;i<newList.size();i++) {
+                flag = false;
+                if (!produit.getName().equals(newList.get(i).getName()) && flag != true) {
+                    flag = false;
+                } else
+                    flag = true;
+            }
+            if(flag==false)
+                newList.add(produit);
+        }
+        return newList;
+    }
 }

@@ -1,6 +1,7 @@
 package com.foodamental;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,16 +21,25 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import org.w3c.dom.Text;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 public class Recipes extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ProductDB productDb;
+    private String query;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,19 +52,33 @@ public class Recipes extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        productDb = new ProductDB();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        FrigoDB fdb = new FrigoDB();
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         EditText ingredientText = (EditText) findViewById(R.id.ingredientText);
-        String s = "";
-        List<ProductObject> list = productDb.getALLProduct();
-        for(ProductObject p:list)
-        {
-            s+=p.toString()+" ";
+        query = "";
+        try {
+            List<ProductDTO> listDTO = fdb.getDistinctProductList();
+            for(ProductDTO product:listDTO)
+            {
+                query+=product.toString()+" ";
+            }
+        } catch (ParseException e) {
+            Toast.makeText(Recipes.this,"Erreur lors de la récuperation des données",Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
-        ingredientText.setText(s);
 
+        String[] listIngredient = query.split(" ");
+        query="";
+        for(String s:listIngredient)
+        {
+            query+=s+"%2C";
+        }
+        query = query.substring(0,query.length()-3);
+        //String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
+        String url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillInIngredients=false&ingredients="+query;
+        new RecipeAsyncTask().execute(url);
     }
 
     @Override
@@ -94,37 +118,33 @@ public class Recipes extends AppCompatActivity
         return MyMenu.onNavigationItemSelected(this,this,item);
     }
 
-    public void sendMessage(View view)
-    {
-        EditText ingredientText;
-        String ingredient;
-        ingredientText = (EditText) findViewById(R.id.ingredientText);
-        ingredient = ingredientText.getText().toString();
-        if((ingredient==""))
-        {
-            Toast.makeText(Recipes.this,"Un des champs n'a pas été rempli, Veuillez ré-essayer",Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            sendRequest(ingredient);
-            Toast.makeText(Recipes.this,ingredient,Toast.LENGTH_LONG).show();
+    private class RecipeAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... url) {
+            try {
+                URL murl = new URL(url[0]);
+                HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
+                conn.setRequestProperty("X-Mashape-Key","h5b30mrIKJmshDMNi7qH4pF8ux1Cp1CGYsHjsnJErhOlPsv15R");
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Accept","application/json");
+                if(conn.getResponseCode()==200)
+                {
+                    Intent intentProduct = new Intent(Recipes.this, RecipeActivity.class);
+                    intentProduct.putExtra("response",StaticUtil.getStringFromInputStream(conn.getInputStream()));
+                    startActivity(intentProduct);
+                    return "reussi";
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 
-    public void sendRequest(String ingredient)
-    {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String[] listIngredient = ingredient.split(" ");
-        String query = "";
-        for(String s:listIngredient)
-        {
-            query+="&allowedIngredient[]="+s;
-        }
-        String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
-        final TextView scan_content = (TextView) findViewById(R.id.scan_content);
-        Intent intentProduct = new Intent(this, RecipeActivity.class);
-        intentProduct.putExtra("url", url);
-        startActivity(intentProduct);
-    }
 
 }

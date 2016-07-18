@@ -76,13 +76,6 @@ public class MyMainPage extends AppCompatActivity
         ProductDB db = new ProductDB();
         FrigoDB frigo = new FrigoDB();
         db.addProduct(new ProductObject((long) 344344, "fddf", "name","brand"));
-        frigo.addProduct(new FrigoObject((long) 344344,2, new Date() ));
-        List<ProductDTO> result = new ArrayList<>();
-        try {
-            result = frigo.getAllProduct();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         /*-----------*/
 
 

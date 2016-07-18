@@ -73,5 +73,9 @@ public class ProductDTO {
         this.brand = brand;
     }
 
+    public String toString()
+    {
+        return name;
+    }
 
 }
