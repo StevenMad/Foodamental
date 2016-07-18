@@ -10,5 +10,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recipeContent"/>
+        android:id="@+id/recipeName"/>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recipeSteps"></ListView>
 </android.support.design.widget.CoordinatorLayout>
