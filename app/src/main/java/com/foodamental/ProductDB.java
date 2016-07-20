@@ -68,7 +68,7 @@ public class ProductDB{
         return product;
     }
 
-    // Getting All users
+    // Getting All Products
 
     public List<ProductObject> getALLProduct() {
         List<ProductObject> productList = new ArrayList<ProductObject>();

@@ -1,6 +1,9 @@
 package com.foodamental;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,21 +16,40 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Recipes extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    ProductDB productDb;
+    private String query;
+    List<RecipeItem> recipes;
+    TextView tv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +62,38 @@ public class Recipes extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        tv = (TextView) findViewById(R.id.id_recipes);
+        createQuery();
+    }
+
+    private void createQuery()
+    {
+        FrigoDB fdb = new FrigoDB();
+        EditText ingredientText = (EditText) findViewById(R.id.ingredientText);
+        query = "";
+        try {
+            List<ProductDTO> listDTO = fdb.getDistinctProductList();
+            for(ProductDTO product:listDTO)
+            {
+                query+=product.toString()+" ";
+            }
+        } catch (ParseException e) {
+            Toast.makeText(Recipes.this,"Erreur lors de la récuperation des données",Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+        String[] listIngredient = query.split(" ");
+        query="";
+        for(String s:listIngredient)
+        {
+            query+=s+"%2C";
+        }
+        query = query.substring(0,query.length()-3);
+        //String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
+        String url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false&ingredients="+query;
+        new RecipeAsyncTask().execute(url);
     }
 
     @Override
@@ -82,37 +133,74 @@ public class Recipes extends AppCompatActivity
         return MyMenu.onNavigationItemSelected(this,this,item);
     }
 
-    public void sendMessage(View view)
-    {
-        EditText ingredientText;
-        String ingredient;
-        ingredientText = (EditText) findViewById(R.id.ingredientText);
-        ingredient = ingredientText.getText().toString();
-        if((ingredient==""))
-        {
-            Toast.makeText(Recipes.this,"Un des champs n'a pas été rempli, Veuillez ré-essayer",Toast.LENGTH_LONG).show();
+
+
+    private class RecipeAsyncTask extends AsyncTask<String, Void, List<RecipeItem>> {
+
+        @Override
+        protected List<RecipeItem> doInBackground(String... url) {
+            try {
+                List<RecipeItem> liste = new ArrayList<>();
+                URL murl = new URL(url[0]);
+                HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
+                conn.setRequestProperty("X-Mashape-Key","h5b30mrIKJmshDMNi7qH4pF8ux1Cp1CGYsHjsnJErhOlPsv15R");
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Accept","application/json");
+                if(conn.getResponseCode()==200)
+                {
+                    String response= StaticUtil.getStringFromInputStream(conn.getInputStream());
+                    //create recipeItem
+                    JSONArray array = new JSONArray(response);
+                    for(int i=0;i<array.length();i++)
+                    {
+                        RecipeItem item = new RecipeItem();
+                        JSONObject json = new JSONObject((String) array.get(i).toString());
+                        URL imageUrl = new URL(json.getString("image"));
+                        Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
+                        item.setName(json.getString("title"));
+                        item.setId(json.getInt("id"));
+                        item.setImage(image);
+                        item.setJson(json);
+                        liste.add(item);
+                    }
+                    return liste;
+                }else
+                {
+                    RecipeItem item = new RecipeItem();
+
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
-        else
+
+        protected void onPostExecute(List<RecipeItem> result)
         {
-            sendRequest(ingredient);
-            Toast.makeText(Recipes.this,ingredient,Toast.LENGTH_LONG).show();
+            final ListView lv = (ListView) findViewById(R.id.listRecipes);
+            RecipesArrayAdapter recipesArrayAdapter = new RecipesArrayAdapter(Recipes.this,
+                    android.R.layout.simple_list_item_1,
+                    result);
+            lv.setAdapter(recipesArrayAdapter);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    RecipeItem content = (RecipeItem) lv.getItemAtPosition(position);
+                    //Toast.makeText(getApplicationContext(),content.toString(),Toast.LENGTH_LONG).show();
+
+                    Intent intentRecipeContent = new Intent(Recipes.this,RecipeContentActivity.class);
+                    intentRecipeContent.putExtra("id",content.getId());
+                    startActivity(intentRecipeContent);
+                }
+            });
         }
     }
 
-    public void sendRequest(String ingredient)
-    {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String[] listIngredient = ingredient.split(" ");
-        String query = "";
-        for(String s:listIngredient)
-        {
-            query+="&allowedIngredient[]="+s;
-        }
-        String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
-        final TextView scan_content = (TextView) findViewById(R.id.scan_content);
-        Intent intentProduct = new Intent(this, RecipeActivity.class);
-        intentProduct.putExtra("url", url);
-        startActivity(intentProduct);
-    }
 
 }

@@ -55,6 +55,10 @@ public class ProductObject {
         this.image = image;
     }
 
+    public String toString()
+    {
+        return name;
+    }
 
     public Long getId() {
         return id;

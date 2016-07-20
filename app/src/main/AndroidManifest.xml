@@ -37,10 +37,6 @@
             android:label="@string/title_activity_recipes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RecipeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity
             android:name=".Profile"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".MyMainPage"
@@ -76,6 +72,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".RecipeContentActivity"></activity>
     </application>
 
 </manifest>

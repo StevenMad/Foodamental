@@ -9,7 +9,7 @@ public class ProductDTO {
 
     private Long id;
     private Integer category;
-    private Date datePerompt;
+    private Date datePerempt;
     private String name;
     private String image;
     private String brand;
@@ -22,18 +22,18 @@ public class ProductDTO {
         return category;
     }
 
-    public Date getDatePerompt() {
-        return datePerompt;
+    public Date getDatePerempt() {
+        return datePerempt;
     }
 
     public String getName() {
         return name;
     }
 
-    public ProductDTO(Long id, Integer category, Date datePerompt, String name, String image, String brand) {
+    public ProductDTO(Long id, Integer category, Date datePerempt, String name, String image, String brand) {
         this.id = id;
         this.category = category;
-        this.datePerompt = datePerompt;
+        this.datePerempt = datePerempt;
         this.name = name;
         this.image = image;
         this.brand = brand;
@@ -53,8 +53,8 @@ public class ProductDTO {
         this.category = category;
     }
 
-    public void setDatePerompt(Date datePerompt) {
-        this.datePerompt = datePerompt;
+    public void setDatePerempt(Date datePerompt) {
+        this.datePerempt = datePerempt;
     }
 
     public void setName(String name) {
@@ -73,5 +73,9 @@ public class ProductDTO {
         this.brand = brand;
     }
 
+    public String toString()
+    {
+        return name;
+    }
 
 }
