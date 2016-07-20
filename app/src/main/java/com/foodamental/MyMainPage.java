@@ -73,16 +73,7 @@ public class MyMainPage extends AppCompatActivity
 
         /*-----DB----*/
         DBHelper db1 = new DBHelper();
-        ProductDB db = new ProductDB();
-        FrigoDB frigo = new FrigoDB();
-        db.addProduct(new ProductObject((long) 344344, "fddf", "name","brand"));
-        frigo.addProduct(new FrigoObject((long) 344344,2, new Date() ));
-        List<ProductDTO> result = new ArrayList<>();
-        try {
-            result = frigo.getAllProduct();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
         /*-----------*/
 
 
@@ -167,7 +158,8 @@ public class MyMainPage extends AppCompatActivity
 
 // nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanningResult != null) {
+
+        if ( (scanningResult != null)||(!scanningResult.equals(""))) {
 
 // nous récupérons le contenu du code barre
             String scanContent = scanningResult.getContents();
@@ -193,9 +185,12 @@ public class MyMainPage extends AppCompatActivity
         RequestQueue queue = Volley.newRequestQueue(this);
 
         final TextView scan_content = (TextView) findViewById(R.id.scan_content);
-        Intent intentProduct = new Intent(this, ProductActivity.class);
-        intentProduct.putExtra("codebar", codeBar);
-        startActivity(intentProduct);
+        if (codeBar != null) {
+            Intent intentProduct = new Intent(this, ProductActivity.class);
+            intentProduct.putExtra("codebar", codeBar);
+            startActivity(intentProduct);
+        }
+
 
 
     }

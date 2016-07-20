@@ -1,7 +1,7 @@
 package com.foodamental;
 
 /**
- * Created by YOUSSEF on 16/07/2016.
+ * Created by YOUSSEF on 18/07/2016.
  */
 public class Tweet {
     public int getColor() {
@@ -32,10 +32,21 @@ public class Tweet {
     private String pseudo;
     private String text;
 
-    public Tweet(int color, String pseudo, String text) {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private Long id;
+
+    public Tweet(int color, String pseudo, String text, Long id) {
         this.color = color;
         this.pseudo = pseudo;
         this.text = text;
+        this.id = id;
     }
 
 

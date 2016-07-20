@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by YOUSSEF on 16/07/2016.
+ * Created by YOUSSEF on 18/07/2016.
  */
 public class TweetAdapter extends ArrayAdapter<Tweet> {
 
