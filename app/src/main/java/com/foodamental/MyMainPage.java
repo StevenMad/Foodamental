@@ -85,6 +85,7 @@ public class MyMainPage extends AppCompatActivity
         frigo.addProduct(new FrigoObject((long) id++,(long) 344346,2,new Date()));
         frigo.addProduct(new FrigoObject((long) id++,(long) 344347,2,new Date()));
         frigo.addProduct(new FrigoObject((long) id++,(long) 344348,2,new Date()));*/
+
         /*-----------*/
 
 
@@ -169,7 +170,8 @@ public class MyMainPage extends AppCompatActivity
 
 // nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanningResult != null) {
+
+        if ( (scanningResult != null)||(!scanningResult.equals(""))) {
 
 // nous récupérons le contenu du code barre
             String scanContent = scanningResult.getContents();
@@ -195,9 +197,12 @@ public class MyMainPage extends AppCompatActivity
         RequestQueue queue = Volley.newRequestQueue(this);
 
         final TextView scan_content = (TextView) findViewById(R.id.scan_content);
-        Intent intentProduct = new Intent(this, ProductActivity.class);
-        intentProduct.putExtra("codebar", codeBar);
-        startActivity(intentProduct);
+        if (codeBar != null) {
+            Intent intentProduct = new Intent(this, ProductActivity.class);
+            intentProduct.putExtra("codebar", codeBar);
+            startActivity(intentProduct);
+        }
+
 
 
     }

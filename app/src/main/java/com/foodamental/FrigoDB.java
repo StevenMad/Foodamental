@@ -128,7 +128,16 @@ public class FrigoDB {
         DatabaseManager.getInstance().closeDatabase();
     }
 
-    public List<ProductDTO> getAllProduct() throws ParseException {
+    // Deleting a product with id
+    public void deleteProductWithId(Long id) {
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+
+        db.delete(FRIGODB_TABLE_NAME, FRIGODB_COLUMN_ID + " = ? ",
+                new String[]{String.valueOf(id)});
+        DatabaseManager.getInstance().closeDatabase();
+    }
+
+    public List<ProductDTO> getAllProduct() {
         List<ProductDTO> listproduct = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT ID_FRIGO, CATEGORIE, DATEPEROMPT, NAME, IMAGE_URL, BRAND FROM FRIGO JOIN PRODUIT ON ID_PRODUCT = IDPRODUCT;";
@@ -137,7 +146,12 @@ public class FrigoDB {
         //looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                ProductDTO product = new ProductDTO(Long.parseLong(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),(Date) dateFormat.parse(cursor.getString(2)),cursor.getString(3) ,cursor.getString(4) , cursor.getString(5));
+                ProductDTO product = null;
+                try {
+                    product = new ProductDTO(Long.parseLong(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),(Date) dateFormat.parse(cursor.getString(2)),cursor.getString(3) ,cursor.getString(4) , cursor.getString(5));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 // Adding contact to list
                 listproduct.add(product);
             } while (cursor.moveToNext());
