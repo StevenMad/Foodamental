@@ -10,18 +10,15 @@ public class FrigoObject {
 
     private Long id;
     private Long idProduct;
-    private Integer category;
     private Date datePerompt;
 
-    public FrigoObject(Long id, Long idProduct, Integer category, Date datePerompt) {
+    public FrigoObject(Long id, Long idProduct, Date datePerompt) {
         this.id = id;
         this.idProduct = idProduct;
-        this.category = category;
         this.datePerompt = datePerompt;
     }
-    public FrigoObject(Long idProduct, Integer category, Date datePerompt) {
+    public FrigoObject(Long idProduct,Date datePerompt) {
         this.idProduct = idProduct;
-        this.category = category;
         this.datePerompt = datePerompt;
     }
 
@@ -36,10 +33,6 @@ public class FrigoObject {
         return idProduct;
     }
 
-    public Integer getCategory() {
-        return category;
-    }
-
     public Date getDatePerompt() {
         return datePerompt;
     }
@@ -50,10 +43,6 @@ public class FrigoObject {
 
     public void setIdProduct(Long idProduct) {
         this.idProduct = idProduct;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
     }
 
     public void setDatePerompt(Date datePerompt) {
