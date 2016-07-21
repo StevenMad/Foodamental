@@ -1,4 +1,4 @@
-package com.foodamental;
+package com.foodamental.dao;
 
 /**
  * Created by YOUSSEF on 14/07/2016.

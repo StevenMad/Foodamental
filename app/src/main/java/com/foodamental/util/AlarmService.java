@@ -1,4 +1,4 @@
-package com.foodamental;
+package com.foodamental.util;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import com.foodamental.R;
+import com.foodamental.activity.AlertPage;
 
 public class AlarmService extends IntentService {
     private NotificationManager alarmNotificationManager;
