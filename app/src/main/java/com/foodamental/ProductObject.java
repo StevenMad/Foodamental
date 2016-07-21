@@ -13,6 +13,19 @@ public class ProductObject {
     private String name;
     private String image;
     private String brand;
+    private Integer category;
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
+
+
+    public Integer getCategory() {
+        return category;
+    }
+
+
 
     public ProductObject() {
 
@@ -23,11 +36,12 @@ public class ProductObject {
         this.brand = brand;
     }
 
-    public ProductObject(Long id, String name,String brand, String image ) {
+    public ProductObject(Long id, String name,String brand, String image, Integer category ) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.brand = brand;
+        this.category = category;
     }
 
     public String getName() {
