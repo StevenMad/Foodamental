@@ -1,4 +1,4 @@
-package com.foodamental;
+package com.foodamental.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

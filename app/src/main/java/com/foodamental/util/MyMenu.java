@@ -1,14 +1,18 @@
-package com.foodamental;
+package com.foodamental.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+
+import com.foodamental.R;
+import com.foodamental.activity.AlertPage;
+import com.foodamental.activity.MyMainPage;
+import com.foodamental.activity.Parametres;
+import com.foodamental.activity.Profile;
+import com.foodamental.activity.Recipes;
 
 /**
  * Created by Madhow on 30/05/2016.
@@ -24,7 +28,7 @@ public class MyMenu {
             context.startActivity(intent);
         }
         if (id == R.id.nav_frigo) {
-            Intent intent = new Intent(context,Courses.class);
+            Intent intent = new Intent(context,AlertPage.Courses.class);
             context.startActivity(intent);
         }else {
             if (id == R.id.nav_recettes) {

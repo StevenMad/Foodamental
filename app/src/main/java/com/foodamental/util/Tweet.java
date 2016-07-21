@@ -1,4 +1,4 @@
-package com.foodamental;
+package com.foodamental.util;
 
 /**
  * Created by YOUSSEF on 18/07/2016.

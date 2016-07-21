@@ -1,4 +1,4 @@
-package com.foodamental;
+package com.foodamental.model;
 
 /**
  * Created by Fangyi on 2016/6/16.
