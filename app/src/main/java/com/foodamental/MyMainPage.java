@@ -76,15 +76,15 @@ public class MyMainPage extends AppCompatActivity
         ProductDB db = new ProductDB();
         FrigoDB frigo = new FrigoDB();
         int id=1;
-        /*db.addProduct(new ProductObject((long) 344344, "onion", "carrefour","brand"));
-        db.addProduct(new ProductObject((long) 344345, "pork", "leader","brand"));
-        db.addProduct(new ProductObject((long) 344346, "egg", "carrefour","brand"));
-        db.addProduct(new ProductObject((long) 344347, "chicken", "carrefour","brand"));
-        db.addProduct(new ProductObject((long) 344348, "tomato", "leader","brand"));
-        frigo.addProduct(new FrigoObject((long) id++,(long) 344344,2,new Date()));
-        frigo.addProduct(new FrigoObject((long) id++,(long) 344346,2,new Date()));
-        frigo.addProduct(new FrigoObject((long) id++,(long) 344347,2,new Date()));
-        frigo.addProduct(new FrigoObject((long) id++,(long) 344348,2,new Date()));*/
+        db.addProduct(new ProductObject((long) 344344, "onion", "carrefour","brand", 1));
+        db.addProduct(new ProductObject((long) 344345, "pork", "leader","brand", 1));
+        db.addProduct(new ProductObject((long) 344346, "egg", "carrefour","brand", 1));
+        db.addProduct(new ProductObject((long) 344347, "chicken", "carrefour","brand", 1));
+        db.addProduct(new ProductObject((long) 344348, "tomato", "leader","brand", 1));
+        frigo.addProduct(new FrigoObject((long) id++,(long) 344344,new Date()));
+        frigo.addProduct(new FrigoObject((long) id++,(long) 344346,new Date()));
+        frigo.addProduct(new FrigoObject((long) id++,(long) 344347,new Date()));
+        frigo.addProduct(new FrigoObject((long) id++,(long) 344348,new Date()));
 
         /*-----------*/
 

@@ -34,7 +34,19 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_courses);
+        setContentView(R.layout.activity_courses);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         mListView = (ListView) findViewById(R.id.listviewperso);
 
         tweets = null;
@@ -71,9 +83,9 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
     private List<Tweet> genererTweets() throws ParseException {
         List<Tweet> tweets = new ArrayList<Tweet>();
 
-        List<ProductDTO> produit = frigo.getAllProduct();
-        for (ProductDTO prod : produit){
-         tweets.add(new Tweet(Color.BLACK, prod.getName(), prod.getBrand(), prod.getId()));
+        List<FrigoObject> produit = frigo.getAllProduct();
+        for (FrigoObject prod : produit){
+         tweets.add(new Tweet(Color.BLACK, prod.getName(), prod.getBrand(), prod.getIdFrigo()));
         }
         //tweets.add(new Tweet(Color.BLACK, "Florent", "Mon premier tweet !"));
         //tweets.add(new Tweet(Color.BLUE, "Kevin", "C'est ici que ça se passe !"));
