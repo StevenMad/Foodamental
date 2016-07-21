@@ -41,7 +41,7 @@ public class ProductDB{
 
         ContentValues values = new ContentValues();
 
-        values.put(PRODUCTDB_COLUMN_ID, product.getId()); // product id
+        values.put(PRODUCTDB_COLUMN_ID, product.getIdProduct()); // product id
         values.put(PRODUCTDB_COLUMN_NAME, product.getName()); // product name
         values.put(PRODUCTDB_COLUMN_BRAND, product.getBrand()); // product brand
         values.put(PRODUCTDB_COLUMN_IMAGE_URL, product.getImage()); // product image
@@ -109,13 +109,13 @@ public class ProductDB{
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(PRODUCTDB_COLUMN_ID, product.getId()); // product id
+        values.put(PRODUCTDB_COLUMN_ID, product.getIdProduct()); // product id
         values.put(PRODUCTDB_COLUMN_NAME, product.getName()); // product name
         values.put(PRODUCTDB_COLUMN_BRAND, product.getBrand()); // product brand
         values.put(PRODUCTDB_COLUMN_IMAGE_URL, product.getImage()); // product image
         values.put(PRODUCTDB_COLUMN_CATEGORY, product.getCategory()); // product category
         int result = db.update(PRODUCTDB_TABLE_NAME, values, PRODUCTDB_COLUMN_ID + " = ?",
-        new String[]{String.valueOf(product.getId())});
+        new String[]{String.valueOf(product.getIdProduct())});
         //updating row
         DatabaseManager.getInstance().closeDatabase();
 
@@ -127,7 +127,7 @@ public class ProductDB{
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
         db.delete(PRODUCTDB_TABLE_NAME, PRODUCTDB_COLUMN_ID + " = ? ",
-                new String[]{String.valueOf(product.getId())});
+                new String[]{String.valueOf(product.getIdProduct())});
         DatabaseManager.getInstance().closeDatabase();
     }
 

@@ -9,7 +9,7 @@ public class ProductObject {
 
 
 
-    private Long id;
+    private Long idProduct;
     private String name;
     private String image;
     private String brand;
@@ -36,8 +36,8 @@ public class ProductObject {
         this.brand = brand;
     }
 
-    public ProductObject(Long id, String name,String brand, String image, Integer category ) {
-        this.id = id;
+    public ProductObject(Long idProduct, String name,String brand, String image, Integer category ) {
+        this.idProduct = idProduct;
         this.name = name;
         this.image = image;
         this.brand = brand;
@@ -74,12 +74,12 @@ public class ProductObject {
         return name;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdProduct() {
+        return idProduct;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdProduct(Long idProduct) {
+        this.idProduct = idProduct;
     }
 
 }

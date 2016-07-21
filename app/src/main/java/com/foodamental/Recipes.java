@@ -74,8 +74,8 @@ public class Recipes extends AppCompatActivity
         EditText ingredientText = (EditText) findViewById(R.id.ingredientText);
         query = "";
         try {
-            List<ProductDTO> listDTO = fdb.getDistinctProductList();
-            for(ProductDTO product:listDTO)
+            List<FrigoObject> listDTO = fdb.getDistinctProductList();
+            for(FrigoObject product:listDTO)
             {
                 query+=product.toString()+" ";
             }

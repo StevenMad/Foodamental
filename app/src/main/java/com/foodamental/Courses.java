@@ -83,9 +83,9 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
     private List<Tweet> genererTweets() throws ParseException {
         List<Tweet> tweets = new ArrayList<Tweet>();
 
-        List<ProductDTO> produit = frigo.getAllProduct();
-        for (ProductDTO prod : produit){
-         tweets.add(new Tweet(Color.BLACK, prod.getName(), prod.getBrand(), prod.getId()));
+        List<FrigoObject> produit = frigo.getAllProduct();
+        for (FrigoObject prod : produit){
+         tweets.add(new Tweet(Color.BLACK, prod.getName(), prod.getBrand(), prod.getIdFrigo()));
         }
         //tweets.add(new Tweet(Color.BLACK, "Florent", "Mon premier tweet !"));
         //tweets.add(new Tweet(Color.BLUE, "Kevin", "C'est ici que ça se passe !"));
