@@ -29,7 +29,7 @@
             android:label="@string/title_activity_my_main_page"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.AlertPage$Courses"
+            android:name=".activity.Courses"
             android:label="Courses"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

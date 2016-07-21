@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.foodamental.R;
 import com.foodamental.activity.AlertPage;
+import com.foodamental.activity.Courses;
 import com.foodamental.activity.MyMainPage;
 import com.foodamental.activity.Parametres;
 import com.foodamental.activity.Profile;
@@ -28,7 +29,7 @@ public class MyMenu {
             context.startActivity(intent);
         }
         if (id == R.id.nav_frigo) {
-            Intent intent = new Intent(context,AlertPage.Courses.class);
+            Intent intent = new Intent(context,Courses.class);
             context.startActivity(intent);
         }else {
             if (id == R.id.nav_recettes) {
