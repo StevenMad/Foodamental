@@ -1,4 +1,4 @@
-package com.foodamental;
+package com.foodamental.util;
 
 import org.json.JSONException;
 import org.json.JSONObject;

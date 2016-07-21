@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MyWelcomePage"
+            android:name=".activity.MyWelcomePage"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,45 +25,45 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MyMainPage"
+            android:name=".activity.MyMainPage"
             android:label="@string/title_activity_my_main_page"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Courses"
+            android:name=".activity.Courses"
             android:label="Courses"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Recipes"
+            android:name=".activity.Recipes"
             android:label="@string/title_activity_recipes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Profile"
+            android:name=".activity.Profile"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".MyMainPage"
+            android:parentActivityName=".activity.MyMainPage"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.foodamental.MyMainPage" />
+                android:value=".activity.MyMainPage" />
         </activity>
-        <activity android:name=".ProductActivity" />
+        <activity android:name=".activity.ProductActivity" />
         <activity
-            android:name=".Parametres"
+            android:name=".activity.Parametres"
             android:label="@string/title_activity_parametres"
-            android:parentActivityName=".MyMainPage"
+            android:parentActivityName=".activity.MyMainPage"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.foodamental.MyMainPage" />
+                android:value=".activity.MyMainPage" />
         </activity>
         <activity
-            android:name=".AlertPage"
+            android:name=".activity.AlertPage"
             android:label="@string/app_name" />
 
         <service
-            android:name=".AlarmService"
+            android:name=".util.AlarmService"
             android:enabled="true" />
 
-        <receiver android:name=".AlarmReceiver" />
+        <receiver android:name=".util.AlarmReceiver" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -72,7 +72,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".RecipeContentActivity"></activity>
+        <activity android:name=".activity.RecipeContentActivity"></activity>
     </application>
 
 </manifest>

@@ -1,16 +1,12 @@
-package com.foodamental;
+package com.foodamental.dao;
 
-import android.content.ContentValues;
-import android.content.Context;
+
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.database.sqlite.SQLiteOpenHelper;
-import java.util.ArrayList;
-import java.util.List;
-import android.database.MatrixCursor;
 import android.util.Log;
+
+import com.foodamental.activity.MyMainPage;
 
 import java.util.ArrayList;
 
@@ -32,21 +28,22 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String FOODB_COLUMN_USERNAME = "USERNAME";
     public static final String FOODB_COLUMN_PASSWORD = "PASSWORD";
     public static final String FOODB_COLUMN_BIRTHDAY = "BIRTHDAY";
-    public static final String FOODB_COLUMN_EMAIL = "EMAIL";
+    public static final String FOODB_COLUMN_EMAIL = "MAIL";
 
-    public static final String PRODUCTDB_TABLE_NAME = "PRODUIT";
-    //FoodUser table Columns names
+    public static final String PRODUCTDB_TABLE_NAME = "PRODUCT";
+    //product table Columns names
     public static final String PRODUCTDB_COLUMN_ID = "ID_PRODUCT";
     public static final String PRODUCTDB_COLUMN_NAME = "NAME";
     public static final String PRODUCTDB_COLUMN_BRAND = "BRAND";
     public static final String PRODUCTDB_COLUMN_IMAGE_URL= "IMAGE_URL";
+    public static final String PRODUCTDB_COLUMN_CATEGORY = "CATEGORY";
+
 
     public static final String FRIGODB_TABLE_NAME = "FRIGO";
-    //FoodUser table Columns names
+    //frigo table Columns names
     public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
     public static final String FRIGODB_COLUMN_ID_PRODUCT = "IDPRODUCT";
-    public static final String FRIGODB_COLUMN_CATEGORIE = "CATEGORIE";
-    public static final String FRIGODB_COLUMN_DATE_PEROMPT= "DATEPEROMPT";
+    public static final String FRIGODB_COLUMN_DATE_PEROMPT= "EXPIRY_DATE";
 
     private static final String TAG = DBHelper.class.getSimpleName().toString();
 
@@ -68,12 +65,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 + PRODUCTDB_COLUMN_ID + " INTEGER PRIMARY KEY, "
                 + PRODUCTDB_COLUMN_NAME + " TEXT,"
                 + PRODUCTDB_COLUMN_BRAND + " TEXT,"
+                + PRODUCTDB_COLUMN_CATEGORY + " INTEGER,"
                 + PRODUCTDB_COLUMN_IMAGE_URL + " TEXT"
                 + ")";
         String CREATE_FRIGO_TABLE = "CREATE TABLE " + FRIGODB_TABLE_NAME + "("
                 + FRIGODB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FRIGODB_COLUMN_ID_PRODUCT + " INTEGER, "
-                + FRIGODB_COLUMN_CATEGORIE + " INTEGER,"
+
                 + FRIGODB_COLUMN_DATE_PEROMPT + " TEXT,"
                 +" FOREIGN KEY(" + FRIGODB_COLUMN_ID_PRODUCT +") REFERENCES PRODUIT(ID_PRODUCT) " + ")";
         db.execSQL(CREATE_USER_TABLE);
@@ -87,7 +85,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Drop older table if existed ;
         db.execSQL("DROP TABLE IF EXISTS FoodUser");
-        db.execSQL("DROP TABLE IF EXISTS PRODUIT");
+        db.execSQL("DROP TABLE IF EXISTS PRODUCT");
         db.execSQL("DROP TABLE IF EXISTS FRIGO");
 
         // Create the new table ;

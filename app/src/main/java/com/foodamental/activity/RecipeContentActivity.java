@@ -1,4 +1,4 @@
-package com.foodamental;
+package com.foodamental.activity;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.foodamental.R;
+import com.foodamental.util.StaticUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;

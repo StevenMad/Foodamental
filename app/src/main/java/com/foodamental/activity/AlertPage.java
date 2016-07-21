@@ -1,17 +1,39 @@
-package com.foodamental;
+package com.foodamental.activity;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
+import com.foodamental.util.AlarmReceiver;
+import com.foodamental.dao.FrigoDB;
+import com.foodamental.model.FrigoObject;
+import com.foodamental.util.MyMenu;
+import com.foodamental.R;
+import com.foodamental.util.Tweet;
+import com.foodamental.util.TweetAdapter;
+
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AlertPage extends Activity {
 
@@ -61,4 +83,6 @@ public class AlertPage extends Activity {
     public void setAlarmText(String alarmText) {
         alarmTextView.setText(alarmText);
     }
+
+
 }
