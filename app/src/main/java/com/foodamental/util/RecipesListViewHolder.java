@@ -1,4 +1,4 @@
-package com.foodamental;
+package com.foodamental.util;
 
 import android.widget.ImageView;
 import android.widget.TextView;

@@ -1,56 +1,42 @@
-package com.foodamental;
+package com.foodamental.activity;
 
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.analytics.ecommerce.Product;
+import com.foodamental.dao.DBHelper;
+import com.foodamental.util.AlarmReceiver;
+import com.foodamental.dao.DatabaseManager;
+import com.foodamental.dao.FrigoDB;
+import com.foodamental.model.FrigoObject;
+import com.foodamental.util.MyMenu;
+import com.foodamental.dao.ProductDB;
+import com.foodamental.model.ProductObject;
+import com.foodamental.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import cz.msebera.android.httpclient.Header;
 
 public class MyMainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,7 +58,6 @@ public class MyMainPage extends AppCompatActivity
         Intent intent = getIntent();
 
         /*-----DB----*/
-        DBHelper db1 = new DBHelper();
         ProductDB db = new ProductDB();
         FrigoDB frigo = new FrigoDB();
         int id=1;

@@ -1,9 +1,11 @@
-package com.foodamental;
+package com.foodamental.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+
+import com.foodamental.model.FrigoObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

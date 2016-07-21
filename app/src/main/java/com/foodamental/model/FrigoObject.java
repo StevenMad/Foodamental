@@ -1,4 +1,4 @@
-package com.foodamental;
+package com.foodamental.model;
 
 
 import java.util.Date;

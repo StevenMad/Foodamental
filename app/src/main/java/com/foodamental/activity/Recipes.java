@@ -1,12 +1,10 @@
-package com.foodamental;
+package com.foodamental.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,25 +20,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+import com.foodamental.dao.FrigoDB;
+import com.foodamental.model.FrigoObject;
+import com.foodamental.util.MyMenu;
+import com.foodamental.dao.ProductDB;
+import com.foodamental.R;
+import com.foodamental.util.RecipeItem;
+import com.foodamental.util.RecipesArrayAdapter;
+import com.foodamental.util.StaticUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Recipes extends AppCompatActivity
