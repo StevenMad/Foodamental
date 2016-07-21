@@ -97,13 +97,9 @@ public class MyWelcomePage extends AppCompatActivity {
          String password;
         prenomText = (EditText) findViewById(R.id.prenomText);
         dateText = (EditText) findViewById(R.id.dateText);
-        emailText = (EditText) findViewById(R.id.emailText);
-        passwordText = (EditText) findViewById(R.id.passwordText);
         prenom = prenomText.getText().toString();
         date = dateText.getText().toString();
-        email = emailText.getText().toString();
-        password = passwordText.getText().toString();
-        if((prenom=="") || (date == "") || (email=="") || ("" == password))
+        if((prenom.equals("")) || (date.equals("")))
         {
             Toast.makeText(MyWelcomePage.this,"Un des champs n'a pas été rempli, Veuillez ré-essayer",Toast.LENGTH_LONG).show();
         }
