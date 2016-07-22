@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.foodamental.R;
+import com.foodamental.dao.UserDB;
+import com.foodamental.model.FoodUser;
 import com.foodamental.util.StaticUtil;
 
 import org.json.JSONException;
@@ -14,8 +16,11 @@ import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class Profile extends AppCompatActivity {
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,19 +29,15 @@ public class Profile extends AppCompatActivity {
 
         Intent intent = getIntent();
         //récupération du json
-        try {
-            FileInputStream file = openFileInput("connexion.json");
-            String s = StaticUtil.getFileContent(file);
-            JSONObject obj = StaticUtil.getJsonFromString(s);
+
+        UserDB db = new UserDB();
+        List<FoodUser> users = db.getALLUser();
+
             TextView prenomTextView = (TextView) findViewById(R.id.pnmText);
             TextView dtnTextView = (TextView) findViewById(R.id.dtnText);
-            prenomTextView.setText("Prenom :  " + obj.getString("prenom"));
-            dtnTextView.setText("Date de naissance : " + obj.getString("date de naissance"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            prenomTextView.setText("Prenom :  " + users.get(0).getUsername());
+            dtnTextView.setText("Date de naissance : " + dateFormat.format(users.get(0).getBirthday()));
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
