@@ -7,6 +7,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="Inscription">Inscription</string>
+    <string name="date_button_set">Date de naissance</string>
+    <string name="date_selected"></string>
+    <string name="inscription">inscris toi</string>
+
     <string name="camera">Lancer la camera</string>
 
     <string name="reslabel">produit1</string>

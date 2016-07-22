@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.foodamental.dao.DBHelper;
+import com.foodamental.dao.UserDB;
+import com.foodamental.model.FoodUser;
 import com.foodamental.util.AlarmReceiver;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.FrigoDB;
@@ -37,6 +39,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.List;
 
 public class MyMainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -50,6 +53,13 @@ public class MyMainPage extends AppCompatActivity
         context = this.getApplicationContext();
         dbHelper = new DBHelper();
         DatabaseManager.initializeInstance(dbHelper);
+
+        UserDB dbuser = new UserDB();
+        List<FoodUser> users = dbuser.getALLUser();
+        if (users.size() == 0) {
+            Intent intent = new Intent(this, MyWelcomePage.class);
+            startActivity(intent);
+        }
         setContentView(R.layout.activity_my_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

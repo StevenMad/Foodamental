@@ -6,7 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.foodamental.model.FoodUser;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,7 +23,8 @@ public class UserDB {
     public static final String FOODB_COLUMN_USERNAME = "USERNAME";
     public static final String FOODB_COLUMN_PASSWORD = "PASSWORD";
     public static final String FOODB_COLUMN_BIRTHDAY = "BIRTHDAY";
-    public static final String FOODB_COLUMN_EMAIL = "EMAIL";
+    public static final String FOODB_COLUMN_EMAIL = "MAIL";
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public UserDB() {
         super();
@@ -32,9 +36,9 @@ public class UserDB {
         ContentValues values = new ContentValues();
 
         values.put(FOODB_COLUMN_USERNAME, Fooduser.getUsername()); // user name
-        values.put(FOODB_COLUMN_PASSWORD, Fooduser.getPassword()); // user password
-        values.put(FOODB_COLUMN_BIRTHDAY, Fooduser.getBirthday()); // user birthday
-        values.put(FOODB_COLUMN_EMAIL, Fooduser.getEmail()); // user email
+        values.put(FOODB_COLUMN_PASSWORD, Fooduser.getPassword() == null ? "" :Fooduser.getPassword() ); // user password
+        values.put(FOODB_COLUMN_BIRTHDAY, dateFormat.format(Fooduser.getBirthday())); // user birthday
+        values.put(FOODB_COLUMN_EMAIL, Fooduser.getEmail()  == null ? "" :Fooduser.getEmail()); // user email
 
         // Insert Row
         db.insert(FOODB_TABLE_NAME, null, values);
@@ -51,7 +55,12 @@ public class UserDB {
         if (cursor != null)
             cursor.moveToFirst();
 
-        FoodUser contact = new FoodUser(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+        FoodUser contact = null;
+        try {
+            contact = new FoodUser(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), (Date) dateFormat.parse(cursor.getString(3)), cursor.getString(4));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         // Return user
         DatabaseManager.getInstance().closeDatabase();
 
@@ -75,7 +84,11 @@ public class UserDB {
                 user.setId(Integer.parseInt(cursor.getString(0)));
                 user.setUsername(cursor.getString(1));
                 user.setPassword(cursor.getString(2));
-                user.setBirthday(cursor.getString(3));
+                try {
+                    user.setBirthday((Date) dateFormat.parse(cursor.getString(3)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 user.setEmail(cursor.getString(4));
                 // Adding contact to list
                 userList.add(user);
@@ -106,7 +119,7 @@ public class UserDB {
         ContentValues values = new ContentValues();
         values.put(FOODB_COLUMN_USERNAME, user.getUsername());
         values.put(FOODB_COLUMN_PASSWORD, user.getPassword());
-        values.put(FOODB_COLUMN_BIRTHDAY, user.getBirthday());
+        values.put(FOODB_COLUMN_BIRTHDAY, dateFormat.format(user.getBirthday()));
         values.put(FOODB_COLUMN_EMAIL, user.getEmail());
 
         //updating row
