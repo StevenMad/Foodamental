@@ -1,13 +1,23 @@
-package com.foodamental;
+package com.foodamental.util;
 
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
+
+import com.foodamental.activity.AlertPage;
+import com.foodamental.activity.MyMainPage;
+import com.foodamental.dao.DatabaseManager;
+
+import java.util.ArrayList;
 
 public class AlarmReceiver extends WakefulBroadcastReceiver {
 
@@ -33,4 +43,5 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
     }
+
 }

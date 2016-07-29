@@ -1,13 +1,8 @@
-package com.foodamental;
+package com.foodamental.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,13 +14,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.foodamental.util.DownloadImageTask;
+import com.foodamental.dao.FrigoDB;
+import com.foodamental.model.FrigoObject;
+import com.foodamental.dao.ProductDB;
+import com.foodamental.model.ProductObject;
+import com.foodamental.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -97,14 +96,16 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
             }
             else {
+                String image = "";
                 JSONObject produit = json.getJSONObject("product");
                 String name = produit.getString("product_name");
                 String brand = produit.getString("brands");
-                String image = produit.getString("image_url");
-                this.product = new ProductObject(Long.valueOf(this.codeBar), name,brand, image);
-                this.frigo = new FrigoObject(Long.valueOf(this.codeBar), 0, new Date());
+                if (produit.has("image_url"))
+                image = produit.getString("image_url");
+                this.product = new ProductObject(Long.valueOf(this.codeBar), name,brand, image, 1);
+                this.frigo = new FrigoObject(Long.valueOf(this.codeBar),  new Date());
                 dataText.setText("result " + name + " " + brand);
-                final ImageView imageView = (ImageView) findViewById(R.id.imageViewProduct);
+                ImageView imageView = (ImageView) findViewById(R.id.imageViewProduct);
                 new DownloadImageTask(imageView).execute(image);
 
             }
