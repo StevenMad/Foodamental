@@ -1,24 +1,17 @@
-package com.foodamental;
+package com.foodamental.activity;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.foodamental.R;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -97,13 +90,9 @@ public class MyWelcomePage extends AppCompatActivity {
          String password;
         prenomText = (EditText) findViewById(R.id.prenomText);
         dateText = (EditText) findViewById(R.id.dateText);
-        emailText = (EditText) findViewById(R.id.emailText);
-        passwordText = (EditText) findViewById(R.id.passwordText);
         prenom = prenomText.getText().toString();
         date = dateText.getText().toString();
-        email = emailText.getText().toString();
-        password = passwordText.getText().toString();
-        if((prenom=="") || (date == "") || (email=="") || ("" == password))
+        if((prenom.equals("")) || (date.equals("")))
         {
             Toast.makeText(MyWelcomePage.this,"Un des champs n'a pas été rempli, Veuillez ré-essayer",Toast.LENGTH_LONG).show();
         }

@@ -3,6 +3,11 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_accueil"
+            android:title="Accueil"
+            />
+
+        <item
             android:id="@+id/nav_frigo"
             android:title="Mon frigo" />
         <item
@@ -12,6 +17,11 @@
         <item
             android:id="@+id/nav_profil"
             android:title="Profil" />
+
+        <item
+            android:id="@+id/nav_bd"
+            android:title="Base locale"
+            />
 
         <item
             android:id="@+id/nav_param"

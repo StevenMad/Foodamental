@@ -16,7 +16,7 @@
     <string name="menu_about">about</string>
     <string name="menu_settings">setting</string>
     <string name="title_activity_setting_page">titleSetting</string>
-    <string name="toast_settings" >yes</string>
+    <string name="toast_settings">yes</string>
     <string name="action_recette">compte recette</string>
     <string-array name="mon_frigo">
         <item>Tomate</item>
