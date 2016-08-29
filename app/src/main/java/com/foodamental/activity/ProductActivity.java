@@ -99,12 +99,13 @@ public class ProductActivity extends Activity implements View.OnClickListener {
                 String image = "";
                 JSONObject produit = json.getJSONObject("product");
                 String name = produit.getString("product_name");
+                String genericName = produit.getString("generic_name_fr");
                 String brand = produit.getString("brands");
                 if (produit.has("image_url"))
                 image = produit.getString("image_url");
-                this.product = new ProductObject(Long.valueOf(this.codeBar), name,brand, image, 1);
+                this.product = new ProductObject(Long.valueOf(this.codeBar), genericName,brand, image, 1);
                 this.frigo = new FrigoObject(Long.valueOf(this.codeBar),  new Date());
-                dataText.setText("result " + name + " " + brand);
+                dataText.setText("result " + name + " " + brand+" "+genericName);
                 ImageView imageView = (ImageView) findViewById(R.id.imageViewProduct);
                 new DownloadImageTask(imageView).execute(image);
 
