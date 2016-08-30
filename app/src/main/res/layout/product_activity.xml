@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
@@ -17,28 +17,53 @@
         android:layout_centerHorizontal="true"
         android:layout_weight="0.29" />
 
-    <FrameLayout
-        android:layout_width="350dp"
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.14">
+        android:onClick="setDate"
+        android:text="@string/date_button_product"
+        android:layout_gravity="left|center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/imageViewProduct"
+        android:layout_alignStart="@+id/buttonAdd" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="add"
-            android:id="@+id/buttonAdd"
-            android:layout_gravity="center"
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-            android:background="@color/green"/>
+        android:text="@string/date_selected"
+        android:textAppearance="?android:attr/textAppearanceMedium"
 
-        <Button
+        android:layout_gravity="right|center_vertical"
+        android:layout_alignTop="@+id/button1"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_alignEnd="@+id/buttonCancel" />
+
+    <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
 
             android:id="@+id/buttonCancel"
             android:layout_gravity="right|center_vertical"
-            android:background="@color/colorAccent"/>
-    </FrameLayout>
+            android:background="@color/colorAccent"
+        android:layout_alignTop="@+id/buttonAdd"
+        android:layout_alignEnd="@+id/dataText"
+        android:textColor="#FFFFFF" />
 
-</LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add"
+        android:id="@+id/buttonAdd"
+        android:layout_gravity="left|center_vertical"
+
+    android:background="@color/green"
+        android:layout_below="@+id/button1"
+        android:layout_alignStart="@+id/dataText"
+        android:layout_marginTop="36dp"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>

@@ -19,17 +19,9 @@
             android:title="Profil" />
 
         <item
-            android:id="@+id/nav_bd"
-            android:title="Base locale"
-            />
-
-        <item
             android:id="@+id/nav_param"
             android:icon="@drawable/ic_menu_manage"
             android:title="Paramètres" />
-        <item
-            android:id="@+id/translate"
-            android:title="Translate"/>
 
     </group>
 

@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -39,6 +40,11 @@ public class ProductActivity extends Activity implements View.OnClickListener {
     private String codeBar;
     static Button btn;
     static Button btn2;
+    private TextView dateView;
+    private Calendar calendar;
+    private int year;
+    private int month;
+    private int day;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,9 +59,22 @@ public class ProductActivity extends Activity implements View.OnClickListener {
         btn.setOnClickListener(this);
         btn2.setOnClickListener(this);
 
+        dateView = (TextView) findViewById(R.id.textView3);
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
 
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        showDate(year, month+1, day);
 
     }
+
+    private void showDate(int year, int month, int day) {
+        dateView.setText(new StringBuilder().append(day).append("/")
+                .append(month).append("/").append(year));
+    }
+
+
     public void sendRequest(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
 

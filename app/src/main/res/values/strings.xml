@@ -8,6 +8,7 @@
 
     <string name="Inscription">Inscription</string>
     <string name="date_button_set">Date de naissance</string>
+    <string name="date_button_product">Date de peremption</string>
     <string name="date_selected"></string>
     <string name="inscription">inscris toi</string>
 
