@@ -1,5 +1,6 @@
 package com.foodamental.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -157,8 +158,15 @@ public class Recipes extends AppCompatActivity
     public class TranslatorAsyncTask extends AsyncTask<String, Void, String> {
         private String idClient = "Foodamental01";
         private String secret = "jKyTcW44LeQYkjFZF1O4ci1VyiVFaRWUyR62YbLOQ74=";
+        private ProgressDialog dialog = new ProgressDialog(Recipes.this);
         public OnTaskComplete response = null;
 
+        @Override
+        protected void onPreExecute()
+        {
+            this.dialog.setMessage("Please Wait");
+            this.dialog.show();
+        }
         @Override
         protected String doInBackground(String... params) {
             URL url = null;
@@ -201,6 +209,8 @@ public class Recipes extends AppCompatActivity
 
         protected void onPostExecute(String result)
         {
+            if(dialog.isShowing())
+                dialog.dismiss();
             response.onTaskCompleted(result);
         }
     }

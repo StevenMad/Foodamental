@@ -1,5 +1,6 @@
 package com.foodamental.activity;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -94,6 +95,13 @@ public class RecipeContentActivity extends AppCompatActivity {
     {
         private String idClient = "Foodamental01";
         private String secret = "jKyTcW44LeQYkjFZF1O4ci1VyiVFaRWUyR62YbLOQ74=";
+        private ProgressDialog dialog = new ProgressDialog(RecipeContentActivity.this);
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Please Wait");
+            this.dialog.show();
+        }
+
         @Override
         protected  List<String> doInBackground(String... jsonArrayString)
         {
@@ -152,6 +160,8 @@ public class RecipeContentActivity extends AppCompatActivity {
 
         protected void onPostExecute(List<String> stepString)
         {
+            if(dialog.isShowing())
+                dialog.dismiss();
             ArrayAdapter<String> obj = new ArrayAdapter<String>(RecipeContentActivity.this,
                     android.R.layout.simple_list_item_1,
                     stepString);

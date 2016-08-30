@@ -125,7 +125,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
                 String image = "";
                 JSONObject produit = json.getJSONObject("product");
                 String name = produit.getString("product_name");
-                String genericName = produit.getString("generic_name_fr");
+                String genericName = produit.getString("generic_name");
                 String brand = produit.getString("brands");
                 if (produit.has("image_url"))
                 image = produit.getString("image_url");
