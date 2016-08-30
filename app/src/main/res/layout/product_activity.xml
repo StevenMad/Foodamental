@@ -8,14 +8,18 @@
         android:layout_width="168dp"
         android:layout_height="wrap_content"
         android:id="@+id/imageViewProduct"
-        android:layout_weight="0.33" />
+        android:layout_weight="0.33"
+        android:layout_marginTop="53dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/buttonAdd" />
 
     <TextView
         android:id="@+id/dataText"
         android:layout_width="344dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_weight="0.29" />
+        android:layout_weight="0.29"
+        android:layout_above="@+id/button1"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/button1"
@@ -25,21 +29,20 @@
         android:text="@string/date_button_product"
         android:layout_gravity="left|center_vertical"
         android:layout_centerVertical="true"
-        android:layout_alignEnd="@+id/imageViewProduct"
         android:layout_alignStart="@+id/buttonAdd" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
 
         android:text="@string/date_selected"
         android:textAppearance="?android:attr/textAppearanceMedium"
 
         android:layout_gravity="right|center_vertical"
-        android:layout_alignTop="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_alignEnd="@+id/buttonCancel" />
+        android:layout_above="@+id/buttonAdd"
+        android:layout_alignStart="@+id/buttonCancel"
+        android:layout_marginBottom="10dp" />
 
     <Button
             android:layout_width="wrap_content"

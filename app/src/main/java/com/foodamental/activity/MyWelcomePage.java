@@ -120,6 +120,7 @@ public class MyWelcomePage extends AppCompatActivity {
 
 
 
+
     @SuppressWarnings("deprecation")
     public void setDate(View view) {
         showDialog(999);

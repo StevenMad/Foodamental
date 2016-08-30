@@ -6,23 +6,22 @@
             android:id="@+id/nav_accueil"
             android:title="Accueil"
             />
-
         <item
             android:id="@+id/nav_frigo"
-            android:title="Mon frigo" />
+            android:title="Mon frigo"
+            />
         <item
             android:id="@+id/nav_recettes"
             android:title="Les recettes"
             />
         <item
             android:id="@+id/nav_profil"
-            android:title="Profil" />
-
+            android:title="Profil"
+            />
         <item
             android:id="@+id/nav_param"
             android:icon="@drawable/ic_menu_manage"
             android:title="Paramètres" />
-
     </group>
 
 </menu>

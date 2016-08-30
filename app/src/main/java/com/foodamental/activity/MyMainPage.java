@@ -71,44 +71,17 @@ public class MyMainPage extends AppCompatActivity
         ProductDB db = new ProductDB();
         FrigoDB frigo = new FrigoDB();
         int id=1;
-        db.addProduct(new ProductObject((long) 344344, "onion", "carrefour","brand", 1));
-        db.addProduct(new ProductObject((long) 344345, "pork", "leader","brand", 1));
-        db.addProduct(new ProductObject((long) 344346, "egg", "carrefour","brand", 1));
-        db.addProduct(new ProductObject((long) 344347, "chicken", "carrefour","brand", 1));
-        db.addProduct(new ProductObject((long) 344348, "tomato", "leader","brand", 1));
+        db.addProduct(new ProductObject((long) 344344, "oignon", "carrefour","brand", 1));
+        db.addProduct(new ProductObject((long) 344345, "porc", "leader","brand", 1));
+        db.addProduct(new ProductObject((long) 344346, "oeufs", "carrefour","brand", 1));
+        db.addProduct(new ProductObject((long) 344347, "poulet", "carrefour","brand", 1));
+        db.addProduct(new ProductObject((long) 344348, "tomate", "leader","brand", 1));
         frigo.addProduct(new FrigoObject((long) id++,(long) 344344,new Date()));
         frigo.addProduct(new FrigoObject((long) id++,(long) 344346,new Date()));
         frigo.addProduct(new FrigoObject((long) id++,(long) 344347,new Date()));
         frigo.addProduct(new FrigoObject((long) id++,(long) 344348,new Date()));
 
         /*-----------*/
-
-
-        //recupération du json à la création
-        try {
-            FileInputStream filein = openFileInput("connexion.json");
-            InputStreamReader reader = new InputStreamReader(filein);
-            char[] inputReadBuffer = new char[1024];
-            String s = "";
-            int charRead;
-            while ((charRead = reader.read(inputReadBuffer)) > 0) {
-                String readString = String.copyValueOf(inputReadBuffer, 0, charRead);
-                s += readString;
-            }
-            reader.close();
-            JSONObject json = new JSONObject(s);
-            String value = json.getString("prenom");
-            textView.setText("Bonjour " + value);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        } catch (JSONException e) {
-            Toast.makeText(MyMainPage.this, "text is not in json format", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -155,6 +128,13 @@ public class MyMainPage extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         return MyMenu.onNavigationItemSelected(this, this, item);
+    }
+
+    //used for debug
+    public void sendBarCode(View view)
+    {
+        String barcode = "5449000000996";
+        sendRequest(barcode);
     }
 
     public void openCamera(View view) {
