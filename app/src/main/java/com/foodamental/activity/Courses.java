@@ -26,6 +26,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activité qui gère les produits du frigo
+ */
 public class Courses extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ListView mListView;
@@ -82,6 +85,11 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
         });
     }
 
+    /**
+     * Fonction qui remplit les éléments qui vont remplir la liste view
+     * @return
+     * @throws ParseException
+     */
     private List<Tweet> genererTweets() throws ParseException {
         List<Tweet> tweets = new ArrayList<Tweet>();
 
@@ -97,6 +105,11 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
         return tweets;
     }
 
+    /**
+     * Fonction qui gère la navigation du menu
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

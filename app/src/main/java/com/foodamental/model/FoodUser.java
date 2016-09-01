@@ -5,6 +5,10 @@ import java.util.Date;
 /**
  * Created by Fangyi on 2016/6/16.
  */
+
+/**
+ * Classe pour table User
+ */
 public class FoodUser {
     private int id;
     private String username;

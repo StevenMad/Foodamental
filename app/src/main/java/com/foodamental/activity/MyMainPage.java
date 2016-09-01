@@ -45,14 +45,14 @@ public class MyMainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static Context context;
-    private static DBHelper dbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this.getApplicationContext();
-        dbHelper = new DBHelper();
-        DatabaseManager.initializeInstance(dbHelper);
+
+        DatabaseManager.getInstance();
 
         UserDB dbuser = new UserDB();
         List<FoodUser> users = dbuser.getALLUser();
