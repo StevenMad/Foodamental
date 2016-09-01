@@ -1,10 +1,12 @@
 package com.foodamental.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import com.foodamental.dao.FrigoDB;
 import com.foodamental.model.FrigoObject;
+import com.foodamental.translator.AdmAccessToken;
 import com.foodamental.util.MyMenu;
 import com.foodamental.dao.ProductDB;
 import com.foodamental.R;
@@ -32,8 +35,13 @@ import com.foodamental.util.StaticUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -41,20 +49,30 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class Recipes extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,OnTaskComplete {
 
     ProductDB productDb;
     private String query;
-    List<RecipeItem> recipes;
+    String ingredientsEng="";
     TextView tv;
+    private TranslatorAsyncTask  translatorAsyncTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        translatorAsyncTask = new TranslatorAsyncTask();
+        translatorAsyncTask.response = this;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,17 +100,10 @@ public class Recipes extends AppCompatActivity
             Toast.makeText(Recipes.this,"Erreur lors de la récuperation des données",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
-
-        String[] listIngredient = query.split(" ");
-        query="";
-        for(String s:listIngredient)
-        {
-            query+=s+"%2C";
-        }
-        query = query.substring(0,query.length()-3);
+        String url = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text="+query+"&from=fr&to=en";
+        translatorAsyncTask.execute(url);
+        //query = query.substring(0,query.length()-3);
         //String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
-        String url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false&ingredients="+query;
-        new RecipeAsyncTask().execute(url);
     }
 
     @Override
@@ -132,6 +143,77 @@ public class Recipes extends AppCompatActivity
         return MyMenu.onNavigationItemSelected(this,this,item);
     }
 
+    @Override
+    public void onTaskCompleted(String output) {
+        String query = "";
+        String[] ingredients = output.split(" ");
+        for(int i=0;i<ingredients.length;i++)
+            query+=ingredients[i]+"%2C";
+        query.substring(0,query.length()-3);
+        String url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false&ingredients=" + query;
+        new RecipeAsyncTask().execute(url);
+    }
+
+
+    public class TranslatorAsyncTask extends AsyncTask<String, Void, String> {
+        private String idClient = "Foodamental01";
+        private String secret = "jKyTcW44LeQYkjFZF1O4ci1VyiVFaRWUyR62YbLOQ74=";
+        private ProgressDialog dialog = new ProgressDialog(Recipes.this);
+        public OnTaskComplete response = null;
+
+        @Override
+        protected void onPreExecute()
+        {
+            this.dialog.setMessage("Please Wait");
+            this.dialog.show();
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            URL url = null;
+            String traceId = UUID.randomUUID().toString();
+            String formatedUrl = String.format(params[0],"bonjour");
+            try {
+                url = new URL(formatedUrl);
+                AdmAccessToken token = AdmAccessToken.getAccessToken(idClient,secret);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "Bearer " + token.access_token);
+                conn.setRequestProperty("X-ClientTraceId", traceId);
+                if(conn.getResponseCode()==200)
+                {
+                    String result = StaticUtil.getStringFromInputStream(conn.getInputStream());
+                    String xml = result; //Populated XML String....
+
+                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder builder = null;
+
+                    builder = factory.newDocumentBuilder();
+                    Document document = builder.parse(new InputSource(new StringReader(xml)));
+                    Element rootElement = document.getDocumentElement();
+                    String value = rootElement.getTextContent();
+                    return value;
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }
+
+        protected void onPostExecute(String result)
+        {
+            if(dialog.isShowing())
+                dialog.dismiss();
+            response.onTaskCompleted(result);
+        }
+    }
 
 
     private class RecipeAsyncTask extends AsyncTask<String, Void, List<RecipeItem>> {
