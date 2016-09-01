@@ -78,8 +78,14 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PRODUCT_TABLE);
         db.execSQL(CREATE_FRIGO_TABLE);
     }
+
+    /**
+     * Upgrade de bdd
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
-    // Upgrade the data base
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, String.format("SQLiteDatabase.onUpgrade(%d -> %d)", oldVersion, newVersion));
 
@@ -91,27 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // Create the new table ;
         onCreate(db);
     }
-    public Cursor getData(int id) {
-        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        Cursor res = db.rawQuery("select * from FoodUser where id=" + id + "", null);
-        DatabaseManager.getInstance().closeDatabase();
 
-        return res;
-    }
-
-    public ArrayList<String> displayUsers() {
-        ArrayList<String> users = new ArrayList<String>();
-        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        Cursor res = db.rawQuery("Select * from FoodUser", null);
-        res.moveToFirst();
-        while (res.isAfterLast() == false) {
-            users.add(res.getString(res.getColumnIndex(FOODB_COLUMN_USERNAME)));
-            res.moveToNext();
-        }
-        DatabaseManager.getInstance().closeDatabase();
-
-        return users;
-    }
 
 
 }

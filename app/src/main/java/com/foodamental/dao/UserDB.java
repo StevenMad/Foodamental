@@ -30,6 +30,10 @@ public class UserDB {
         super();
     }
 
+    /**
+     * Fonction qui ajoute un user
+     * @param Fooduser
+     */
     public void addUser(FoodUser Fooduser) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -45,7 +49,11 @@ public class UserDB {
         DatabaseManager.getInstance().closeDatabase();
     }
 
-    // Get one user
+    /**
+     * Fonction qui renvoie un user à partir de l'ID
+     * @param id
+     * @return
+     */
     public FoodUser getFoodUser(int id) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -67,8 +75,10 @@ public class UserDB {
         return contact;
     }
 
-    // Getting All users
-
+    /**
+     * Fonction qui renvoie tous les users
+     * @return
+     */
     public List<FoodUser> getALLUser() {
         List<FoodUser> userList = new ArrayList<FoodUser>();
         // Select all Query
@@ -100,7 +110,10 @@ public class UserDB {
         return userList;
     }
 
-    //getting users Count
+    /**
+     * Fonction qui renvoie le nombre de users
+     * @return
+     */
     public int getUserCount() {
         String countQuery = "SELECT * FROM" + FOODB_TABLE_NAME;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -112,7 +125,11 @@ public class UserDB {
         return cursor.getCount();
     }
 
-    //Updating a user
+    /**
+     * Fonction qui update un user
+     * @param user
+     * @return
+     */
     public int updateUser(FoodUser user) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -129,7 +146,10 @@ public class UserDB {
         return result;
     }
 
-    // Deleting a user
+    /**
+     * Fonction qui efface un user
+     * @param user
+     */
     public void deleteUser(FoodUser user) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         db.delete(FOODB_TABLE_NAME, FOODB_COLUMN_ID + " = ? ",

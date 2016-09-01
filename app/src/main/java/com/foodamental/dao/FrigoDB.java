@@ -31,11 +31,10 @@ public class FrigoDB {
     }
 
 
-
-
-
-    // Adding new product in frigo
-
+    /**
+     * Fonction qui ajoute un produit dans bdd
+     * @param frigo
+     */
     public void addProduct(FrigoObject frigo) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -51,7 +50,12 @@ public class FrigoDB {
 
     }
 
-    // Get one product in frigo
+    /**
+     * Fonction qui renvoie un produit par rapport à un ID
+     * @param id
+     * @return
+     * @throws ParseException
+     */
     public FrigoObject getProduct(Integer id) throws ParseException {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -68,8 +72,11 @@ public class FrigoDB {
         return product;
     }
 
-    // Getting All product in frigo
-
+    /**
+     * Fonction qui envoie tous les produits
+     * @return
+     * @throws ParseException
+     */
     public List<FrigoObject> getALLProduct() throws ParseException {
         List<FrigoObject> frigoList = new ArrayList<FrigoObject>();
         // Select all Query
@@ -91,7 +98,10 @@ public class FrigoDB {
         return frigoList;
     }
 
-    //getting frigo products Count
+    /**
+     * Fonction qui renvoie le nombre de produits
+     * @return
+     */
     public int getProductCount() {
         String countQuery = "SELECT * FROM" + FRIGODB_TABLE_NAME;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -102,7 +112,11 @@ public class FrigoDB {
         return cursor.getCount();
     }
 
-    //Updating a product
+    /**
+     * Fonction qui met à jour un produit
+     * @param frigo
+     * @return
+     */
     public int updateProduct(FrigoObject frigo) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -118,7 +132,10 @@ public class FrigoDB {
         return result;
     }
 
-    // Deleting a product in frigo
+    /**
+     * Fonction qui efface un produit
+     * @param frigo
+     */
     public void deleteProduct(FrigoObject frigo) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -127,7 +144,10 @@ public class FrigoDB {
         DatabaseManager.getInstance().closeDatabase();
     }
 
-    // Deleting a product with id
+    /**
+     * Fonction qui efface un produit avec son ID
+     * @param id
+     */
     public void deleteProductWithId(Long id) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -136,6 +156,10 @@ public class FrigoDB {
         DatabaseManager.getInstance().closeDatabase();
     }
 
+    /**
+     * Fonction qui renvoie les produits du frigo
+     * @return
+     */
     public List<FrigoObject> getAllProduct() {
         List<FrigoObject> listproduct = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -158,7 +182,11 @@ public class FrigoDB {
         return listproduct;
     }
 
-
+    /**
+     *
+     * @return
+     * @throws ParseException
+     */
     public List<FrigoObject> getDistinctProductList() throws ParseException
     {
         List<FrigoObject> list = getAllProduct();

@@ -19,6 +19,9 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+/**
+ * Activité qui gère le profil user et son affichage
+ */
 public class Profile extends AppCompatActivity {
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 

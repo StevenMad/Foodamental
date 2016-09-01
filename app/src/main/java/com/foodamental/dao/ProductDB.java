@@ -27,12 +27,10 @@ public class ProductDB{
         super();
     }
 
-
-
-
-
-    // Adding new Product
-
+    /**
+     * Fonction qui rajoute un produit
+     * @param product
+     */
     public void addProduct(ProductObject product) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -50,7 +48,11 @@ public class ProductDB{
 
     }
 
-    // Get one product with id
+    /**
+     * Fonction qui renvoie un produit
+     * @param id
+     * @return
+     */
     public ProductObject getProduct(Integer id) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -67,8 +69,10 @@ public class ProductDB{
         return product;
     }
 
-    // Getting All Products
-
+    /**
+     * Fonction qui renvoie tous les produits
+     * @return
+     */
     public List<ProductObject> getALLProduct() {
         List<ProductObject> productList = new ArrayList<ProductObject>();
         // Select all Query
@@ -90,7 +94,10 @@ public class ProductDB{
         return productList;
     }
 
-    //getting products Count
+    /**
+     * Fonction qui renvoie le nombre de produits
+     * @return
+     */
     public int getProductCount() {
         String countQuery = "SELECT * FROM" + PRODUCTDB_TABLE_NAME;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -101,7 +108,11 @@ public class ProductDB{
         return cursor.getCount();
     }
 
-    //Updating a product
+    /**
+     * Fonction qui update un produit
+     * @param product
+     * @return
+     */
     public int updateProduct(ProductObject product) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -119,7 +130,10 @@ public class ProductDB{
         return result;
     }
 
-    // Deleting a product
+    /**
+     * Fonction qui efface un produit
+     * @param product
+     */
     public void deleteProduct(ProductObject product) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 

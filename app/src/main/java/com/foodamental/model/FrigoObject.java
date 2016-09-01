@@ -6,6 +6,10 @@ import java.util.Date;
 /**
  * Created by YOUSSEF on 15/07/2016.
  */
+
+/**
+ * Classe pour table Frigo
+ */
 public class FrigoObject extends ProductObject{
 
     private Long idFrigo;
