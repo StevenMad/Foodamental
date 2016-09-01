@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,11 +21,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.foodamental.dao.FrigoDB;
-import com.foodamental.model.FrigoObject;
+import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.translator.AdmAccessToken;
 import com.foodamental.util.MyMenu;
-import com.foodamental.dao.ProductDB;
+import com.foodamental.dao.dbimpl.ProductDB;
 import com.foodamental.R;
 import com.foodamental.util.RecipeItem;
 import com.foodamental.util.RecipesArrayAdapter;
@@ -55,6 +54,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+/**
+ * Activité des recettes
+ */
 public class Recipes extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,OnTaskComplete {
 
@@ -85,6 +87,9 @@ public class Recipes extends AppCompatActivity
         createQuery();
     }
 
+    /**
+     * Fonction qui traduit les produits du frigo
+     */
     private void createQuery()
     {
         FrigoDB fdb = new FrigoDB();
@@ -106,6 +111,9 @@ public class Recipes extends AppCompatActivity
         //String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
     }
 
+    /**
+     * Fonction du menu
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,6 +124,11 @@ public class Recipes extends AppCompatActivity
         }
     }
 
+    /**
+     * Fonction du menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -123,6 +136,11 @@ public class Recipes extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Fonction du menu
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -137,12 +155,22 @@ public class Recipes extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Fonction du menu
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         return MyMenu.onNavigationItemSelected(this,this,item);
     }
 
+    /**
+     *
+     * @param output
+     */
     @Override
     public void onTaskCompleted(String output) {
         String query = "";

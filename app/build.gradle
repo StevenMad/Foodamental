@@ -35,4 +35,5 @@ dependencies {
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.android.support:multidex:1.0.0'
+    compile group: 'joda-time', name: 'joda-time', version: '2.3'
 }

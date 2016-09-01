@@ -1,11 +1,13 @@
-package com.foodamental.dao;
+package com.foodamental.dao.dbimpl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 
-import com.foodamental.model.FrigoObject;
+import com.foodamental.dao.DatabaseManager;
+import com.foodamental.dao.interfaces.IFrigoDB;
+import com.foodamental.dao.model.FrigoObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +18,13 @@ import java.util.List;
 /**
  * Created by YOUSSEF on 15/07/2016.
  */
-public class FrigoDB {
+
+/**
+ * Classe pour la table frigo
+ */
+public class FrigoDB implements IFrigoDB {
+
+
     public static final String FRIGODB_TABLE_NAME = "FRIGO";
     //frigo table Columns names
     public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
@@ -25,17 +33,16 @@ public class FrigoDB {
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
-
     public FrigoDB() {
         super();
     }
 
 
-
-
-
-    // Adding new product in frigo
-
+    /**
+     * Fonction qui ajoute un produit dans bdd
+     * @param frigo
+     */
+    @Override
     public void addProduct(FrigoObject frigo) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -51,7 +58,13 @@ public class FrigoDB {
 
     }
 
-    // Get one product in frigo
+    /**
+     * Fonction qui renvoie un produit par rapport à un ID
+     * @param id
+     * @return
+     * @throws ParseException
+     */
+    @Override
     public FrigoObject getProduct(Integer id) throws ParseException {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -68,8 +81,12 @@ public class FrigoDB {
         return product;
     }
 
-    // Getting All product in frigo
-
+    /**
+     * Fonction qui envoie tous les produits
+     * @return
+     * @throws ParseException
+     */
+    @Override
     public List<FrigoObject> getALLProduct() throws ParseException {
         List<FrigoObject> frigoList = new ArrayList<FrigoObject>();
         // Select all Query
@@ -91,7 +108,11 @@ public class FrigoDB {
         return frigoList;
     }
 
-    //getting frigo products Count
+    /**
+     * Fonction qui renvoie le nombre de produits
+     * @return
+     */
+    @Override
     public int getProductCount() {
         String countQuery = "SELECT * FROM" + FRIGODB_TABLE_NAME;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -102,7 +123,12 @@ public class FrigoDB {
         return cursor.getCount();
     }
 
-    //Updating a product
+    /**
+     * Fonction qui met à jour un produit
+     * @param frigo
+     * @return
+     */
+    @Override
     public int updateProduct(FrigoObject frigo) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -118,7 +144,11 @@ public class FrigoDB {
         return result;
     }
 
-    // Deleting a product in frigo
+    /**
+     * Fonction qui efface un produit
+     * @param frigo
+     */
+    @Override
     public void deleteProduct(FrigoObject frigo) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -127,7 +157,11 @@ public class FrigoDB {
         DatabaseManager.getInstance().closeDatabase();
     }
 
-    // Deleting a product with id
+    /**
+     * Fonction qui efface un produit avec son ID
+     * @param id
+     */
+    @Override
     public void deleteProductWithId(Long id) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -136,6 +170,11 @@ public class FrigoDB {
         DatabaseManager.getInstance().closeDatabase();
     }
 
+    /**
+     * Fonction qui renvoie les produits du frigo
+     * @return
+     */
+    @Override
     public List<FrigoObject> getAllProduct() {
         List<FrigoObject> listproduct = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -158,7 +197,12 @@ public class FrigoDB {
         return listproduct;
     }
 
-
+    /**
+     *
+     * @return
+     * @throws ParseException
+     */
+    @Override
     public List<FrigoObject> getDistinctProductList() throws ParseException
     {
         List<FrigoObject> list = getAllProduct();

@@ -20,10 +20,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.foodamental.util.DownloadImageTask;
-import com.foodamental.dao.FrigoDB;
-import com.foodamental.model.FrigoObject;
-import com.foodamental.dao.ProductDB;
-import com.foodamental.model.ProductObject;
+import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.model.FrigoObject;
+import com.foodamental.dao.dbimpl.ProductDB;
+import com.foodamental.dao.model.ProductObject;
 import com.foodamental.R;
 
 import org.json.JSONException;
