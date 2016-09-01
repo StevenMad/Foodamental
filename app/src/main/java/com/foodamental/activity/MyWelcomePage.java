@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -19,15 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.foodamental.R;
-import com.foodamental.dao.UserDB;
-import com.foodamental.model.FoodUser;
+import com.foodamental.dao.dbimpl.UserDB;
+import com.foodamental.dao.model.FoodUser;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.Date;
 

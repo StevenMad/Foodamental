@@ -1,10 +1,12 @@
-package com.foodamental.dao;
+package com.foodamental.dao.dbimpl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.foodamental.model.FoodUser;
+import com.foodamental.dao.DatabaseManager;
+import com.foodamental.dao.interfaces.IUserDB;
+import com.foodamental.dao.model.FoodUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +17,11 @@ import java.util.List;
 /**
  * Created by YOUSSEF on 14/07/2016.
  */
-public class UserDB {
+
+/**
+ * Classe pour la table user
+ */
+public class UserDB implements IUserDB {
 
     public static final String FOODB_TABLE_NAME = "FoodUser";
     //FoodUser table Columns names
@@ -34,6 +40,7 @@ public class UserDB {
      * Fonction qui ajoute un user
      * @param Fooduser
      */
+    @Override
     public void addUser(FoodUser Fooduser) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -54,6 +61,7 @@ public class UserDB {
      * @param id
      * @return
      */
+    @Override
     public FoodUser getFoodUser(int id) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -79,6 +87,7 @@ public class UserDB {
      * Fonction qui renvoie tous les users
      * @return
      */
+    @Override
     public List<FoodUser> getALLUser() {
         List<FoodUser> userList = new ArrayList<FoodUser>();
         // Select all Query
@@ -114,6 +123,7 @@ public class UserDB {
      * Fonction qui renvoie le nombre de users
      * @return
      */
+    @Override
     public int getUserCount() {
         String countQuery = "SELECT * FROM" + FOODB_TABLE_NAME;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -130,6 +140,7 @@ public class UserDB {
      * @param user
      * @return
      */
+    @Override
     public int updateUser(FoodUser user) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -150,17 +161,11 @@ public class UserDB {
      * Fonction qui efface un user
      * @param user
      */
+    @Override
     public void deleteUser(FoodUser user) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         db.delete(FOODB_TABLE_NAME, FOODB_COLUMN_ID + " = ? ",
                 new String[]{String.valueOf(user.getId())});
         DatabaseManager.getInstance().closeDatabase();
     }
-
-
-
-
-
-
-
 }

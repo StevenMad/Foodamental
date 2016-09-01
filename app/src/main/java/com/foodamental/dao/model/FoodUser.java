@@ -1,4 +1,4 @@
-package com.foodamental.model;
+package com.foodamental.dao.model;
 
 import java.util.Date;
 

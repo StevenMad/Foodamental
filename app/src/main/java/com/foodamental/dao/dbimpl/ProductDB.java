@@ -1,10 +1,12 @@
-package com.foodamental.dao;
+package com.foodamental.dao.dbimpl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.foodamental.model.ProductObject;
+import com.foodamental.dao.DatabaseManager;
+import com.foodamental.dao.interfaces.IProductDB;
+import com.foodamental.dao.model.ProductObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,11 @@ import java.util.List;
 /**
  * Created by YOUSSEF on 14/07/2016.
  */
-public class ProductDB{
+
+/**
+ * Claase pour la table produit
+ */
+public class ProductDB implements IProductDB {
     public static final String PRODUCTDB_TABLE_NAME = "PRODUCT";
     //Product table Columns names
     public static final String PRODUCTDB_COLUMN_ID = "ID_PRODUCT";
@@ -31,6 +37,7 @@ public class ProductDB{
      * Fonction qui rajoute un produit
      * @param product
      */
+    @Override
     public void addProduct(ProductObject product) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -53,6 +60,7 @@ public class ProductDB{
      * @param id
      * @return
      */
+    @Override
     public ProductObject getProduct(Integer id) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -73,6 +81,7 @@ public class ProductDB{
      * Fonction qui renvoie tous les produits
      * @return
      */
+    @Override
     public List<ProductObject> getALLProduct() {
         List<ProductObject> productList = new ArrayList<ProductObject>();
         // Select all Query
@@ -98,6 +107,7 @@ public class ProductDB{
      * Fonction qui renvoie le nombre de produits
      * @return
      */
+    @Override
     public int getProductCount() {
         String countQuery = "SELECT * FROM" + PRODUCTDB_TABLE_NAME;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -113,6 +123,7 @@ public class ProductDB{
      * @param product
      * @return
      */
+    @Override
     public int updateProduct(ProductObject product) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -134,6 +145,7 @@ public class ProductDB{
      * Fonction qui efface un produit
      * @param product
      */
+    @Override
     public void deleteProduct(ProductObject product) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 

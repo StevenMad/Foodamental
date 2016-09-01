@@ -15,6 +15,9 @@ import java.util.ArrayList;
  * Modified by Fangyi on 16/06/2016.
  */
 
+/**
+ * Classe pour création de bdd
+ */
 public class DBHelper extends SQLiteOpenHelper {
 
     // Data base version

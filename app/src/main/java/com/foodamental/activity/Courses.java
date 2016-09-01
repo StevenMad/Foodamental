@@ -16,8 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.foodamental.R;
-import com.foodamental.dao.FrigoDB;
-import com.foodamental.model.FrigoObject;
+import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.util.MyMenu;
 import com.foodamental.util.Tweet;
 import com.foodamental.util.TweetAdapter;
