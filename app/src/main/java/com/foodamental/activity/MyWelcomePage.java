@@ -55,6 +55,7 @@ public class MyWelcomePage extends AppCompatActivity {
 
         dateView = (TextView) findViewById(R.id.textView3);
         calendar = Calendar.getInstance();
+        date = calendar.getTime();
         year = calendar.get(Calendar.YEAR);
 
         month = calendar.get(Calendar.MONTH);
