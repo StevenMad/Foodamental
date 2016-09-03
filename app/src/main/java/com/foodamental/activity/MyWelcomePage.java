@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -19,18 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.foodamental.R;
-import com.foodamental.dao.UserDB;
-import com.foodamental.model.FoodUser;
+import com.foodamental.dao.dbimpl.UserDB;
+import com.foodamental.dao.model.FoodUser;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Activité de la page d'authentification et inscris le user dans la base
+ */
 public class MyWelcomePage extends AppCompatActivity {
 
     private DatePicker datePicker;
@@ -66,18 +61,35 @@ public class MyWelcomePage extends AppCompatActivity {
         day = calendar.get(Calendar.DAY_OF_MONTH);
         showDate(year, month+1, day);
     }
+
+    /**
+     * Fonction qui remplit le texte au format date FR
+     * @param year
+     * @param month
+     * @param day
+     */
     private void showDate(int year, int month, int day) {
         dateView.setText(new StringBuilder().append(day).append("/")
                 .append(month).append("/").append(year));
     }
 
-        @Override
+    /**
+     * Fonction du menu
+     * @param menu
+     * @return
+     */
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_my_welcome_page, menu);
         return true;
     }
 
+    /**
+     * Fonction du menu
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -93,6 +105,11 @@ public class MyWelcomePage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * Fonction qui inscrit dans la base
+     * @param view
+     */
     public void sendMessage(View view)
     {
         EditText prenomText;
@@ -117,10 +134,10 @@ public class MyWelcomePage extends AppCompatActivity {
     }
 
 
-
-
-
-
+    /**
+     * Fonction qui initialise le datePicker et renvoit un message
+     * @param view
+     */
     @SuppressWarnings("deprecation")
     public void setDate(View view) {
         showDialog(999);
@@ -128,6 +145,11 @@ public class MyWelcomePage extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Fonction qui initialise le datePicker
+     * @param id
+     * @return
+     */
     @Override
     protected Dialog onCreateDialog(int id) {
         // TODO Auto-generated method stub
@@ -137,6 +159,9 @@ public class MyWelcomePage extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Fonction qui récupère les données du datePicker et remplit le champ text
+     */
     private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
@@ -152,12 +177,22 @@ public class MyWelcomePage extends AppCompatActivity {
             showDate(arg1, arg2+1, arg3);
         }
     };
+
+    /**
+     * Fonction qui cache le clavier en cas d'appuie extérieur
+     * @param view
+     */
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
+    /**
+     * Fonction qui récupère les données du datePicker
+     * @param datePicker
+     * @return
+     */
+    public static Date getDateFromDatePicker(DatePicker datePicker){
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year =  datePicker.getYear();

@@ -9,6 +9,9 @@ import android.view.View;
 
 import com.foodamental.R;
 
+/**
+ * Activité qui gère les paramètres
+ */
 public class Parametres extends AppCompatActivity {
 
     @Override

@@ -1,10 +1,14 @@
-package com.foodamental.model;
+package com.foodamental.dao.model;
 
 
 import java.util.Date;
 
 /**
  * Created by YOUSSEF on 15/07/2016.
+ */
+
+/**
+ * Classe pour table Frigo
  */
 public class FrigoObject extends ProductObject{
 

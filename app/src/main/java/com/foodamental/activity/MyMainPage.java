@@ -17,27 +17,18 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.foodamental.dao.DBHelper;
-import com.foodamental.dao.UserDB;
-import com.foodamental.model.FoodUser;
-import com.foodamental.util.AlarmReceiver;
+import com.foodamental.dao.dbimpl.UserDB;
+import com.foodamental.dao.model.FoodUser;
 import com.foodamental.dao.DatabaseManager;
-import com.foodamental.dao.FrigoDB;
-import com.foodamental.model.FrigoObject;
+import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.util.MyMenu;
-import com.foodamental.dao.ProductDB;
-import com.foodamental.model.ProductObject;
+import com.foodamental.dao.dbimpl.ProductDB;
+import com.foodamental.dao.model.ProductObject;
 import com.foodamental.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
 
@@ -45,14 +36,14 @@ public class MyMainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static Context context;
-    private static DBHelper dbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this.getApplicationContext();
-        dbHelper = new DBHelper();
-        DatabaseManager.initializeInstance(dbHelper);
+
+        DatabaseManager.getInstance();
 
         UserDB dbuser = new UserDB();
         List<FoodUser> users = dbuser.getALLUser();
