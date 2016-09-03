@@ -4,7 +4,6 @@ package com.foodamental.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,26 +11,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.foodamental.dao.dbimpl.UserDB;
-import com.foodamental.dao.model.FoodUser;
+import com.foodamental.R;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
-import com.foodamental.dao.model.FrigoObject;
-import com.foodamental.util.MyMenu;
 import com.foodamental.dao.dbimpl.ProductDB;
+import com.foodamental.dao.dbimpl.UserDB;
+import com.foodamental.dao.model.FoodUser;
+import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.dao.model.ProductObject;
-import com.foodamental.R;
+import com.foodamental.util.MyMenu;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Activité main du démarrage
+ */
 public class MyMainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -61,16 +66,30 @@ public class MyMainPage extends AppCompatActivity
         /*-----DB----*/
         ProductDB db = new ProductDB();
         FrigoDB frigo = new FrigoDB();
-        int id=1;
-        db.addProduct(new ProductObject((long) 344344, "oignon", "carrefour","brand", 1));
-        db.addProduct(new ProductObject((long) 344345, "porc", "leader","brand", 1));
-        db.addProduct(new ProductObject((long) 344346, "oeufs", "carrefour","brand", 1));
-        db.addProduct(new ProductObject((long) 344347, "poulet", "carrefour","brand", 1));
-        db.addProduct(new ProductObject((long) 344348, "tomate", "leader","brand", 1));
-        frigo.addProduct(new FrigoObject((long) id++,(long) 344344,new Date()));
-        frigo.addProduct(new FrigoObject((long) id++,(long) 344346,new Date()));
-        frigo.addProduct(new FrigoObject((long) id++,(long) 344347,new Date()));
-        frigo.addProduct(new FrigoObject((long) id++,(long) 344348,new Date()));
+        int id = 1;
+        db.addProduct(new ProductObject((long) 344344, "oignon", "carrefour", "brand", 1));
+        db.addProduct(new ProductObject((long) 344345, "porc", "leader", "brand", 1));
+        db.addProduct(new ProductObject((long) 344346, "oeufs", "carrefour", "brand", 1));
+        db.addProduct(new ProductObject((long) 344347, "poulet", "carrefour", "brand", 1));
+        db.addProduct(new ProductObject((long) 344348, "tomate", "leader", "brand", 1));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d1 = null;
+        Date d2 = null;
+        Date d3 = null;
+        Date d4 = null;
+        try {
+            d1 = sdf.parse("2012-12-01");
+            d2 = sdf.parse("2015-12-21");
+            d3 = sdf.parse("2016-12-21");
+            d4 = sdf.parse("2012-12-2");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        frigo.addProduct(new FrigoObject((long) id++, (long) 344344, d1));
+        frigo.addProduct(new FrigoObject((long) id++, (long) 344346, d2));
+        frigo.addProduct(new FrigoObject((long) id++, (long) 344347, d3));
+        frigo.addProduct(new FrigoObject((long) id++, (long) 344348, d4));
+        List<FrigoObject> list = frigo.getAllProductOrderBy("EXPIRY_DATE");
 
         /*-----------*/
 
@@ -84,6 +103,9 @@ public class MyMainPage extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    /**
+     * Fonction menu
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -92,6 +114,11 @@ public class MyMainPage extends AppCompatActivity
         startActivity(intent);
     }
 
+    /**
+     * Fonction menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -99,6 +126,11 @@ public class MyMainPage extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Fonction menu
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -115,29 +147,37 @@ public class MyMainPage extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Fonction menu
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         return MyMenu.onNavigationItemSelected(this, this, item);
     }
 
-    //used for debug
-    public void sendBarCode(View view)
-    {
-        String barcode = "5449000000996";
-        sendRequest(barcode);
-    }
-
+    /**
+     * Fonction ouverture du scan
+     * @param view
+     */
     public void openCamera(View view) {
         new IntentIntegrator(this).initiateScan();
     }
 
+    /**
+     * Fonction résultat scan
+     * @param requestCode
+     * @param resultCode
+     * @param intent
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
 // nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
-        if ( (scanningResult != null)||(!scanningResult.equals(""))) {
+        if ((scanningResult != null) || (!scanningResult.equals(""))) {
 
 // nous récupérons le contenu du code barre
             String scanContent = scanningResult.getContents();
@@ -159,6 +199,10 @@ public class MyMainPage extends AppCompatActivity
 
     }
 
+    /**
+     * Fonction qui envoie une nouvelle activity et le code barre
+     * @param codeBar
+     */
     public void sendRequest(String codeBar) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -170,9 +214,9 @@ public class MyMainPage extends AppCompatActivity
         }
 
 
-
     }
-    public static Context getContext(){
+
+    public static Context getContext() {
         return context;
     }
 

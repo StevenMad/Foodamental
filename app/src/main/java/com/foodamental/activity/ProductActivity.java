@@ -52,6 +52,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
     private int year;
     private int month;
     private int day;
+    private Date date;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,12 +77,22 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
     }
 
+    /**
+     * Fonction qui remplit le text view
+     *
+     * @param year
+     * @param month
+     * @param day
+     */
     private void showDate(int year, int month, int day) {
         dateView.setText(new StringBuilder().append(day).append("/")
                 .append(month).append("/").append(year));
     }
 
-
+    /**
+     *
+     * @param url
+     */
     public void sendRequest(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -108,6 +119,11 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
     }
 
+    /**
+     * Fonction qui traite le json
+     * @param json
+     * @throws IOException
+     */
     public void traitementJson(JSONObject json) throws IOException {
         final TextView dataText = (TextView) findViewById(R.id.dataText);
 
@@ -142,6 +158,10 @@ public class ProductActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    /**
+     * Fonction qui add dans bdd
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonAdd) {
@@ -167,11 +187,10 @@ public class ProductActivity extends Activity implements View.OnClickListener {
     }
 
 
-
-
-
-
-
+    /**
+     * Fonction qui envoie un message
+     * @param view
+     */
     @SuppressWarnings("deprecation")
     public void setDate(View view) {
         showDialog(999);
@@ -179,6 +198,11 @@ public class ProductActivity extends Activity implements View.OnClickListener {
                 .show();
     }
 
+    /**
+     * Fonction qui retorune le datepicker
+     * @param id
+     * @return
+     */
     @Override
     protected Dialog onCreateDialog(int id) {
         // TODO Auto-generated method stub
@@ -188,7 +212,9 @@ public class ProductActivity extends Activity implements View.OnClickListener {
         return null;
     }
 
-    private Date date;
+    /**
+     * Fonction qui récupère la date
+     */
     private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
@@ -204,11 +230,21 @@ public class ProductActivity extends Activity implements View.OnClickListener {
             showDate(arg1, arg2+1, arg3);
         }
     };
+
+    /**
+     * Fonction qui cache le clavier si appuie exterieur
+     * @param view
+     */
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    /**
+     * Fonction qui récupère le date du datePicker
+     * @param datePicker
+     * @return
+     */
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();

@@ -30,7 +30,7 @@ public class UserDB implements IUserDB {
     public static final String FOODB_COLUMN_PASSWORD = "PASSWORD";
     public static final String FOODB_COLUMN_BIRTHDAY = "BIRTHDAY";
     public static final String FOODB_COLUMN_EMAIL = "MAIL";
-    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public UserDB() {
         super();

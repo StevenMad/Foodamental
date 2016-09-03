@@ -30,7 +30,7 @@ public class FrigoDB implements IFrigoDB {
     public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
     public static final String FRIGODB_COLUMN_ID_PRODUCT = "IDPRODUCT";
     public static final String FRIGODB_COLUMN_DATE_PEREMPT = "EXPIRY_DATE";
-    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 
     public FrigoDB() {
@@ -179,6 +179,35 @@ public class FrigoDB implements IFrigoDB {
         List<FrigoObject> listproduct = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " + "NAME, IMAGE_URL, BRAND FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                FrigoObject product = null;
+                try {
+                    product = new FrigoObject(Long.parseLong(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),(Date) dateFormat.parse(cursor.getString(2)),cursor.getString(3) ,cursor.getString(4) , cursor.getString(5));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                // Adding contact to list
+                listproduct.add(product);
+            } while (cursor.moveToNext());
+        }
+        return listproduct;
+    }
+
+    /**
+     * Fonction qui renvoie les produits frigo selon un order by
+     * @param order
+     * @return
+     */
+    @Override
+    public List<FrigoObject> getAllProductOrderBy(String order) {
+        List<FrigoObject> listproduct = new ArrayList<>();
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " + "NAME, IMAGE_URL, BRAND FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT
+                + " ORDER BY " + order + ";";
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         //looping through all rows and adding to list

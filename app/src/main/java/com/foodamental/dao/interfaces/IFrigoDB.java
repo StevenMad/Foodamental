@@ -22,5 +22,6 @@ public interface IFrigoDB {
     public void deleteProductWithId(Long id);
     public List<FrigoObject> getAllProduct();
     public List<FrigoObject> getDistinctProductList() throws ParseException;
+    public List<FrigoObject> getAllProductOrderBy(String order);
 
 }
