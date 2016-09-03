@@ -1,24 +1,19 @@
 package com.foodamental.activity;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.ToggleButton;
 
-import com.foodamental.util.AlarmReceiver;
 import com.foodamental.R;
 
-import java.util.Calendar;
-
 public class AlertPage extends Activity {
-
-    AlarmManager alarmManager;
+    private Switch mySwitch;
+    private TextView switchStatus;
+/*    AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     private TimePicker alarmTimePicker;
     private static AlertPage inst;
@@ -32,18 +27,56 @@ public class AlertPage extends Activity {
     public void onStart() {
         super.onStart();
         inst = this;
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alert_page);
-        alarmTimePicker = (TimePicker) findViewById(R.id.alarmTimePicker);
+/*        alarmTimePicker = (TimePicker) findViewById(R.id.alarmTimePicker);
         alarmTextView = (TextView) findViewById(R.id.alarmText);
         ToggleButton alarmToggle = (ToggleButton) findViewById(R.id.alarmToggle);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);*/
+        switchStatus = (TextView) findViewById(R.id.switchStatus);
+        mySwitch = (Switch) findViewById(R.id.switch1);
+        SharedPreferences sharedPrefs = getSharedPreferences("com.mobileapp.smartapplocker", MODE_PRIVATE);
+        mySwitch.setChecked(sharedPrefs.getBoolean("service_status", true));
+
+        //attach a listener to check for changes in state
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+
+                if (isChecked) {
+                    switchStatus.setText("Switch is currently ON");
+                    SharedPreferences.Editor editor = getSharedPreferences("com.mobileapp.smartapplocker", MODE_PRIVATE).edit();
+                    editor.putBoolean("service_status", mySwitch.isChecked());
+                    editor.commit();
+                } else {
+                    switchStatus.setText("Switch is currently OFF");
+                    SharedPreferences.Editor editor = getSharedPreferences("com.mobileapp.smartapplocker", MODE_PRIVATE).edit();
+                    editor.putBoolean("service_status", mySwitch.isChecked());
+                    editor.commit();
+
+                }
+
+            }
+        });
+
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.my_main_page, menu);
+        return true;
+    }
+}
+
+/*
     public void onToggleClicked(View view) {
         if (((ToggleButton) view).isChecked()) {
             Log.d("MyActivity", "Alarm On");
@@ -64,6 +97,7 @@ public class AlertPage extends Activity {
     public void setAlarmText(String alarmText) {
         alarmTextView.setText(alarmText);
     }
+*/
 
 
-}
+
