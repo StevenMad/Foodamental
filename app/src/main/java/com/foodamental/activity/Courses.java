@@ -34,12 +34,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class Courses extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    ListView mListView;
-    List<Tweet> tweets;
-    TweetAdapter adapter;
-    FrigoDB frigo = new FrigoDB();
-    int[] color = {Color.GREEN, Color.YELLOW, Color.RED, Color.BLACK};
-    SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private ListView mListView;
+    private List<Tweet> tweets;
+    private TweetAdapter adapter;
+    private FrigoDB frigo = new FrigoDB();
+    private int[] color = {Color.GREEN, Color.YELLOW, Color.RED, Color.BLACK};
+    private SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
