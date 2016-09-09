@@ -1,10 +1,14 @@
-package com.foodamental.model;
+package com.foodamental.dao.model;
 
 
 import java.util.Date;
 
 /**
  * Created by YOUSSEF on 15/07/2016.
+ */
+
+/**
+ * Classe pour table Frigo
  */
 public class FrigoObject extends ProductObject{
 
@@ -34,7 +38,7 @@ public class FrigoObject extends ProductObject{
         return idFrigo;
     }
 
-    public Date getDatePerompt() {
+    public Date getDatePerempt() {
         return datePerompt;
     }
 
@@ -42,7 +46,7 @@ public class FrigoObject extends ProductObject{
         this.idFrigo = id;
     }
 
-    public void setDatePerompt(Date datePerompt) {
+    public void setDatePerempt(Date datePerompt) {
         this.datePerompt = datePerompt;
     }
 }

@@ -1,43 +1,27 @@
 package com.foodamental.activity;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.support.v7.app.NotificationCompat;
+import android.view.Menu;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.ToggleButton;
 
-import com.foodamental.util.AlarmReceiver;
-import com.foodamental.dao.FrigoDB;
-import com.foodamental.model.FrigoObject;
-import com.foodamental.util.MyMenu;
 import com.foodamental.R;
-import com.foodamental.util.Tweet;
-import com.foodamental.util.TweetAdapter;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 public class AlertPage extends Activity {
-
-    AlarmManager alarmManager;
+    private Switch mySwitch;
+    private TextView switchStatus;
+    private static int notifyId = 2016;
+/*    AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     private TimePicker alarmTimePicker;
     private static AlertPage inst;
@@ -51,18 +35,88 @@ public class AlertPage extends Activity {
     public void onStart() {
         super.onStart();
         inst = this;
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alert_page);
-        alarmTimePicker = (TimePicker) findViewById(R.id.alarmTimePicker);
+/*        alarmTimePicker = (TimePicker) findViewById(R.id.alarmTimePicker);
         alarmTextView = (TextView) findViewById(R.id.alarmText);
         ToggleButton alarmToggle = (ToggleButton) findViewById(R.id.alarmToggle);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);*/
+        switchStatus = (TextView) findViewById(R.id.switchStatus);
+        mySwitch = (Switch) findViewById(R.id.switch1);
+        SharedPreferences sharedPrefs = getSharedPreferences("com.mobileapp.smartapplocker", MODE_PRIVATE);
+        mySwitch.setChecked(sharedPrefs.getBoolean("service_status", true));
+
+        //attach a listener to check for changes in state
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+
+                if (isChecked) {
+                    switchStatus.setText("Switch is currently ON");
+                    SharedPreferences.Editor editor = getSharedPreferences("com.mobileapp.smartapplocker", MODE_PRIVATE).edit();
+                    editor.putBoolean("service_status", mySwitch.isChecked());
+                    editor.commit();
+                    createNotification();
+                } else {
+                    switchStatus.setText("Switch is currently OFF");
+                    SharedPreferences.Editor editor = getSharedPreferences("com.mobileapp.smartapplocker", MODE_PRIVATE).edit();
+                    editor.putBoolean("service_status", mySwitch.isChecked());
+                    editor.commit();
+
+                }
+
+            }
+        });
+
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.my_main_page, menu);
+        return true;
+    }
+
+    public void createNotification() {
+        Intent intent = new Intent(this, Courses.class);
+// use System.currentTimeMillis() to have a unique ID for the pending intent
+        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+        Intent intent2 = new Intent(this, Recipes.class);
+// use System.currentTimeMillis() to have a unique ID for the pending intent
+        PendingIntent pIntent2 = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent2, 0);
+// build notification
+// the addAction re-use the same intent to keep the example short
+        Notification n  = new Notification.Builder(this)
+                .setContentTitle("Attention vos produits vont périmés!!")
+                .setContentText("Choisir un des deux menus")
+                .setSmallIcon(R.drawable.ic_launcher1)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+                .addAction(R.drawable.common_signin_btn_icon_light, "Frigo", pIntent)
+                .addAction(R.drawable.common_signin_btn_icon_light, "Recettes", pIntent2)
+                .build();
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(notifyId, n);
+    }
+    public static void cancelNotification(Context ctx) {
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager nMgr = (NotificationManager) ctx.getSystemService(ns);
+        nMgr.cancel(notifyId);
+    }
+}
+
+/*
     public void onToggleClicked(View view) {
         if (((ToggleButton) view).isChecked()) {
             Log.d("MyActivity", "Alarm On");
@@ -83,6 +137,7 @@ public class AlertPage extends Activity {
     public void setAlarmText(String alarmText) {
         alarmTextView.setText(alarmText);
     }
+*/
 
 
-}
+

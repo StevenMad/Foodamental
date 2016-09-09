@@ -1,26 +1,37 @@
-package com.foodamental.model;
+package com.foodamental.dao.model;
+
+import java.util.Date;
 
 /**
  * Created by Fangyi on 2016/6/16.
+ */
+
+/**
+ * Classe pour table User
  */
 public class FoodUser {
     private int id;
     private String username;
     private String password;
-    private String birthday;
+    private Date birthday;
     private String email;
 
     public FoodUser ()
     {
     }
 
-    public FoodUser(int id, String username, String password, String birthday, String email)
+    public FoodUser(int id, String username, String password, Date birthday, String email)
     {
         this.id = id;
         this.username = username;
         this.password = password;
         this.birthday = birthday;
         this.email = email;
+    }
+
+    public FoodUser(String username,Date birthday ) {
+        this.username = username;
+        this.birthday = birthday;
     }
 
     public void setId(int id) {
@@ -35,7 +46,7 @@ public class FoodUser {
         this.password = password;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -55,7 +66,7 @@ public class FoodUser {
         return password;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
