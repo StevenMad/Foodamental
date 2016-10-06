@@ -47,6 +47,7 @@ public class RecipeContentActivity extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.recipeName);
         lv = (ListView) findViewById(R.id.recipeSteps);
         Integer id = Integer.valueOf(idExtra);
+        //lien vers l'api
         String url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"+id+"/analyzedInstructions";
         new RecipeContentAsyncTask().execute(url);
     }
@@ -54,6 +55,9 @@ public class RecipeContentActivity extends AppCompatActivity {
 
     private class RecipeContentAsyncTask extends AsyncTask<String, Void, String> {
         @Override
+        /**
+         * recuperation de la recette
+         */
         protected String doInBackground(String... url) {
             try {
                 URL murl = new URL(url[0]);
@@ -73,16 +77,21 @@ public class RecipeContentActivity extends AppCompatActivity {
             return null;
         }
 
+        /**
+         * afficher la recette apres doInBackground
+         * @param result la recette obtenue
+         */
         @Override
         protected void onPostExecute(String result)
         {
             try {
-                JSONArray jsonArray = new JSONArray(result);
+                JSONArray jsonArray = new JSONArray(result); //recuperation du json
                 List<String> listeStep = new ArrayList<String>();
                 int step=1;
                 for(int i=0;i<jsonArray.length();i++) {
                     JSONObject js = (JSONObject) jsonArray.get(i);
                     JSONArray stepList = (JSONArray) js.get("steps");
+                    //pour chaque element step on effectue une traduction
                     new RecipeTranslateAsyncTask().execute(stepList.toString());
                 }
             } catch (JSONException e) {
@@ -91,6 +100,9 @@ public class RecipeContentActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * classe de traduction
+     */
     private class RecipeTranslateAsyncTask extends AsyncTask<String, Void, List<String>>
     {
         private String idClient = "Foodamental01";
@@ -102,6 +114,11 @@ public class RecipeContentActivity extends AppCompatActivity {
             this.dialog.show();
         }
 
+        /**
+         * Traduire chaque mot de la recette
+         * @param jsonArrayString
+         * @return
+         */
         @Override
         protected  List<String> doInBackground(String... jsonArrayString)
         {
@@ -116,11 +133,14 @@ public class RecipeContentActivity extends AppCompatActivity {
                     JSONArray jArray = new JSONArray(json);
                     for(int j=0;j<jArray.length();j++)
                     {
+                        //preparation de la requete vers l'api
                         JSONObject jsonObj = (JSONObject) jArray.get(j);
                         String query = jsonObj.getString("step");
                         String urlString = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" + query + "&from=en&to=fr";
                         URL url = new URL(urlString);
+                        //instanciation du token
                         AdmAccessToken token = AdmAccessToken.getAccessToken(idClient, secret);
+                        //lancement de la connexion à l'api
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("GET");
                         conn.setRequestProperty("Authorization", "Bearer " + token.access_token);
@@ -132,6 +152,7 @@ public class RecipeContentActivity extends AppCompatActivity {
                             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                             DocumentBuilder builder = null;
 
+                            //recuperation de la traduction a partir de l'xml
                             builder = factory.newDocumentBuilder();
                             Document document = builder.parse(new InputSource(new StringReader(xml)));
                             Element rootElement = document.getDocumentElement();
@@ -158,10 +179,16 @@ public class RecipeContentActivity extends AppCompatActivity {
             return null;
         }
 
+        /**
+         * action apres doInBackground
+         * @param stepString la list des etapes de la recette
+         */
         protected void onPostExecute(List<String> stepString)
         {
+            //suppression du spinner
             if(dialog.isShowing())
                 dialog.dismiss();
+            //affichage du resultat dans une listView
             ArrayAdapter<String> obj = new ArrayAdapter<String>(RecipeContentActivity.this,
                     android.R.layout.simple_list_item_1,
                     stepString);

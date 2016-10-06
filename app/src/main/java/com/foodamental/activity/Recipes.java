@@ -195,6 +195,12 @@ public class Recipes extends AppCompatActivity
             this.dialog.setMessage("Please Wait");
             this.dialog.show();
         }
+
+        /**
+         * do
+         * @param params
+         * @return
+         */
         @Override
         protected String doInBackground(String... params) {
             URL url = null;
@@ -246,19 +252,30 @@ public class Recipes extends AppCompatActivity
 
     private class RecipeAsyncTask extends AsyncTask<String, Void, List<RecipeItem>> {
 
+        private ProgressDialog dialog = new ProgressDialog(Recipes.this);
+        public OnTaskComplete response = null;
+
+        @Override
+        protected void onPreExecute()
+        {
+            this.dialog.setMessage("Please Wait");
+            this.dialog.show();
+        }
+
         @Override
         protected List<RecipeItem> doInBackground(String... url) {
             try {
                 List<RecipeItem> liste = new ArrayList<>();
                 URL murl = new URL(url[0]);
                 HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
+                //insertion de la cle
                 conn.setRequestProperty("X-Mashape-Key","h5b30mrIKJmshDMNi7qH4pF8ux1Cp1CGYsHjsnJErhOlPsv15R");
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Accept","application/json");
                 if(conn.getResponseCode()==200)
                 {
                     String response= StaticUtil.getStringFromInputStream(conn.getInputStream());
-                    //create recipeItem
+                    //creation recipeItem
                     JSONArray array = new JSONArray(response);
                     for(int i=0;i<array.length();i++)
                     {
@@ -270,6 +287,7 @@ public class Recipes extends AppCompatActivity
                         item.setId(json.getInt("id"));
                         item.setImage(image);
                         item.setJson(json);
+                        //ajout de l'element dans la liste
                         liste.add(item);
                     }
                     return liste;
@@ -290,19 +308,25 @@ public class Recipes extends AppCompatActivity
             return null;
         }
 
+        /**
+         * apres doInBackGround cette methode est executée
+         * @param result
+         */
         protected void onPostExecute(List<RecipeItem> result)
         {
+            //prepare la listeView
             final ListView lv = (ListView) findViewById(R.id.listRecipes);
+            //creation de l'adapter avec les recipeItem
             RecipesArrayAdapter recipesArrayAdapter = new RecipesArrayAdapter(Recipes.this,
                     android.R.layout.simple_list_item_1,
                     result);
             lv.setAdapter(recipesArrayAdapter);
+            //si on clique sur l'item on change d'activité
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     RecipeItem content = (RecipeItem) lv.getItemAtPosition(position);
                     //Toast.makeText(getApplicationContext(),content.toString(),Toast.LENGTH_LONG).show();
-
                     Intent intentRecipeContent = new Intent(Recipes.this,RecipeContentActivity.class);
                     intentRecipeContent.putExtra("id",content.getId());
                     startActivity(intentRecipeContent);

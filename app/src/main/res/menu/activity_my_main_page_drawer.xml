@@ -4,24 +4,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_accueil"
-            android:title="Accueil"
+            android:title="@string/accueil"
             />
         <item
             android:id="@+id/nav_frigo"
-            android:title="Mon frigo"
+            android:title="@string/mon_frigo"
             />
         <item
             android:id="@+id/nav_recettes"
-            android:title="Les recettes"
+            android:title="@string/recettes"
             />
         <item
             android:id="@+id/nav_profil"
-            android:title="Profil"
+            android:title="@string/profil"
             />
         <item
             android:id="@+id/nav_param"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Paramètres" />
+            android:title="@string/parametres" />
     </group>
 
 </menu>
