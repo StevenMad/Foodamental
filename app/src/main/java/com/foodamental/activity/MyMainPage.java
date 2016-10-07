@@ -64,14 +64,8 @@ public class MyMainPage extends AppCompatActivity
         Intent intent = getIntent();
 
         /*-----DB----*/
-        ProductDB db = new ProductDB();
         FrigoDB frigo = new FrigoDB();
         int id = 1;
-        db.addProduct(new ProductObject((long) 344344, "oignon", "carrefour", "brand", 1));
-        db.addProduct(new ProductObject((long) 344345, "porc", "leader", "brand", 1));
-        db.addProduct(new ProductObject((long) 344346, "oeufs", "carrefour", "brand", 1));
-        db.addProduct(new ProductObject((long) 344347, "poulet", "carrefour", "brand", 1));
-        db.addProduct(new ProductObject((long) 344348, "tomate", "leader", "brand", 1));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date d1 = null;
         Date d2 = null;
@@ -85,10 +79,11 @@ public class MyMainPage extends AppCompatActivity
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        frigo.addProduct(new FrigoObject((long) id++, (long) 344344, d1));
-        frigo.addProduct(new FrigoObject((long) id++, (long) 344346, d2));
-        frigo.addProduct(new FrigoObject((long) id++, (long) 344347, d3));
-        frigo.addProduct(new FrigoObject((long) id++, (long) 344348, d4));
+
+        frigo.addProduct(new FrigoObject((long) 344344, "oignon", "carrefour", "brand",1, d1));
+        frigo.addProduct(new FrigoObject((long) 344346, "oeufs", "carrefour", "brand", 1, d2));
+        frigo.addProduct(new FrigoObject((long) 344347, "poulet", "carrefour", "brand", 1, d3));
+        frigo.addProduct(new FrigoObject((long) 344348,"tomate", "leader", "brand",1,  d4));
         List<FrigoObject> list = frigo.getAllProductOrderBy("EXPIRY_DATE");
 
         /*-----------*/

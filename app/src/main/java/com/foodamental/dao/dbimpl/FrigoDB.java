@@ -46,14 +46,25 @@ public class FrigoDB implements IFrigoDB {
     public void addProduct(FrigoObject frigo) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
-        ContentValues values = new ContentValues();
+        ContentValues valuesForFrigo = new ContentValues();
+        ContentValues valuesForProduct = new ContentValues();
 
-        values.put(FRIGODB_COLUMN_ID, frigo.getIdFrigo()); // frigo id
-        values.put(FRIGODB_COLUMN_ID_PRODUCT, frigo.getIdProduct()); // product id in frigo
-        values.put(FRIGODB_COLUMN_DATE_PEREMPT, dateFormat.format(frigo.getDatePerempt())); // expiry date
+        valuesForProduct.put(ProductDB.PRODUCTDB_COLUMN_ID, frigo.getIdProduct()); // product id
+        valuesForProduct.put(ProductDB.PRODUCTDB_COLUMN_NAME, frigo.getName()); // product name
+        valuesForProduct.put(ProductDB.PRODUCTDB_COLUMN_BRAND, frigo.getBrand()); // product brand
+        valuesForProduct.put(ProductDB.PRODUCTDB_COLUMN_IMAGE_URL, frigo.getImage()); // product image
+        valuesForProduct.put(ProductDB.PRODUCTDB_COLUMN_CATEGORY, frigo.getCategory()); // product category
+
+        db.insert(ProductDB.PRODUCTDB_TABLE_NAME, null, valuesForProduct);
+
+        valuesForFrigo.put(FRIGODB_COLUMN_ID, frigo.getIdFrigo()); // frigo id
+        valuesForFrigo.put(FRIGODB_COLUMN_ID_PRODUCT, frigo.getIdProduct()); // product id in frigo
+        valuesForFrigo.put(FRIGODB_COLUMN_DATE_PEREMPT, dateFormat.format(frigo.getDatePerempt())); // expiry date
 
         // Insert Row
-        db.insert(FRIGODB_TABLE_NAME, null, values);
+        db.insert(FRIGODB_TABLE_NAME, null, valuesForFrigo);
+
+
         DatabaseManager.getInstance().closeDatabase();
 
     }

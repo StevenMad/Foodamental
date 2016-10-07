@@ -54,6 +54,7 @@
         </activity>
         <activity
             android:name=".activity.ProductActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.Parametres"

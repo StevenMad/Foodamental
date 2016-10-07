@@ -19,12 +19,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.foodamental.util.DownloadImageTask;
+import com.foodamental.R;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
-import com.foodamental.dao.dbimpl.ProductDB;
 import com.foodamental.dao.model.ProductObject;
-import com.foodamental.R;
+import com.foodamental.util.DownloadImageTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +57,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_activity);
-        this.codeBar  = getIntent().getSerializableExtra("codebar").toString();
+        this.codeBar = getIntent().getSerializableExtra("codebar").toString();
         String url = this.URL;
         url += codeBar + ".json";
         sendRequest(url);
@@ -73,7 +72,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        showDate(year, month+1, day);
+        showDate(year, month + 1, day);
 
     }
 
@@ -90,7 +89,6 @@ public class ProductActivity extends Activity implements View.OnClickListener {
     }
 
     /**
-     *
      * @param url
      */
     public void sendRequest(String url) {
@@ -121,6 +119,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
     /**
      * Fonction qui traite le json
+     *
      * @param json
      * @throws IOException
      */
@@ -136,18 +135,16 @@ public class ProductActivity extends Activity implements View.OnClickListener {
                 dataText.setText("result " + "pas de produit");
                 btn.setEnabled(false);
 
-            }
-            else {
+            } else {
                 String image = "";
                 JSONObject produit = json.getJSONObject("product");
                 String name = produit.getString("product_name");
                 String genericName = produit.getString("generic_name");
                 String brand = produit.getString("brands");
                 if (produit.has("image_url"))
-                image = produit.getString("image_url");
-                this.product = new ProductObject(Long.valueOf(this.codeBar), genericName,brand, image, 1);
-                this.frigo = new FrigoObject(Long.valueOf(this.codeBar),  new Date());
-                dataText.setText("result " + name + " " + brand+" "+genericName);
+                    image = produit.getString("image_url");
+                this.frigo = new FrigoObject(Long.valueOf(this.codeBar), genericName, brand, image, 1, new Date());
+                dataText.setText("result " + name + " " + brand + " " + genericName);
                 ImageView imageView = (ImageView) findViewById(R.id.imageViewProduct);
                 new DownloadImageTask(imageView).execute(image);
 
@@ -160,12 +157,13 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
     /**
      * Fonction qui add dans bdd
+     *
      * @param v
      */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonAdd) {
-            ProductDB dbproduct = new ProductDB();
+            //ProductDB dbproduct = new ProductDB();
             FrigoDB dbfrigo = new FrigoDB();
 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -175,7 +173,6 @@ public class ProductActivity extends Activity implements View.OnClickListener {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            dbproduct.addProduct(this.product);
             dbfrigo.addProduct(this.frigo);
 
         }
@@ -189,6 +186,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
     /**
      * Fonction qui envoie un message
+     *
      * @param view
      */
     @SuppressWarnings("deprecation")
@@ -200,6 +198,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
     /**
      * Fonction qui retorune le datepicker
+     *
      * @param id
      * @return
      */
@@ -227,28 +226,30 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
             date = calendar.getTime();
 
-            showDate(arg1, arg2+1, arg3);
+            showDate(arg1, arg2 + 1, arg3);
         }
     };
 
     /**
      * Fonction qui cache le clavier si appuie exterieur
+     *
      * @param view
      */
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     /**
      * Fonction qui récupère le date du datePicker
+     *
      * @param datePicker
      * @return
      */
-    public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
+    public static java.util.Date getDateFromDatePicker(DatePicker datePicker) {
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
-        int year =  datePicker.getYear();
+        int year = datePicker.getYear();
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);

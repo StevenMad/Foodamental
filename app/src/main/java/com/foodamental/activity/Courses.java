@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.foodamental.R;
 import com.foodamental.dao.dbimpl.FrigoDB;
@@ -25,6 +28,7 @@ import com.foodamental.util.TweetAdapter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +44,8 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
     private FrigoDB frigo = new FrigoDB();
     private int[] color = {Color.GREEN, Color.YELLOW, Color.RED, Color.BLACK};
     private SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private String[] arraySpinner;
+    private Spinner s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -69,7 +76,6 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
         adapter = new TweetAdapter(Courses.this, tweets);
         mListView.setAdapter(adapter);
-        List<Tweet> tweets2 = tweets;
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, final int position, long id) {
@@ -89,6 +95,27 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
                 adb.show();
             }
         });
+
+        this.arraySpinner = new String[]{
+                "A-Z", "Z-A", "Date péremption"
+        };
+        s = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        s.setAdapter(adapterSpinner);
+        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                String mselection = s.getSelectedItem().toString();
+                triList(mselection);
+                Toast.makeText(getApplicationContext(), "Trié par " + mselection, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
     }
 
     /**
@@ -104,12 +131,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
         for (FrigoObject prod : produit) {
             tweets.add(new Tweet(getColorByDate(prod.getDatePerempt()), prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo()));
         }
-        //tweets.add(new Tweet(Color.BLACK, "Florent", "Mon premier tweet !"));
-        //tweets.add(new Tweet(Color.BLUE, "Kevin", "C'est ici que ça se passe !"));
-        //tweets.add(new Tweet(Color.GREEN, "Logan", "Que c'est beau..."));
-        //tweets.add(new Tweet(Color.RED, "Mathieu", "Il est quelle heure ??"));
-        //tweets.add(new Tweet(Color.GRAY, "Willy", "On y est presque"));
-        return tweets;
+     return tweets;
     }
 
     /**
@@ -138,5 +160,32 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
             return color[3];
     }
 
+    private void triList(String param){
+        if (param.equals("A-Z")) {
+            adapter.sort(new Comparator<Tweet>() {
+                @Override
+                public int compare(Tweet lhs, Tweet rhs) {
+                    return lhs.getPseudo().compareTo(rhs.getPseudo());
+                }
+            });
+        }
+        else if (param.equals("Z-A")){
+            adapter.sort(new Comparator<Tweet>() {
+                @Override
+                public int compare(Tweet lhs, Tweet rhs) {
+                    return rhs.getPseudo().compareTo(lhs.getPseudo());
+                }
+            });
+
+        }
+        else {
+            adapter.sort(new Comparator<Tweet>() {
+                @Override
+                public int compare(Tweet lhs, Tweet rhs) {
+                    return rhs.getText().compareTo(lhs.getText());
+                }
+            });
+        }
+    }
 
 }
