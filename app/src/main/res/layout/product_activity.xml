@@ -45,13 +45,13 @@
         android:layout_marginBottom="10dp" />
 
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
 
-            android:id="@+id/buttonCancel"
-            android:layout_gravity="right|center_vertical"
-            android:background="@color/colorAccent"
+        android:id="@+id/buttonCancel"
+        android:layout_gravity="right|center_vertical"
+        android:background="@color/colorAccent"
         android:layout_alignTop="@+id/buttonAdd"
         android:layout_alignEnd="@+id/dataText"
         android:textColor="@string/text_color" />
@@ -63,7 +63,7 @@
         android:id="@+id/buttonAdd"
         android:layout_gravity="left|center_vertical"
 
-    android:background="@color/green"
+        android:background="@color/green"
         android:layout_below="@+id/button1"
         android:layout_alignStart="@+id/dataText"
         android:layout_marginTop="36dp"

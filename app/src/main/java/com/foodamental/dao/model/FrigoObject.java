@@ -34,6 +34,15 @@ public class FrigoObject extends ProductObject{
         this.datePerompt = datePerompt;
     }
 
+    public FrigoObject(Long idProduct, String name,String brand, String image, Integer category, Date datePerompt ) {
+        this.setIdProduct(idProduct);
+        this.setName(name);
+        this.setImage(image);
+        this.setBrand(brand);
+        this.setCategory(category);
+        this.datePerompt = datePerompt;
+    }
+
     public Long getIdFrigo() {
         return idFrigo;
     }
