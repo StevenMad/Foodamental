@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Foodamental</string>
+    <string name="action_settings">Add Alert</string>
+    <string name="title_activity_my_main_page">MyMainPage</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="Inscription">Inscription</string>
+    <string name="date_button_set">Date de naissance</string>
+    <string name="date_button_product">Date de peremption</string>
+    <string name="date_selected"></string>
+    <string name="inscription">inscris toi</string>
+
+    <string name="prenom">Prénoms</string>
+    <string name="accueil">Accueil</string>
+    <string name="mon_frigo">Mon frigo</string>
+    <string name="recettes">Les recettes</string>
+    <string name="text_color">#FFFFFF</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="profil">Profil</string>
+    <string name="parametres">Paramètres</string>
+    <string name="texte_tweet">Texte de mon tweet</string>
+    <string name="data_base_manager">DataBase Manager</string>
+    <string name="scan">Scan</string>
+    <string name="set_alarm">Alarm On/Off</string>
+    <string name="android_studio">Android Studio</string>
+    <string name="android_com">android.studio@android.com</string>
+    <string name="camera">Lancer la camera</string>
+
+    <string name="reslabel">produit1</string>
+    <string name="resbtn">Ajouter produit</string>
+    <string name="test">Tester</string>
+    <string name="menu_help">help</string>
+    <string name="menu_about">about</string>
+    <string name="menu_settings">setting</string>
+    <string name="title_activity_setting_page">titleSetting</string>
+    <string name="toast_settings">yes</string>
+    <string name="action_recette">compte recette</string>
+    <string-array name="mon_frigo">
+        <item>Tomate</item>
+        <item>Canette</item>
+        <item>Yahourt</item>
+    </string-array>
+    <string name="title_activity_recipes">Recipes</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_parametres">Parametres</string>
+</resources>
