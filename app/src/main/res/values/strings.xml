@@ -12,6 +12,25 @@
     <string name="date_selected"></string>
     <string name="inscription">inscris toi</string>
 
+    <!-- thiery's changes -->
+    <string name="prenom">Prénoms</string>
+    <string name="accueil">Accueil</string>
+    <string name="mon_frigo">Mon frigo</string>
+    <string name="recettes">Les recettes</string>
+    <string name="text_color">#FFFFFF</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="profil">Profil</string>
+    <string name="parametres">Paramètres</string>
+    <string name="texte_tweet">Texte de mon tweet</string>
+    <string name="data_base_manager">DataBase Manager</string>
+    <string name="scan">Scan</string>
+    <string name="set_alarm">Alarm On/Off</string>
+    <string name="android_studio">Android Studio</string>
+    <string name="android_com">android.studio@android.com</string>
+
+
     <string name="camera">Lancer la camera</string>
 
     <string name="reslabel">produit1</string>
