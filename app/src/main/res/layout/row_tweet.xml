@@ -22,7 +22,7 @@
         android:layout_toRightOf="@+id/avatar"
         android:layout_alignTop="@+id/avatar"
         android:textStyle="bold"
-        tools:text="Pseudo"
+        tools:text="@string/pseudo"
         />
 
     <TextView
@@ -32,7 +32,7 @@
         android:textColor="@android:color/black"
         android:layout_alignLeft="@+id/pseudo"
         android:layout_below="@+id/pseudo"
-        tools:text="Texte de mon tweet"
+        tools:text="@string/texte_tweet"
         />
 
 </RelativeLayout>
