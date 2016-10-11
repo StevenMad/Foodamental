@@ -47,4 +47,7 @@
     <string name="title_activity_recipes">Recipes</string>
     <string name="title_activity_profile">Profil</string>
     <string name="title_activity_parametres">Setting</string>
+    <string name="sort">sort by</string>
+    <string name="scanTitle">Add a product</string>
+    <string name="todays_recipe">Todays recipe</string>
 </resources>

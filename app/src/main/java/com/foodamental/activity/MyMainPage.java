@@ -8,6 +8,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -142,6 +144,11 @@ public class MyMainPage extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void openRecipe(View view)
+    {
+        System.out.println("Hello World");
+    }
+
     /**
      * Fonction menu
      * @param item
@@ -154,63 +161,9 @@ public class MyMainPage extends AppCompatActivity
     }
 
     /**
-     * Fonction ouverture du scan
-     * @param view
+     * for database
+     * @return the context
      */
-    public void openCamera(View view) {
-        new IntentIntegrator(this).initiateScan();
-    }
-
-    /**
-     * Fonction résultat scan
-     * @param requestCode
-     * @param resultCode
-     * @param intent
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-
-// nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-
-        if ((scanningResult != null) || (!scanningResult.equals(""))) {
-
-// nous récupérons le contenu du code barre
-            String scanContent = scanningResult.getContents();
-
-// nous récupérons le format du code barre
-            String scanFormat = scanningResult.getFormatName();
-
-            sendRequest(scanContent);
-
-
-// nous affichons le résultat dans nos TextView
-
-
-        } else {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Aucune donnée reçu!", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-
-    }
-
-    /**
-     * Fonction qui envoie une nouvelle activity et le code barre
-     * @param codeBar
-     */
-    public void sendRequest(String codeBar) {
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        final TextView scan_content = (TextView) findViewById(R.id.scan_content);
-        if (codeBar != null) {
-            Intent intentProduct = new Intent(this, ProductActivity.class);
-            intentProduct.putExtra("codebar", codeBar);
-            startActivity(intentProduct);
-        }
-
-
-    }
-
     public static Context getContext() {
         return context;
     }
