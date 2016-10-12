@@ -13,10 +13,19 @@
     tools:showIn="@layout/app_bar_courses"
     android:weightSum="1">
     <TextView
-        android:id="@+id/textViewTri"
-        android:layout_width="150dp"
-        android:layout_height="49dp"
-        android:text="Triez par :" />
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/scan_button" />
+
+    <TextView
+        android:id="@+id/scan_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/scan_button" />
+
     <ListView
         android:id="@+id/listviewperso"
         android:layout_width="339dp"
@@ -33,5 +42,31 @@
         android:layout_marginBottom="501dp"
         android:spinnerMode="dropdown"
         android:layout_gravity="right|top" />
+
+    <TextView
+        android:id="@+id/textViewTri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sort"
+        android:layout_gravity="center_horizontal|top" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="147dp"
+        android:layout_height="66dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ScanTitle"
+            android:layout_gravity="left|top"
+            android:text="@string/scanTitle"/>
+        <Button android:id="@+id/scan_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scan"
+            android:onClick="openCamera"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true" />
+    </LinearLayout>
+
 
 </FrameLayout>

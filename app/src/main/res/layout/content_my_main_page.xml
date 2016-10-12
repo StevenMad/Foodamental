@@ -1,29 +1,17 @@
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    <Button android:id="@+id/scan_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/scan"
-        android:onClick="openCamera"
-        android:layout_marginTop="54dp"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/scan_button" />
+    <include layout="@layout/row_recipe_main"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="197dp"/>
 
-    <TextView
-        android:id="@+id/scan_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textIsSelectable="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/scan_button" />
-
-</RelativeLayout>
+    <include layout="@layout/row_products_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout >

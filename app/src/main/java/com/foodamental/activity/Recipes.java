@@ -314,6 +314,7 @@ public class Recipes extends AppCompatActivity
          */
         protected void onPostExecute(List<RecipeItem> result)
         {
+            this.dialog.dismiss();
             //prepare la listeView
             final ListView lv = (ListView) findViewById(R.id.listRecipes);
             //creation de l'adapter avec les recipeItem

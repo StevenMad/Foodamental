@@ -1,7 +1,9 @@
 package com.foodamental.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -16,14 +18,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.foodamental.R;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.util.MyMenu;
 import com.foodamental.util.Tweet;
 import com.foodamental.util.TweetAdapter;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +45,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Courses extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static Context context;
     private ListView mListView;
     private List<Tweet> tweets;
     private TweetAdapter adapter;
@@ -186,6 +194,69 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
                 }
             });
         }
+    }
+
+    /*-- buttons --*/
+    /**
+     * Fonction ouverture du scan
+     * @param view
+     */
+    public void openCamera(View view) {
+        new IntentIntegrator(this).initiateScan();
+    }
+
+    /**
+     * Fonction résultat scan
+     * @param requestCode
+     * @param resultCode
+     * @param intent
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+// nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+
+        if ((scanningResult != null) || (!scanningResult.equals(""))) {
+
+// nous récupérons le contenu du code barre
+            String scanContent = scanningResult.getContents();
+
+// nous récupérons le format du code barre
+            String scanFormat = scanningResult.getFormatName();
+
+            sendRequest(scanContent);
+
+
+// nous affichons le résultat dans nos TextView
+
+
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Aucune donnée reçu!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+    }
+
+    /**
+     * Fonction qui envoie une nouvelle activity et le code barre
+     * @param codeBar
+     */
+    public void sendRequest(String codeBar) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        final TextView scan_content = (TextView) findViewById(R.id.scan_content);
+        if (codeBar != null) {
+            Intent intentProduct = new Intent(this, ProductActivity.class);
+            intentProduct.putExtra("codebar", codeBar);
+            startActivity(intentProduct);
+        }
+
+
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
 }
