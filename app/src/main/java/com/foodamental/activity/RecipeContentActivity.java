@@ -48,12 +48,21 @@ public class RecipeContentActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.recipeSteps);
         Integer id = Integer.valueOf(idExtra);
         //lien vers l'api
-        String url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"+id+"/analyzedInstructions";
+        //String url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"+id+"/analyzedInstructions";
+        String url = "https://www.wecook.fr/web-api/recipes?id="+id;
         new RecipeContentAsyncTask().execute(url);
     }
 
 
     private class RecipeContentAsyncTask extends AsyncTask<String, Void, String> {
+
+        private ProgressDialog dialog = new ProgressDialog(RecipeContentActivity.this);
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Please Wait");
+            this.dialog.show();
+        }
+
         @Override
         /**
          * recuperation de la recette
@@ -62,9 +71,9 @@ public class RecipeContentActivity extends AppCompatActivity {
             try {
                 URL murl = new URL(url[0]);
                 HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
-                conn.setRequestProperty("X-Mashape-Key", "h5b30mrIKJmshDMNi7qH4pF8ux1Cp1CGYsHjsnJErhOlPsv15R");
+                conn.setRequestProperty("Authorization","Bearer 0VxU5I__nxIzBlJSVGATJQ");
                 conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Accept","application/json");
                 result = StaticUtil.getStringFromInputStream(conn.getInputStream());
                 return result;
             } catch (MalformedURLException e) {
@@ -85,15 +94,20 @@ public class RecipeContentActivity extends AppCompatActivity {
         protected void onPostExecute(String result)
         {
             try {
-                JSONArray jsonArray = new JSONArray(result); //recuperation du json
-                List<String> listeStep = new ArrayList<String>();
-                int step=1;
-                for(int i=0;i<jsonArray.length();i++) {
-                    JSONObject js = (JSONObject) jsonArray.get(i);
-                    JSONArray stepList = (JSONArray) js.get("steps");
-                    //pour chaque element step on effectue une traduction
-                    new RecipeTranslateAsyncTask().execute(stepList.toString());
+                if(dialog.isShowing())
+                    dialog.dismiss();
+                JSONObject json = new JSONObject(result);
+                JSONArray jsonArray = json.getJSONArray("result"); //recuperation du json
+                JSONArray steps = jsonArray.getJSONObject(0).getJSONArray("steps");
+                List<String> stepStringList = new ArrayList<String>();
+                for(int i=0;i<steps.length();i++)
+                {
+                    JSONObject js = steps.getJSONObject(i);
+                    stepStringList.add("Etape " + js.getInt("order") + "\n" + js.getString("step"));
                 }
+                ArrayAdapter<String> obj = new ArrayAdapter<String>(RecipeContentActivity.this, android.R.layout.simple_list_item_1, stepStringList);
+                //affichage du resultat dans une listView
+                lv.setAdapter(obj);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -186,13 +200,7 @@ public class RecipeContentActivity extends AppCompatActivity {
         protected void onPostExecute(List<String> stepString)
         {
             //suppression du spinner
-            if(dialog.isShowing())
-                dialog.dismiss();
-            //affichage du resultat dans une listView
-            ArrayAdapter<String> obj = new ArrayAdapter<String>(RecipeContentActivity.this,
-                    android.R.layout.simple_list_item_1,
-                    stepString);
-            lv.setAdapter(obj);
+
         }
     }
 }

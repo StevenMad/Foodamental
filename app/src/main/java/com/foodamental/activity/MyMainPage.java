@@ -66,7 +66,7 @@ public class MyMainPage extends AppCompatActivity
         Intent intent = getIntent();
 
         /*-----DB----*/
-        FrigoDB frigo = new FrigoDB();
+        /*FrigoDB frigo = new FrigoDB();
         int id = 1;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date d1 = null;
@@ -86,7 +86,7 @@ public class MyMainPage extends AppCompatActivity
         frigo.addProduct(new FrigoObject((long) 344346, "oeufs", "carrefour", "brand", 1, d2));
         frigo.addProduct(new FrigoObject((long) 344347, "poulet", "carrefour", "brand", 1, d3));
         frigo.addProduct(new FrigoObject((long) 344348,"tomate", "leader", "brand",1,  d4));
-        List<FrigoObject> list = frigo.getAllProductOrderBy("EXPIRY_DATE");
+        List<FrigoObject> list = frigo.getAllProductOrderBy("EXPIRY_DATE");*/
 
         /*-----------*/
 

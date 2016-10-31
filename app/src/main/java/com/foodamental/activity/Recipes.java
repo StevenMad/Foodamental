@@ -64,7 +64,6 @@ public class Recipes extends AppCompatActivity
     private String query;
     String ingredientsEng="";
     TextView tv;
-    private TranslatorAsyncTask  translatorAsyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +71,6 @@ public class Recipes extends AppCompatActivity
         setContentView(R.layout.activity_recipes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        translatorAsyncTask = new TranslatorAsyncTask();
-        translatorAsyncTask.response = this;
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -97,16 +92,21 @@ public class Recipes extends AppCompatActivity
         query = "";
         try {
             List<FrigoObject> listDTO = fdb.getDistinctProductList();
-            for(FrigoObject product:listDTO)
-            {
-                query+=product.toString()+" ";
+            if (listDTO.isEmpty())
+                Toast.makeText(Recipes.this, "Erreur lors de la récuperation des données", Toast.LENGTH_LONG).show();
+            else {
+                for (int i = 0; i < 6; i++) {
+                    FrigoObject product = listDTO.get(i);
+                    query += product.toString() + ",";
+                }
+                query = query.substring(0, query.length() - 1);
+                String url = "https://www.wecook.fr/web-api/recipes/search?q="+query;
+                new RecipeAsyncTask().execute(url);
             }
-        } catch (ParseException e) {
-            Toast.makeText(Recipes.this,"Erreur lors de la récuperation des données",Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
-        String url = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text="+query+"&from=fr&to=en";
-        translatorAsyncTask.execute(url);
+        }catch (ParseException e) {
+                Toast.makeText(Recipes.this,"Erreur lors de la récuperation des données",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
         //query = query.substring(0,query.length()-3);
         //String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
     }
@@ -122,7 +122,7 @@ public class Recipes extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
+}
 
     /**
      * Fonction du menu
@@ -182,74 +182,6 @@ public class Recipes extends AppCompatActivity
         new RecipeAsyncTask().execute(url);
     }
 
-
-    public class TranslatorAsyncTask extends AsyncTask<String, Void, String> {
-        private String idClient = "Foodamental01";
-        private String secret = "jKyTcW44LeQYkjFZF1O4ci1VyiVFaRWUyR62YbLOQ74=";
-        private ProgressDialog dialog = new ProgressDialog(Recipes.this);
-        public OnTaskComplete response = null;
-
-        @Override
-        protected void onPreExecute()
-        {
-            this.dialog.setMessage("Please Wait");
-            this.dialog.show();
-        }
-
-        /**
-         * do
-         * @param params
-         * @return
-         */
-        @Override
-        protected String doInBackground(String... params) {
-            URL url = null;
-            String traceId = UUID.randomUUID().toString();
-            String formatedUrl = String.format(params[0],"bonjour");
-            try {
-                url = new URL(formatedUrl);
-                AdmAccessToken token = AdmAccessToken.getAccessToken(idClient,secret);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Authorization", "Bearer " + token.access_token);
-                conn.setRequestProperty("X-ClientTraceId", traceId);
-                if(conn.getResponseCode()==200)
-                {
-                    String result = StaticUtil.getStringFromInputStream(conn.getInputStream());
-                    String xml = result; //Populated XML String....
-
-                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder builder = null;
-
-                    builder = factory.newDocumentBuilder();
-                    Document document = builder.parse(new InputSource(new StringReader(xml)));
-                    Element rootElement = document.getDocumentElement();
-                    String value = rootElement.getTextContent();
-                    return value;
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
-                e.printStackTrace();
-            }
-            return "hello";
-        }
-
-        protected void onPostExecute(String result)
-        {
-            if(dialog.isShowing())
-                dialog.dismiss();
-            response.onTaskCompleted(result);
-        }
-    }
-
-
     private class RecipeAsyncTask extends AsyncTask<String, Void, List<RecipeItem>> {
 
         private ProgressDialog dialog = new ProgressDialog(Recipes.this);
@@ -269,24 +201,29 @@ public class Recipes extends AppCompatActivity
                 URL murl = new URL(url[0]);
                 HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
                 //insertion de la cle
-                conn.setRequestProperty("X-Mashape-Key","h5b30mrIKJmshDMNi7qH4pF8ux1Cp1CGYsHjsnJErhOlPsv15R");
+                conn.setRequestProperty("Authorization","Bearer 0VxU5I__nxIzBlJSVGATJQ");
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Accept","application/json");
                 if(conn.getResponseCode()==200)
                 {
                     String response= StaticUtil.getStringFromInputStream(conn.getInputStream());
                     //creation recipeItem
-                    JSONArray array = new JSONArray(response);
-                    for(int i=0;i<array.length();i++)
+                    JSONObject jsonUrlResponse = new JSONObject(response);
+                    String s = jsonUrlResponse.getString("result");
+                    JSONObject jresult = new JSONObject(s);
+                    JSONArray listRecipes = jresult.getJSONArray("resources");
+                    for(int i=0;i<listRecipes.length();i++)
                     {
                         RecipeItem item = new RecipeItem();
-                        JSONObject json = new JSONObject((String) array.get(i).toString());
-                        URL imageUrl = new URL(json.getString("image"));
-                        Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
-                        item.setName(json.getString("title"));
+                        JSONObject json = new JSONObject((String) listRecipes.get(i).toString());
+                        if(json.has("picture_url"))
+                        {
+                            URL imageUrl = new URL(json.getString("picture_url"));
+                            Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
+                            item.setImage(image);
+                        }
+                        item.setName(json.getString("name"));
                         item.setId(json.getInt("id"));
-                        item.setImage(image);
-                        item.setJson(json);
                         //ajout de l'element dans la liste
                         liste.add(item);
                     }
@@ -294,7 +231,6 @@ public class Recipes extends AppCompatActivity
                 }else
                 {
                     RecipeItem item = new RecipeItem();
-
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();

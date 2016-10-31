@@ -4,14 +4,4 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
-    <include layout="@layout/row_recipe_main"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="6dp"
-        android:layout_width="match_parent"
-        android:layout_height="197dp"/>
-
-    <include layout="@layout/row_products_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 </LinearLayout >
