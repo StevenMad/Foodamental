@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -21,9 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.foodamental.dao.DBHelper;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.translator.AdmAccessToken;
+import com.foodamental.util.JsonUtilTools;
 import com.foodamental.util.MyMenu;
 import com.foodamental.dao.dbimpl.ProductDB;
 import com.foodamental.R;
@@ -90,23 +93,18 @@ public class Recipes extends AppCompatActivity
         FrigoDB fdb = new FrigoDB();
         EditText ingredientText = (EditText) findViewById(R.id.ingredientText);
         query = "";
-        try {
-            List<FrigoObject> listDTO = fdb.getDistinctProductList();
-            if (listDTO.isEmpty())
-                Toast.makeText(Recipes.this, "Erreur lors de la récuperation des données", Toast.LENGTH_LONG).show();
-            else {
-                for (int i = 0; i < 6; i++) {
-                    FrigoObject product = listDTO.get(i);
-                    query += product.toString() + ",";
-                }
-                query = query.substring(0, query.length() - 1);
-                String url = "https://www.wecook.fr/web-api/recipes/search?q="+query;
-                new RecipeAsyncTask().execute(url);
+        List<FrigoObject> listDTO = fdb.getAllProductOrderBy(DBHelper.FRIGODB_COLUMN_DATE_PEREMPT);
+        if (listDTO.isEmpty())
+            Toast.makeText(Recipes.this, "Erreur lors de la récuperation des données", Toast.LENGTH_LONG).show();
+        else {
+            for (int i = 0; i < listDTO.size() && i < 7; i++) {
+                FrigoObject product = listDTO.get(i);
+                query += product.toString() + ",";
             }
-        }catch (ParseException e) {
-                Toast.makeText(Recipes.this,"Erreur lors de la récuperation des données",Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
+            query = query.substring(0, query.length() - 1);
+            String url = "https://www.wecook.fr/web-api/recipes/search?q="+query;
+            new RecipeAsyncTask().execute(url);
+        }
         //query = query.substring(0,query.length()-3);
         //String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
     }
@@ -182,7 +180,7 @@ public class Recipes extends AppCompatActivity
         new RecipeAsyncTask().execute(url);
     }
 
-    private class RecipeAsyncTask extends AsyncTask<String, Void, List<RecipeItem>> {
+    public class RecipeAsyncTask extends AsyncTask<String, Void, List<RecipeItem>> {
 
         private ProgressDialog dialog = new ProgressDialog(Recipes.this);
         public OnTaskComplete response = null;
@@ -198,48 +196,38 @@ public class Recipes extends AppCompatActivity
         protected List<RecipeItem> doInBackground(String... url) {
             try {
                 List<RecipeItem> liste = new ArrayList<>();
-                URL murl = new URL(url[0]);
-                HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
-                //insertion de la cle
-                conn.setRequestProperty("Authorization","Bearer 0VxU5I__nxIzBlJSVGATJQ");
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept","application/json");
-                if(conn.getResponseCode()==200)
+                JSONObject jsonUrlResponse = JsonUtilTools.getJSONFromRecipesRequest(url[0]);
+                //creation recipeItem
+                String s = jsonUrlResponse.getString("result");
+                JSONObject jresult = new JSONObject(s);
+                JSONArray listRecipes = jresult.getJSONArray("resources");
+                for(int i=0;i<listRecipes.length() && i<7;i++)
                 {
-                    String response= StaticUtil.getStringFromInputStream(conn.getInputStream());
-                    //creation recipeItem
-                    JSONObject jsonUrlResponse = new JSONObject(response);
-                    String s = jsonUrlResponse.getString("result");
-                    JSONObject jresult = new JSONObject(s);
-                    JSONArray listRecipes = jresult.getJSONArray("resources");
-                    for(int i=0;i<listRecipes.length();i++)
-                    {
-                        RecipeItem item = new RecipeItem();
+                    RecipeItem item = new RecipeItem();
                         JSONObject json = new JSONObject((String) listRecipes.get(i).toString());
                         if(json.has("picture_url"))
                         {
                             URL imageUrl = new URL(json.getString("picture_url"));
                             Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
                             item.setImage(image);
+                        }else
+                        {
+                            int id = getResources().getIdentifier("food_default","drawable",getPackageName());
+                            Bitmap image = BitmapFactory.decodeResource(getResources(),id);
+                            item.setImage(image);
                         }
                         item.setName(json.getString("name"));
                         item.setId(json.getInt("id"));
+                        item.setCookingTime(json.getJSONObject("time").getInt("total"));
+                        item.setNbServe(json.getInt("portions"));
                         //ajout de l'element dans la liste
                         liste.add(item);
                     }
                     return liste;
-                }else
-                {
-                    RecipeItem item = new RecipeItem();
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
+                } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (JSONException e1) {
+                e1.printStackTrace();
             }
             return null;
         }

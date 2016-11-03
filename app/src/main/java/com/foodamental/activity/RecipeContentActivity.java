@@ -2,6 +2,8 @@ package com.foodamental.activity;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -9,36 +11,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.foodamental.R;
-import com.foodamental.translator.AdmAccessToken;
-import com.foodamental.util.StaticUtil;
+import com.foodamental.util.JsonUtilTools;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 public class RecipeContentActivity extends AppCompatActivity {
 
     String result;
     TextView tv;
     ListView lv;
+    TabLayout tab;
+    ViewPager pager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +38,13 @@ public class RecipeContentActivity extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.recipeName);
         lv = (ListView) findViewById(R.id.recipeSteps);
         Integer id = Integer.valueOf(idExtra);
+
         //lien vers l'api
         //String url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"+id+"/analyzedInstructions";
         String url = "https://www.wecook.fr/web-api/recipes?id="+id;
         new RecipeContentAsyncTask().execute(url);
     }
+
 
 
     private class RecipeContentAsyncTask extends AsyncTask<String, Void, String> {
@@ -69,18 +62,15 @@ public class RecipeContentActivity extends AppCompatActivity {
          */
         protected String doInBackground(String... url) {
             try {
-                URL murl = new URL(url[0]);
-                HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
-                conn.setRequestProperty("Authorization","Bearer 0VxU5I__nxIzBlJSVGATJQ");
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept","application/json");
-                result = StaticUtil.getStringFromInputStream(conn.getInputStream());
-                return result;
+                JSONObject json = JsonUtilTools.getJSONFromRecipesRequest(url[0]);
+                return json.toString();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (ProtocolException e) {
                 e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             return null;
@@ -108,6 +98,8 @@ public class RecipeContentActivity extends AppCompatActivity {
                 ArrayAdapter<String> obj = new ArrayAdapter<String>(RecipeContentActivity.this, android.R.layout.simple_list_item_1, stepStringList);
                 //affichage du resultat dans une listView
                 lv.setAdapter(obj);
+                TextView tv = (TextView) findViewById(R.id.recipeName);
+                tv.setText(jsonArray.getJSONObject(0).getString("name"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -116,7 +108,7 @@ public class RecipeContentActivity extends AppCompatActivity {
 
     /**
      * classe de traduction
-     */
+     *//*
     private class RecipeTranslateAsyncTask extends AsyncTask<String, Void, List<String>>
     {
         private String idClient = "Foodamental01";
@@ -128,11 +120,11 @@ public class RecipeContentActivity extends AppCompatActivity {
             this.dialog.show();
         }
 
-        /**
+        *//**
          * Traduire chaque mot de la recette
          * @param jsonArrayString
          * @return
-         */
+         *//*
         @Override
         protected  List<String> doInBackground(String... jsonArrayString)
         {
@@ -191,16 +183,17 @@ public class RecipeContentActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             return null;
-        }
+        }*/
 
         /**
          * action apres doInBackground
          * @param stepString la list des etapes de la recette
          */
-        protected void onPostExecute(List<String> stepString)
+        /*protected void onPostExecute(List<String> stepString)
         {
             //suppression du spinner
 
         }
     }
+    */
 }

@@ -15,11 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:layout_width="392dp"
-                android:layout_height="220dp"
+                android:layout_width="match_parent"
+                android:layout_height="211dp"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
-                android:src="@drawable/recipe"/>
+                android:id="@+id/recipe_image"/>
 
             <TextView
                 android:layout_width="230dp"
@@ -32,11 +32,11 @@
             <TextView
                 android:layout_width="230dp"
                 android:layout_height="70dp"
-                android:text="Filet de poisson et omelette panée a la frangipane de france"
                 android:padding="6dp"
                 android:background="#DDBBBBBB"
                 android:layout_gravity="right|bottom"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:id="@+id/recipe_name"/>
         </FrameLayout>
     </android.support.v7.widget.CardView>
 

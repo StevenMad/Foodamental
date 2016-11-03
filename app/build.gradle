@@ -9,8 +9,8 @@ android {
         applicationId "com.foodamental"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1"
         // Enabling multidex support.
         multiDexEnabled true
     }
@@ -41,4 +41,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.2.1'
     compile 'com.google.android.gms:play-services-auth:9.2.1'
     compile 'com.google.android.gms:play-services-gcm:9.2.1'
+    compile 'com.android.support:support-v4:23.4.0'
 }

@@ -15,6 +15,8 @@ public class RecipeItem {
     private JSONObject json;
     private Integer id;
     private String name;
+    private Integer cookingTime;
+    private Integer nbServe;
 
     public Bitmap getImage() {
         return image;
@@ -32,6 +34,13 @@ public class RecipeItem {
         return name;
     }
 
+    public Integer getCookingTime()
+    {
+        return cookingTime;
+    }
+
+    public Integer getNbServe(){return nbServe;}
+
     public void setImage(Bitmap image) {
         this.image = image;
     }
@@ -46,5 +55,15 @@ public class RecipeItem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setCookingTime(Integer cookingTime)
+    {
+        this.cookingTime=cookingTime;
+    }
+
+    public void setNbServe(Integer nbServe)
+    {
+        this.nbServe = nbServe;
     }
 }

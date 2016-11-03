@@ -6,12 +6,46 @@
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:id="@+id/imageRecipe"/>
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:id="@+id/RecipeNameInList"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/imageRecipe" />
+        android:id="@+id/imageRecipe"
+        android:src="@drawable/food_default"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toEndOf="@+id/imageRecipe"
+        android:padding="4dp"
+        android:id="@+id/linearLayout">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/RecipeNameInList"
+            android:textSize="20dp"
+            android:paddingTop="17dp"
+            android:gravity="center"
+            android:text="Titre de la recette"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayout"
+        android:layout_toEndOf="@+id/imageRecipe"
+        android:layout_alignBottom="@+id/imageRecipe">
+        <TextView
+            android:layout_width="116dp"
+            android:layout_height="match_parent"
+            android:id="@+id/RecipeCookTime"
+            android:gravity="center"
+            android:textSize="14dp"
+            android:text="temps"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/RecipeNumberService"
+            android:textSize="14dp"
+            android:gravity="center"
+            android:text="portions"
+            android:layout_below="@+id/RecipeCookTime"
+            android:layout_alignParentStart="true" />
+    </LinearLayout>
 </RelativeLayout>
