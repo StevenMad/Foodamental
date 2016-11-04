@@ -74,32 +74,8 @@ public class AlertPage extends Activity {
      * @param ctx
      */
     public static void createNotification(Context ctx ) {
-        /*Intent intent = new Intent(this, Courses.class);
-// use System.currentTimeMillis() to have a unique ID for the pending intent
-        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
-        Intent intent2 = new Intent(this, Recipes.class);
-// use System.currentTimeMillis() to have a unique ID for the pending intent
-        PendingIntent pIntent2 = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent2, 0);
-// build notification
-// the addAction re-use the same intent to keep the example short
-        Notification n  = new Notification.Builder(this)
-                .setContentTitle("Attention vos produits vont périmés!!")
-                .setContentText("Choisir un des deux menus")
-                .setSmallIcon(R.drawable.ic_launcher1)
-                .setContentIntent(pIntent)
-                .setAutoCancel(true)
-                .addAction(R.drawable.common_google_signin_btn_icon_light, "Frigo", pIntent)
-                .addAction(R.drawable.common_google_signin_btn_icon_light, "Recettes", pIntent2)
-                .build();
 
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        notificationManager.notify(notifyId, n);*/
         Calendar sevendayalarm = Calendar.getInstance();
-
-        //sevendayalarm.add(Calendar.DATE, 7);
         int interval = 10000;
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 18);
