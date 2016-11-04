@@ -1,15 +1,12 @@
 package com.foodamental.dao;
 
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.foodamental.activity.Foodamental;
 import com.foodamental.activity.MyMainPage;
-
-import java.util.ArrayList;
 
 /**
  * Created by Madhow on 06/06/2016.
@@ -47,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //frigo table Columns names
     public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
     public static final String FRIGODB_COLUMN_ID_PRODUCT = "IDPRODUCT";
-    public static final String FRIGODB_COLUMN_DATE_PEROMPT= "EXPIRY_DATE";
+    public static final String FRIGODB_COLUMN_DATE_PEREMPT = "EXPIRY_DATE";
 
     private static final String TAG = DBHelper.class.getSimpleName().toString();
 
@@ -76,7 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + FRIGODB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FRIGODB_COLUMN_ID_PRODUCT + " INTEGER, "
 
-                + FRIGODB_COLUMN_DATE_PEROMPT + " TEXT,"
+                + FRIGODB_COLUMN_DATE_PEREMPT + " TEXT,"
                 +" FOREIGN KEY(" + FRIGODB_COLUMN_ID_PRODUCT +") REFERENCES PRODUIT(ID_PRODUCT) " + ")";
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_PRODUCT_TABLE);

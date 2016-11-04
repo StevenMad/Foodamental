@@ -50,4 +50,7 @@
     <string name="sort">sort by</string>
     <string name="scanTitle">Add a product</string>
     <string name="todays_recipe">Todays recipe</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
