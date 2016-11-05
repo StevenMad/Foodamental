@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.foodamental.activity.Foodamental;
 import com.foodamental.activity.MyMainPage;
 
 /**
@@ -48,7 +49,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TAG = DBHelper.class.getSimpleName().toString();
 
     public DBHelper() {
-        super(MyMainPage.getContext(), DATABASE_NAME, null, DATABASE_VERSION);
+        super(Foodamental.getAppContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

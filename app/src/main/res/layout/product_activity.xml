@@ -47,19 +47,19 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cancel"
+        android:text="Cancel"
 
         android:id="@+id/buttonCancel"
         android:layout_gravity="right|center_vertical"
         android:background="@color/colorAccent"
         android:layout_alignTop="@+id/buttonAdd"
         android:layout_alignEnd="@+id/dataText"
-        android:textColor="@string/text_color" />
+        android:textColor="#FFFFFF" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add"
+        android:text="add"
         android:id="@+id/buttonAdd"
         android:layout_gravity="left|center_vertical"
 
@@ -67,6 +67,6 @@
         android:layout_below="@+id/button1"
         android:layout_alignStart="@+id/dataText"
         android:layout_marginTop="36dp"
-        android:textColor="@string/text_color" />
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>
