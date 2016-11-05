@@ -3,15 +3,25 @@ package com.foodamental.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.Manifest;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +35,22 @@ import com.foodamental.dao.dbimpl.UserDB;
 import com.foodamental.dao.model.FoodUser;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.dao.model.ProductObject;
+import com.foodamental.util.JsonUtilTools;
 import com.foodamental.util.MyMenu;
+import com.foodamental.util.RecipeItem;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,12 +61,26 @@ public class MyMainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static Context context;
-
+    private final int MY_PERMISSION_STORAGE = 1;
+    private final int MY_PERMISSION_CAMERA = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this.getApplicationContext();
+        //check permissions
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSION_CAMERA);
+        }
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSION_STORAGE);
+        }
 
         DatabaseManager.getInstance();
 
@@ -63,33 +97,6 @@ public class MyMainPage extends AppCompatActivity
         TextView textView = (TextView) findViewById(R.id.textView);
         Intent intent = getIntent();
 
-        /*-----DB----*/
-        ProductDB db = new ProductDB();
-        FrigoDB frigo = new FrigoDB();
-        int id = 1;
-        db.addProduct(new ProductObject((long) 344344, "oignon", "carrefour", "brand", 1));
-        db.addProduct(new ProductObject((long) 344345, "porc", "leader", "brand", 1));
-        db.addProduct(new ProductObject((long) 344346, "oeufs", "carrefour", "brand", 1));
-        db.addProduct(new ProductObject((long) 344347, "poulet", "carrefour", "brand", 1));
-        db.addProduct(new ProductObject((long) 344348, "tomate", "leader", "brand", 1));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date d1 = null;
-        Date d2 = null;
-        Date d3 = null;
-        Date d4 = null;
-        try {
-            d1 = sdf.parse("2012-12-01");
-            d2 = sdf.parse("2015-12-21");
-            d3 = sdf.parse("2016-12-21");
-            d4 = sdf.parse("2012-12-2");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        frigo.addProduct(new FrigoObject((long) id++, (long) 344344, d1));
-        frigo.addProduct(new FrigoObject((long) id++, (long) 344346, d2));
-        frigo.addProduct(new FrigoObject((long) id++, (long) 344347, d3));
-        frigo.addProduct(new FrigoObject((long) id++, (long) 344348, d4));
-        List<FrigoObject> list = frigo.getAllProductOrderBy("EXPIRY_DATE");
 
         /*-----------*/
 
@@ -101,6 +108,16 @@ public class MyMainPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //add items on the menu
+        new TodaysRecipeAsyncTask().execute();
+    }
+
+    //check permissions
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[],int[] grantResults )
+    {
+
     }
 
     /**
@@ -147,6 +164,11 @@ public class MyMainPage extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void openRecipe(View view)
+    {
+        System.out.println("Hello World");
+    }
+
     /**
      * Fonction menu
      * @param item
@@ -159,65 +181,68 @@ public class MyMainPage extends AppCompatActivity
     }
 
     /**
-     * Fonction ouverture du scan
-     * @param view
+     * for database
+     * @return the context
      */
-    public void openCamera(View view) {
-        new IntentIntegrator(this).initiateScan();
-    }
-
-    /**
-     * Fonction résultat scan
-     * @param requestCode
-     * @param resultCode
-     * @param intent
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-
-// nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-
-        if ((scanningResult != null) || (!scanningResult.equals(""))) {
-
-// nous récupérons le contenu du code barre
-            String scanContent = scanningResult.getContents();
-
-// nous récupérons le format du code barre
-            String scanFormat = scanningResult.getFormatName();
-
-            sendRequest(scanContent);
-
-
-// nous affichons le résultat dans nos TextView
-
-
-        } else {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Aucune donnée reçu!", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-
-    }
-
-    /**
-     * Fonction qui envoie une nouvelle activity et le code barre
-     * @param codeBar
-     */
-    public void sendRequest(String codeBar) {
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        final TextView scan_content = (TextView) findViewById(R.id.scan_content);
-        if (codeBar != null) {
-            Intent intentProduct = new Intent(this, ProductActivity.class);
-            intentProduct.putExtra("codebar", codeBar);
-            startActivity(intentProduct);
-        }
-
-
-    }
-
     public static Context getContext() {
         return context;
+    }
+
+    /*--- AsyncTasks ---*/
+    private class TodaysRecipeAsyncTask extends AsyncTask<Void, Void, RecipeItem>
+    {
+
+        private String url = "https://www.wecook.fr/web-api/recipes?id=";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //double rand = Math.random() * 8000;
+            //url = url+(int) rand;
+            url = url+4242;
+        }
+
+        @Override
+        protected RecipeItem doInBackground(Void... params) {
+            try{
+                List<RecipeItem> liste = new ArrayList<>();
+                JSONObject jsonUrlResponse = JsonUtilTools.getJSONFromRecipesRequest(url);
+                if(jsonUrlResponse==null)
+                    return null;
+                //creation recipeItem
+                JSONArray jsonArray = jsonUrlResponse.getJSONArray("result"); //recuperation du json
+                JSONObject json = jsonArray.getJSONObject(0);
+                RecipeItem item = new RecipeItem();
+                if(json.has("picture_url"))
+                {
+                    URL imageUrl = new URL(json.getString("picture_url"));
+                    Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
+                    item.setImage(image);
+                }else
+                {
+                    int id = getResources().getIdentifier("food_default","drawable",getPackageName());
+                    Bitmap image = BitmapFactory.decodeResource(getResources(),id);
+                    item.setImage(image);
+                }
+                item.setName(json.getString("name"));
+                item.setId(json.getInt("id"));
+                //ajout de l'element dans la liste
+                return item;
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(RecipeItem recipeItem) {
+            ImageView image = (ImageView) findViewById(R.id.recipe_image);
+            TextView tv = (TextView) findViewById(R.id.recipe_name);
+            tv.setText(recipeItem.getName());
+            image.setImageBitmap(recipeItem.getImage());
+        }
     }
 
 }

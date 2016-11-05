@@ -19,7 +19,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DataBase Manager"
+        android:text="@string/data_base_manager"
         android:id="@+id/button2"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"

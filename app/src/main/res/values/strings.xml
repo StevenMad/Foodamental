@@ -7,28 +7,50 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="Inscription">Inscription</string>
-    <string name="date_button_set">Date de naissance</string>
-    <string name="date_button_product">Date de peremption</string>
+    <string name="date_button_set">Birth date</string>
+    <string name="date_button_product">Expiration date</string>
     <string name="date_selected"></string>
-    <string name="inscription">inscris toi</string>
+    <string name="inscription">sign up</string>
 
-    <string name="camera">Lancer la camera</string>
+    <string name="prenom">First Name</string>
+    <string name="accueil">Home</string>
+    <string name="mon_frigo">my fridge</string>
+    <string name="recettes">Recipes</string>
+    <string name="text_color">#FFFFFF</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="profil">Profil</string>
+    <string name="parametres">Setting</string>
+    <string name="texte_tweet">my tweet text</string>
+    <string name="data_base_manager">DataBase Manager</string>
+    <string name="scan">Scan</string>
+    <string name="set_alarm">Alarm On/Off</string>
+    <string name="android_studio">Android Studio</string>
+    <string name="android_com">android.studio@android.com</string>
+    <string name="camera">Start camera</string>
 
     <string name="reslabel">produit1</string>
-    <string name="resbtn">Ajouter produit</string>
-    <string name="test">Tester</string>
+    <string name="resbtn">Add product</string>
+    <string name="test">Test</string>
     <string name="menu_help">help</string>
     <string name="menu_about">about</string>
     <string name="menu_settings">setting</string>
     <string name="title_activity_setting_page">titleSetting</string>
     <string name="toast_settings">yes</string>
-    <string name="action_recette">compte recette</string>
+    <string name="action_recette">account recipe</string>
     <string-array name="mon_frigo">
         <item>Tomate</item>
         <item>Canette</item>
         <item>Yahourt</item>
     </string-array>
     <string name="title_activity_recipes">Recipes</string>
-    <string name="title_activity_profile">Profile</string>
-    <string name="title_activity_parametres">Parametres</string>
+    <string name="title_activity_profile">Profil</string>
+    <string name="title_activity_parametres">Setting</string>
+    <string name="sort">sort by</string>
+    <string name="scanTitle">Add a product</string>
+    <string name="todays_recipe">Todays recipe</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

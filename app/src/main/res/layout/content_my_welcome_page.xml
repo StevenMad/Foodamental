@@ -20,7 +20,7 @@
         android:layout_width="89dp"
         android:layout_height="32dp"
 
-        android:text="Prénom"
+        android:text="@string/prenom"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"

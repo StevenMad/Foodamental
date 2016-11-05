@@ -99,8 +99,8 @@ public class AlertPage extends Activity {
                 .setSmallIcon(R.drawable.ic_launcher1)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
-                .addAction(R.drawable.common_signin_btn_icon_light, "Frigo", pIntent)
-                .addAction(R.drawable.common_signin_btn_icon_light, "Recettes", pIntent2)
+                .addAction(R.drawable.common_google_signin_btn_icon_light, "Frigo", pIntent)
+                .addAction(R.drawable.common_google_signin_btn_icon_light, "Recettes", pIntent2)
                 .build();
 
 

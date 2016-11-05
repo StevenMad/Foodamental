@@ -1,10 +1,13 @@
 package com.foodamental.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,18 +16,28 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.foodamental.Manifest;
 import com.foodamental.R;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.util.MyMenu;
 import com.foodamental.util.Tweet;
 import com.foodamental.util.TweetAdapter;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -34,12 +47,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class Courses extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static Context context;
     private ListView mListView;
     private List<Tweet> tweets;
     private TweetAdapter adapter;
     private FrigoDB frigo = new FrigoDB();
     private int[] color = {Color.GREEN, Color.YELLOW, Color.RED, Color.BLACK};
     private SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private String[] arraySpinner;
+    private Spinner s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +64,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -69,7 +86,6 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
         adapter = new TweetAdapter(Courses.this, tweets);
         mListView.setAdapter(adapter);
-        List<Tweet> tweets2 = tweets;
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, final int position, long id) {
@@ -89,6 +105,27 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
                 adb.show();
             }
         });
+
+        this.arraySpinner = new String[]{
+                "A-Z", "Z-A", "Date péremption"
+        };
+        s = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        s.setAdapter(adapterSpinner);
+        s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                String mselection = s.getSelectedItem().toString();
+                triList(mselection);
+                Toast.makeText(getApplicationContext(), "Trié par " + mselection, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
     }
 
     /**
@@ -104,12 +141,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
         for (FrigoObject prod : produit) {
             tweets.add(new Tweet(getColorByDate(prod.getDatePerempt()), prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo()));
         }
-        //tweets.add(new Tweet(Color.BLACK, "Florent", "Mon premier tweet !"));
-        //tweets.add(new Tweet(Color.BLUE, "Kevin", "C'est ici que ça se passe !"));
-        //tweets.add(new Tweet(Color.GREEN, "Logan", "Que c'est beau..."));
-        //tweets.add(new Tweet(Color.RED, "Mathieu", "Il est quelle heure ??"));
-        //tweets.add(new Tweet(Color.GRAY, "Willy", "On y est presque"));
-        return tweets;
+     return tweets;
     }
 
     /**
@@ -138,5 +170,95 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
             return color[3];
     }
 
+    private void triList(String param){
+        if (param.equals("A-Z")) {
+            adapter.sort(new Comparator<Tweet>() {
+                @Override
+                public int compare(Tweet lhs, Tweet rhs) {
+                    return lhs.getPseudo().compareTo(rhs.getPseudo());
+                }
+            });
+        }
+        else if (param.equals("Z-A")){
+            adapter.sort(new Comparator<Tweet>() {
+                @Override
+                public int compare(Tweet lhs, Tweet rhs) {
+                    return rhs.getPseudo().compareTo(lhs.getPseudo());
+                }
+            });
+
+        }
+        else {
+            adapter.sort(new Comparator<Tweet>() {
+                @Override
+                public int compare(Tweet lhs, Tweet rhs) {
+                    return rhs.getText().compareTo(lhs.getText());
+                }
+            });
+        }
+    }
+
+    /*-- buttons --*/
+    /**
+     * Fonction ouverture du scan
+     * @param view
+     */
+    public void openCamera(View view) {
+        new IntentIntegrator(this).initiateScan();
+    }
+
+    /**
+     * Fonction résultat scan
+     * @param requestCode
+     * @param resultCode
+     * @param intent
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+// nous utilisons la classe IntentIntegrator et sa fonction parseActivityResult pour parser le résultat du scan
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+
+        if ((scanningResult != null) || (!scanningResult.equals(""))) {
+
+// nous récupérons le contenu du code barre
+            String scanContent = scanningResult.getContents();
+
+// nous récupérons le format du code barre
+            String scanFormat = scanningResult.getFormatName();
+
+            sendRequest(scanContent);
+
+
+// nous affichons le résultat dans nos TextView
+
+
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Aucune donnée reçu!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+    }
+
+    /**
+     * Fonction qui envoie une nouvelle activity et le code barre
+     * @param codeBar
+     */
+    public void sendRequest(String codeBar) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        final TextView scan_content = (TextView) findViewById(R.id.scan_content);
+        if (codeBar != null) {
+            Intent intentProduct = new Intent(this, ProductActivity.class);
+            intentProduct.putExtra("codebar", codeBar);
+            startActivity(intentProduct);
+        }
+
+
+    }
+
+    public static Context getContext() {
+        return context;
+    }
 
 }

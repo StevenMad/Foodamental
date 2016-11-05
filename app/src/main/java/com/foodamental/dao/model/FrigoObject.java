@@ -13,25 +13,34 @@ import java.util.Date;
 public class FrigoObject extends ProductObject{
 
     private Long idFrigo;
-    private Date datePerompt;
+    private Date datePerempt;
 
-    public FrigoObject(Long idFrigo,Long idProduct, Date datePerompt) {
+    public FrigoObject(Long idFrigo,Long idProduct, Date datePerempt) {
         this.idFrigo = idFrigo;
         this.setIdProduct(idProduct);
-        this.datePerompt = datePerompt;
+        this.datePerempt = datePerempt;
     }
     public FrigoObject(Long idFrigo, Integer category, Date datePerempt, String name, String image, String brand) {
         this.idFrigo = idFrigo;
         this.setCategory(category);
-        this.datePerompt = datePerempt;
+        this.datePerempt = datePerempt;
         this.setName(name);
         this.setImage(image);
         this.setBrand(brand);
     }
 
-    public FrigoObject(Long idProduct, Date datePerompt) {
+    public FrigoObject(Long idProduct, Date datePerempt) {
         this.setIdProduct(idProduct);
-        this.datePerompt = datePerompt;
+        this.datePerempt = datePerempt;
+    }
+
+    public FrigoObject(Long idProduct, String name,String brand, String image, Integer category, Date datePerempt) {
+        this.setIdProduct(idProduct);
+        this.setName(name);
+        this.setImage(image);
+        this.setBrand(brand);
+        this.setCategory(category);
+        this.datePerempt = datePerempt;
     }
 
     public Long getIdFrigo() {
@@ -39,7 +48,7 @@ public class FrigoObject extends ProductObject{
     }
 
     public Date getDatePerempt() {
-        return datePerompt;
+        return datePerempt;
     }
 
     public void setIdFrigo(Long id) {
@@ -47,6 +56,6 @@ public class FrigoObject extends ProductObject{
     }
 
     public void setDatePerempt(Date datePerompt) {
-        this.datePerompt = datePerompt;
+        this.datePerempt = datePerompt;
     }
 }
