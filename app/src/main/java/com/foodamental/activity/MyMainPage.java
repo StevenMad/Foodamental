@@ -245,4 +245,11 @@ public class MyMainPage extends AppCompatActivity
         }
     }
 
+    public void showRecipe(View view)
+    {
+        Intent intentRecipeContent = new Intent(MyMainPage.this,RecipeContentActivity.class);
+        intentRecipeContent.putExtra("id",4242);
+        startActivity(intentRecipeContent);
+    }
+
 }
