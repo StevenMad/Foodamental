@@ -51,7 +51,7 @@ public class MyMenu {
             }
             case R.id.nav_param:
             {
-                Intent intent = new Intent(context, Parametres.class);
+                Intent intent = new Intent(context, AlertPage.class);
                 context.startActivity(intent);
                 break;
             }

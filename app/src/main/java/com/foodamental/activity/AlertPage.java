@@ -76,10 +76,10 @@ public class AlertPage extends Activity {
     public static void createNotification(Context ctx ) {
 
         Calendar sevendayalarm = Calendar.getInstance();
-        int interval = 10000;
+        int interval = 604800000;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 00);
         calendar.set(Calendar.SECOND, 0);
         Intent intent1 = new Intent(ctx, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
