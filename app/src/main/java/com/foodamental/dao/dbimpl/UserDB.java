@@ -1,10 +1,12 @@
-package com.foodamental.dao;
+package com.foodamental.dao.dbimpl;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.foodamental.model.FoodUser;
+import com.foodamental.dao.DatabaseManager;
+import com.foodamental.dao.interfaces.IUserDB;
+import com.foodamental.dao.model.FoodUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +17,11 @@ import java.util.List;
 /**
  * Created by YOUSSEF on 14/07/2016.
  */
-public class UserDB {
+
+/**
+ * Classe pour la table user
+ */
+public class UserDB implements IUserDB {
 
     public static final String FOODB_TABLE_NAME = "FoodUser";
     //FoodUser table Columns names
@@ -24,12 +30,17 @@ public class UserDB {
     public static final String FOODB_COLUMN_PASSWORD = "PASSWORD";
     public static final String FOODB_COLUMN_BIRTHDAY = "BIRTHDAY";
     public static final String FOODB_COLUMN_EMAIL = "MAIL";
-    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public UserDB() {
         super();
     }
 
+    /**
+     * Fonction qui ajoute un user
+     * @param Fooduser
+     */
+    @Override
     public void addUser(FoodUser Fooduser) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -45,7 +56,12 @@ public class UserDB {
         DatabaseManager.getInstance().closeDatabase();
     }
 
-    // Get one user
+    /**
+     * Fonction qui renvoie un user à partir de l'ID
+     * @param id
+     * @return
+     */
+    @Override
     public FoodUser getFoodUser(int id) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -67,8 +83,11 @@ public class UserDB {
         return contact;
     }
 
-    // Getting All users
-
+    /**
+     * Fonction qui renvoie tous les users
+     * @return
+     */
+    @Override
     public List<FoodUser> getALLUser() {
         List<FoodUser> userList = new ArrayList<FoodUser>();
         // Select all Query
@@ -100,7 +119,11 @@ public class UserDB {
         return userList;
     }
 
-    //getting users Count
+    /**
+     * Fonction qui renvoie le nombre de users
+     * @return
+     */
+    @Override
     public int getUserCount() {
         String countQuery = "SELECT * FROM" + FOODB_TABLE_NAME;
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
@@ -112,7 +135,12 @@ public class UserDB {
         return cursor.getCount();
     }
 
-    //Updating a user
+    /**
+     * Fonction qui update un user
+     * @param user
+     * @return
+     */
+    @Override
     public int updateUser(FoodUser user) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
@@ -129,18 +157,15 @@ public class UserDB {
         return result;
     }
 
-    // Deleting a user
+    /**
+     * Fonction qui efface un user
+     * @param user
+     */
+    @Override
     public void deleteUser(FoodUser user) {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
         db.delete(FOODB_TABLE_NAME, FOODB_COLUMN_ID + " = ? ",
                 new String[]{String.valueOf(user.getId())});
         DatabaseManager.getInstance().closeDatabase();
     }
-
-
-
-
-
-
-
 }

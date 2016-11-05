@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.foodamental.R;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -33,6 +35,8 @@ public class RecipesArrayAdapter extends ArrayAdapter<RecipeItem>{
             rlvh = new RecipesListViewHolder();
             rlvh.image = (ImageView) convertView.findViewById(R.id.imageRecipe);
             rlvh.Title = (TextView) convertView.findViewById(R.id.RecipeNameInList);
+            rlvh.cookingTime = (TextView) convertView.findViewById(R.id.RecipeCookTime);
+            rlvh.nbServe = (TextView) convertView.findViewById(R.id.RecipeNumberService);
             convertView.setTag(rlvh);
         }
 
@@ -40,6 +44,8 @@ public class RecipesArrayAdapter extends ArrayAdapter<RecipeItem>{
 
         rlvh.Title.setText(item.getName());
         rlvh.image.setImageBitmap(item.getImage());
+        rlvh.cookingTime.setText(item.getCookingTime()+" min");
+        rlvh.nbServe.setText(item.getNbServe()+" pers");
         return convertView;
     }
 }

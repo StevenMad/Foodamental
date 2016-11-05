@@ -1,9 +1,13 @@
-package com.foodamental.model;
+package com.foodamental.dao.model;
 
 import java.util.List;
 
 /**
  * Created by YOUSSEF on 19/06/2016.
+ */
+
+/**
+ * Classe pour table produit
  */
 public class ProductObject {
 

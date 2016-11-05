@@ -7,18 +7,15 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.foodamental.R;
-import com.foodamental.dao.UserDB;
-import com.foodamental.model.FoodUser;
-import com.foodamental.util.StaticUtil;
+import com.foodamental.dao.dbimpl.UserDB;
+import com.foodamental.dao.model.FoodUser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+/**
+ * Activité qui gère le profil user et son affichage
+ */
 public class Profile extends AppCompatActivity {
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 

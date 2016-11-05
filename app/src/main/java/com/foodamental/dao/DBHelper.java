@@ -1,20 +1,20 @@
 package com.foodamental.dao;
 
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.foodamental.activity.MyMainPage;
 
-import java.util.ArrayList;
-
 /**
  * Created by Madhow on 06/06/2016.
  * Modified by Fangyi on 16/06/2016.
  */
 
+/**
+ * Classe pour création de bdd
+ */
 public class DBHelper extends SQLiteOpenHelper {
 
     // Data base version
@@ -43,7 +43,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //frigo table Columns names
     public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
     public static final String FRIGODB_COLUMN_ID_PRODUCT = "IDPRODUCT";
-    public static final String FRIGODB_COLUMN_DATE_PEROMPT= "EXPIRY_DATE";
+    public static final String FRIGODB_COLUMN_DATE_PEREMPT = "EXPIRY_DATE";
 
     private static final String TAG = DBHelper.class.getSimpleName().toString();
 
@@ -72,14 +72,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 + FRIGODB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FRIGODB_COLUMN_ID_PRODUCT + " INTEGER, "
 
-                + FRIGODB_COLUMN_DATE_PEROMPT + " TEXT,"
+                + FRIGODB_COLUMN_DATE_PEREMPT + " TEXT,"
                 +" FOREIGN KEY(" + FRIGODB_COLUMN_ID_PRODUCT +") REFERENCES PRODUIT(ID_PRODUCT) " + ")";
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_PRODUCT_TABLE);
         db.execSQL(CREATE_FRIGO_TABLE);
     }
+
+    /**
+     * Upgrade de bdd
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
-    // Upgrade the data base
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, String.format("SQLiteDatabase.onUpgrade(%d -> %d)", oldVersion, newVersion));
 
@@ -91,27 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // Create the new table ;
         onCreate(db);
     }
-    public Cursor getData(int id) {
-        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        Cursor res = db.rawQuery("select * from FoodUser where id=" + id + "", null);
-        DatabaseManager.getInstance().closeDatabase();
 
-        return res;
-    }
-
-    public ArrayList<String> displayUsers() {
-        ArrayList<String> users = new ArrayList<String>();
-        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        Cursor res = db.rawQuery("Select * from FoodUser", null);
-        res.moveToFirst();
-        while (res.isAfterLast() == false) {
-            users.add(res.getString(res.getColumnIndex(FOODB_COLUMN_USERNAME)));
-            res.moveToNext();
-        }
-        DatabaseManager.getInstance().closeDatabase();
-
-        return users;
-    }
 
 
 }

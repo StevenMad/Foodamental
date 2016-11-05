@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by Tan on 1/26/2016.
+ * Classe qui gère les opérations sur la base
  */
 public class DatabaseManager {
     private Integer mOpenCounter = 0;
@@ -16,23 +16,43 @@ public class DatabaseManager {
     private static DatabaseManager instance;
     private static SQLiteOpenHelper mDatabaseHelper;
     private SQLiteDatabase mDatabase;
+    private static DBHelper dbHelper;
 
+
+    private DatabaseManager(SQLiteOpenHelper helper){
+        initializeInstance(helper);
+
+    }
+    /**
+     * Fonction qui initialise le database Manager
+     * @param helper
+     */
     public static synchronized void initializeInstance(SQLiteOpenHelper helper) {
         if (instance == null) {
-            instance = new DatabaseManager();
+
+
             mDatabaseHelper = helper;
         }
     }
 
+    /**
+     * Fonction qui renvoie l'instance du database Manager
+     * @return
+     */
     public static synchronized DatabaseManager getInstance() {
         if (instance == null) {
-            throw new IllegalStateException(DatabaseManager.class.getSimpleName() +
-                    " is not initialized, call initializeInstance(..) method first.");
+            dbHelper = new DBHelper();
+            instance = new DatabaseManager(dbHelper);
+
         }
 
         return instance;
     }
 
+    /**
+     * Fonction qui ouvre la database
+     * @return
+     */
     public synchronized SQLiteDatabase openDatabase() {
         mOpenCounter+=1;
         if(mOpenCounter == 1) {
@@ -42,6 +62,9 @@ public class DatabaseManager {
         return mDatabase;
     }
 
+    /**
+     * Fonction qui ferme la database
+     */
     public synchronized void closeDatabase() {
         mOpenCounter-=1;
         if(mOpenCounter == 0) {

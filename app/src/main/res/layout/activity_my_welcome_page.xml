@@ -21,6 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_my_welcome_page" />
+    <include layout="@layout/content_my_welcome_page"
+        android:id="@+id/prenom" />
 
 </android.support.design.widget.CoordinatorLayout>
