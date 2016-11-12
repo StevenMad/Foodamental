@@ -189,7 +189,7 @@ public class FrigoDB implements IFrigoDB {
     public List<FrigoObject> getAllProduct() {
         List<FrigoObject> listproduct = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " + "NAME, IMAGE_URL, BRAND FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT;
+        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY_ID, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " + "NAME, IMAGE_URL, BRAND FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT;
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         //looping through all rows and adding to list
@@ -217,7 +217,7 @@ public class FrigoDB implements IFrigoDB {
     public List<FrigoObject> getAllProductOrderBy(String order) {
         List<FrigoObject> listproduct = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " + "NAME, IMAGE_URL, BRAND FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT
+        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY_ID, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " + "NAME, IMAGE_URL, BRAND FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT
                 + " ORDER BY " + order + ";";
         Cursor cursor = db.rawQuery(selectQuery, null);
 

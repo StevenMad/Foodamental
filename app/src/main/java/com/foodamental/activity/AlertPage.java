@@ -75,16 +75,17 @@ public class AlertPage extends Activity {
      */
     public static void createNotification(Context ctx ) {
 
-        Calendar sevendayalarm = Calendar.getInstance();
-        int interval = 10000;
+        int interval = 1 * 60 * 60 * 1000;
         Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, 2);
         calendar.set(Calendar.HOUR_OF_DAY, 18);
         calendar.set(Calendar.MINUTE, 30);
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         Intent intent1 = new Intent(ctx, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) ctx.getSystemService(ctx.ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, sevendayalarm.getTimeInMillis(), interval, pendingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pendingIntent);
 
     }
 
