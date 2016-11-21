@@ -53,7 +53,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
     private List<Tweet> tweets;
     private TweetAdapter adapter;
     private FrigoDB frigo = new FrigoDB();
-    private int[] color = {Color.GREEN, Color.YELLOW, Color.RED, Color.BLACK};
+    private int[] color = {R.drawable.green, R.drawable.yellow, R.drawable.red, R.drawable.black};
     private SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String[] arraySpinner;
     private Spinner s;
@@ -140,7 +140,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
         List<FrigoObject> produit = frigo.getAllProduct();
         for (FrigoObject prod : produit) {
-            tweets.add(new Tweet(getColorByDate(prod.getDatePerempt()), prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo()));
+            tweets.add(new Tweet(Color.BLACK, prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo(), getColorByDate(prod.getDatePerempt())));
         }
      return tweets;
     }

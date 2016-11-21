@@ -25,7 +25,7 @@ public class ProductDB implements IProductDB {
     public static final String PRODUCTDB_COLUMN_NAME = "NAME";
     public static final String PRODUCTDB_COLUMN_BRAND = "BRAND";
     public static final String PRODUCTDB_COLUMN_IMAGE_URL= "IMAGE_URL";
-    public static final String PRODUCTDB_COLUMN_CATEGORY = "CATEGORY";
+    public static final String PRODUCTDB_COLUMN_CATEGORY = "CATEGORY_ID";
 
 
 
