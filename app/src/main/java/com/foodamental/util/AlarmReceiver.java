@@ -16,6 +16,8 @@ import com.foodamental.activity.AlertPage;
 import com.foodamental.activity.Courses;
 import com.foodamental.activity.Recipes;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -23,8 +25,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences("com.mobileapp.smartapplocker", MODE_PRIVATE);
+        boolean interupter = sharedPrefs.getBoolean("service_status", false);
 
-        if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
+        if (("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) && (interupter)) {
             AlertPage.createNotification(context);
         } else {
             long when = System.currentTimeMillis();
