@@ -45,6 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
     public static final String FRIGODB_COLUMN_ID_PRODUCT = "IDPRODUCT";
     public static final String FRIGODB_COLUMN_DATE_PEREMPT = "EXPIRY_DATE";
+    public static final String FRIGODB_COLUMN_QUANTITY = "QUANTITY";
 
     public static final String CATEGORYDB_TABLE_NAME = "CATEGORY";
     //CATEGORY table Columns names
@@ -82,6 +83,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + FRIGODB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FRIGODB_COLUMN_ID_PRODUCT + " INTEGER, "
                 + FRIGODB_COLUMN_DATE_PEREMPT + " TEXT,"
+                + FRIGODB_COLUMN_QUANTITY + " INTEGER,"
                 +" FOREIGN KEY(" + FRIGODB_COLUMN_ID_PRODUCT +") REFERENCES PRODUCT(ID_PRODUCT) " + ")";
 
         String CREATE_CATEGORY_TABLE = "CREATE TABLE " + CATEGORYDB_TABLE_NAME + "("

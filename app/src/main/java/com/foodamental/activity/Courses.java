@@ -92,7 +92,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
             public void onItemClick(AdapterView<?> a, View v, final int position, long id) {
                 AlertDialog.Builder adb = new AlertDialog.Builder(Courses.this);
                 adb.setTitle("Delete?");
-                adb.setMessage("Are you sure you want to delete " + position);
+                adb.setMessage("Are you sure you want to delete " + tweets.get(position).getPseudo());
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

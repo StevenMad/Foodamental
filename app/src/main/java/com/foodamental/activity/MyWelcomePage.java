@@ -85,10 +85,10 @@ public class MyWelcomePage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        frigo.addProduct(new FrigoObject((long) 344344, "oignon", "carrefour", "brand",1, d1));
-        frigo.addProduct(new FrigoObject((long) 344346, "oeufs", "carrefour", "brand", 1, d2));
-        frigo.addProduct(new FrigoObject((long) 344347, "poulet", "carrefour", "brand", 1, d3));
-        frigo.addProduct(new FrigoObject((long) 344348,"tomate", "leader", "brand",1,  d4));
+        frigo.addProduct(new FrigoObject((long) 344344, "oignon et toto", "carrefour", "brand",1, d1,1));
+        frigo.addProduct(new FrigoObject((long) 344346, "oeufs", "carrefour", "brand", 1, d2, 2));
+        frigo.addProduct(new FrigoObject((long) 344347, "poulet", "carrefour", "brand", 1, d3, 3));
+        frigo.addProduct(new FrigoObject((long) 344348,"tomate", "leader", "brand",1,  d4, 4));
         List<FrigoObject> list = frigo.getAllProductOrderBy("EXPIRY_DATE");
     }
 
