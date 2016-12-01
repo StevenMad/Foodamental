@@ -25,6 +25,19 @@ public class FrigoObject extends ProductObject{
 
     private int quantity;
 
+    public int getTypeOFBase() {
+        return typeOFBase;
+    }
+
+    public void setTypeOFBase(int typeOFBase) {
+        this.typeOFBase = typeOFBase;
+    }
+
+    private int typeOFBase;
+
+    public FrigoObject(){
+
+    }
     public FrigoObject(Long idFrigo,Long idProduct, Date datePerempt, int quantity) {
         this.idFrigo = idFrigo;
         this.setIdProduct(idProduct);
@@ -41,9 +54,20 @@ public class FrigoObject extends ProductObject{
         this.quantity = qunatity;
     }
 
-    public FrigoObject(Long idProduct, Date datePerempt) {
-        this.setIdProduct(idProduct);
+    public FrigoObject(Long idFrigo, String Name,Date datePerempt,Integer category,int qunatity) {
+        this.idFrigo = idFrigo;
+        this.setName(Name);
         this.datePerempt = datePerempt;
+        this.setCategory(category);
+        this.quantity = qunatity;
+
+    }
+    public FrigoObject(String Name,Date datePerempt,Integer category,int qunatity) {
+        this.setName(Name);
+        this.datePerempt = datePerempt;
+        this.setCategory(category);
+        this.quantity = qunatity;
+
     }
 
     public FrigoObject(Long idProduct, String name,String brand, String image, Integer category, Date datePerempt, int qunatity) {

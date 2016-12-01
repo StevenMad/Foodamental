@@ -203,7 +203,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
         }
 
-        Intent intent = new Intent(ProductActivity.this, MyMainPage.class);
+        Intent intent = new Intent(ProductActivity.this, Courses.class);
         startActivity(intent);
 
 

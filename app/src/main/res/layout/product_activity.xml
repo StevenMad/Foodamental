@@ -64,7 +64,7 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/editText2"
-        android:text="0"
+        android:text="1"
         android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:selectAllOnFocus="false"

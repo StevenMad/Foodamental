@@ -49,6 +49,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.ActivityNoScan"
+            android:label="@string/title_activity_no_scan"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.Profile"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".activity.MyMainPage"

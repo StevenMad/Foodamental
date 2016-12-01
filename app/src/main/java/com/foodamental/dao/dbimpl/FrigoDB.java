@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 
+import com.foodamental.dao.DBHelper;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.interfaces.IFrigoDB;
 import com.foodamental.dao.model.FrigoObject;
@@ -12,6 +13,8 @@ import com.foodamental.dao.model.FrigoObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -89,6 +92,7 @@ public class FrigoDB implements IFrigoDB {
             cursor.moveToFirst();
 
         FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), (Date) dateFormat.parse(cursor.getString(2)),Integer.parseInt(cursor.getString(3)) );
+        product.setTypeOFBase(0);
         // Return frigo object
         DatabaseManager.getInstance().closeDatabase();
 
@@ -113,10 +117,15 @@ public class FrigoDB implements IFrigoDB {
         if (cursor.moveToFirst()) {
             do {
                 FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), (Date) dateFormat.parse(cursor.getString(2)),Integer.parseInt(cursor.getString(3)));
+                product.setTypeOFBase(0);
+
                 // Adding product to list
                 frigoList.add(product);
             } while (cursor.moveToNext());
         }
+        OtherFrigoProductDB otherProduct = new OtherFrigoProductDB();
+        List<FrigoObject> allOtherObject = otherProduct.getALLOtherProduct();
+        frigoList.addAll(allOtherObject);
         // return frigo products list
         DatabaseManager.getInstance().closeDatabase();
         return frigoList;
@@ -194,7 +203,7 @@ public class FrigoDB implements IFrigoDB {
     public List<FrigoObject> getAllProduct() {
         List<FrigoObject> listproduct = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY_ID, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " +  "NAME, IMAGE_URL, BRAND " + " , " +FRIGODB_COLUMN_QUANTITY + " FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT;
+        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY_ID, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " +  "NAME, IMAGE_URL, BRAND " + " , " + FRIGODB_COLUMN_QUANTITY + " FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT;
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         //looping through all rows and adding to list
@@ -203,6 +212,7 @@ public class FrigoDB implements IFrigoDB {
                 FrigoObject product = null;
                 try {
                     product = new FrigoObject(Long.parseLong(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),(Date) dateFormat.parse(cursor.getString(2)),cursor.getString(3) ,cursor.getString(4) , cursor.getString(5),Integer.parseInt(cursor.getString(6)) );
+                    product.setTypeOFBase(0);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -210,6 +220,14 @@ public class FrigoDB implements IFrigoDB {
                 listproduct.add(product);
             } while (cursor.moveToNext());
         }
+        OtherFrigoProductDB otherProduct = new OtherFrigoProductDB();
+        List<FrigoObject> allOtherObject = null;
+        try {
+            allOtherObject = otherProduct.getALLOtherProduct();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        listproduct.addAll(allOtherObject);
         return listproduct;
     }
 
@@ -232,6 +250,7 @@ public class FrigoDB implements IFrigoDB {
                 FrigoObject product = null;
                 try {
                     product = new FrigoObject(Long.parseLong(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),(Date) dateFormat.parse(cursor.getString(2)),cursor.getString(3) ,cursor.getString(4) , cursor.getString(5),Integer.parseInt(cursor.getString(6)));
+                    product.setTypeOFBase(0);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -239,6 +258,15 @@ public class FrigoDB implements IFrigoDB {
                 listproduct.add(product);
             } while (cursor.moveToNext());
         }
+        OtherFrigoProductDB otherProduct = new OtherFrigoProductDB();
+        List<FrigoObject> allOtherObject = otherProduct.getAllOtherProductOrderBy(DBHelper.FRIGODB_COLUMN_DATE_PEREMPT);
+        listproduct.addAll(allOtherObject);
+        Collections.sort(listproduct, new Comparator<FrigoObject>() {
+            @Override
+            public int compare(FrigoObject o1, FrigoObject o2) {
+                return o1.getDatePerempt().compareTo(o2.getDatePerempt());
+            }
+        });
         return listproduct;
     }
 

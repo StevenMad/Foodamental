@@ -52,6 +52,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CATEGORYDB_COLUMN_ID = "ID_CATEGORY";
     public static final String CATEGORYDB_COLUMN_NAME = "NAME_CATEGORY";
 
+    public static final String OTHERFRIGOPRODUCTDB_TABLE_NAME = "OTHERPRODUCT";
+    //OtherFrigoPrudct table Columns names
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_ID = "ID_OTHER_PRODUCT";
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_NAME = "NAME";
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_DATE_PEREMPT = "EXPIRY_DATE";
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_CATEGORY = "CATEGORY_ID";
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_QUANTITY = "QUANTITY";
+
+
 
 
 
@@ -90,10 +99,17 @@ public class DBHelper extends SQLiteOpenHelper {
                 + CATEGORYDB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + CATEGORYDB_COLUMN_NAME + " TEXT )";
 
+        String CREATE_OTHER_FRIGO_PRODUCT_TABLE = "CREATE TABLE " + OTHERFRIGOPRODUCTDB_TABLE_NAME + "("
+                + OTHERFRIGOPRODUCTDB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + OTHERFRIGOPRODUCTDB_COLUMN_NAME + " TEXT,"
+                + OTHERFRIGOPRODUCTDB_COLUMN_DATE_PEREMPT + " TEXT,"
+                + OTHERFRIGOPRODUCTDB_COLUMN_CATEGORY + " INTEGER,"
+                + OTHERFRIGOPRODUCTDB_COLUMN_QUANTITY + " INTEGER ) ";
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_PRODUCT_TABLE);
         db.execSQL(CREATE_FRIGO_TABLE);
+        db.execSQL(CREATE_OTHER_FRIGO_PRODUCT_TABLE);
 
 
         db.execSQL("insert into " + CATEGORYDB_TABLE_NAME +" ("+CATEGORYDB_COLUMN_NAME  + ") "+" values('fruit');");
@@ -123,6 +139,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS PRODUCT");
         db.execSQL("DROP TABLE IF EXISTS FRIGO");
         db.execSQL("DROP TABLE IF EXISTS CATEGORY");
+        db.execSQL("DROP TABLE IF EXISTS OTHERPRODUCT");
         // Create the new table ;
         onCreate(db);
     }
