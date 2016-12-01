@@ -49,12 +49,33 @@ import java.util.concurrent.TimeUnit;
 public class Courses extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static Context context;
+    View.OnClickListener actions = new View.OnClickListener() {
+        public void onClick(View v) {
+            AlertDialog.Builder adb = new AlertDialog.Builder(Courses.this);
+            adb.setTitle("Scan?");
+            adb.setMessage("You can scan this product ? ");
+            adb.setNegativeButton("No", new AlertDialog.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intentProduct = new Intent(getApplicationContext(), ActivityNoScan.class);
+                    startActivity(intentProduct);
+                }
+            });
+            adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    openCamera();
+                }
+            });
+            adb.show();
+        }
+
+    };
     private ListView mListView;
     private List<Tweet> tweets;
     private TweetAdapter adapter;
     private FrigoDB frigo = new FrigoDB();
     private OtherFrigoProductDB frigoOther = new OtherFrigoProductDB();
     private int[] color = {R.drawable.green, R.drawable.yellow, R.drawable.red, R.drawable.black};
+    private int[] category = {R.drawable.fruit, R.drawable.legumes, R.drawable.huile, R.drawable.fromage, R.drawable.oeuf, R.drawable.steak, R.drawable.fish, R.drawable.boisson, R.drawable.cereales};
     private SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String[] arraySpinner;
     private Spinner s;
@@ -150,7 +171,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
         List<FrigoObject> produit = frigo.getAllProduct();
         for (FrigoObject prod : produit) {
-            tweets.add(new Tweet(Color.BLACK, prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo(), getColorByDate(prod.getDatePerempt()), prod.getTypeOFBase()));
+            tweets.add(new Tweet(category[prod.getCategory()], prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo(), getColorByDate(prod.getDatePerempt()), prod.getTypeOFBase()));
         }
         return tweets;
     }
@@ -167,6 +188,8 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
         return MyMenu.onNavigationItemSelected(this, this, item);
     }
 
+    /*-- buttons --*/
+
     private int getColorByDate(Date date) {
         Date dateCurrent = new Date();
         long diff = date.getTime() - dateCurrent.getTime();
@@ -180,8 +203,6 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
         else
             return color[3];
     }
-
-    /*-- buttons --*/
 
     private void triList(String param) {
         if (param.equals("A-Z")) {
@@ -211,8 +232,6 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
     /**
      * Fonction ouverture du scan
-     *
-     *
      */
     public void openCamera() {
         new IntentIntegrator(this).initiateScan();
@@ -269,27 +288,6 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
 
     }
-
-    View.OnClickListener actions = new View.OnClickListener() {
-        public void onClick(View v) {
-            AlertDialog.Builder adb = new AlertDialog.Builder(Courses.this);
-            adb.setTitle("Scan?");
-            adb.setMessage("You can scan this product ? ");
-            adb.setNegativeButton("No", new AlertDialog.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intentProduct = new Intent(getApplicationContext(), ActivityNoScan.class);
-                    startActivity(intentProduct);
-                }
-            });
-            adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                   openCamera();
-                }
-            });
-            adb.show();
-        }
-
-    };
 
     @Override
     public void onBackPressed() {

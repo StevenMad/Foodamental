@@ -156,13 +156,13 @@ public class ProductActivity extends Activity implements View.OnClickListener {
                 String brand = "";
                 JSONObject produit = json.getJSONObject("product");
                 if (produit.has("product_name"))
-                 name = produit.getString("product_name");
+                 name = produit.getString("product_name").trim();
                 if (produit.has("generic_name"))
-                    genericName =  produit.getString("generic_name");
+                    genericName =  produit.getString("generic_name").trim();
                 if (produit.has("brands"))
-                    brand = produit.getString("brands");
+                    brand = produit.getString("brands").trim();
                 if (produit.has("image_url"))
-                    image = produit.getString("image_url");
+                    image = produit.getString("image_url").trim();
                 if (genericName.equals(""))
                     genericName = name;
                 this.frigo = new FrigoObject(Long.valueOf(this.codeBar), genericName, brand, image, s.getSelectedItemPosition(), new Date(), Integer.parseInt(edit.getText().toString()));
@@ -186,7 +186,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.buttonAdd) {
             //ProductDB dbproduct = new ProductDB();
-            String quantityString = edit.getText().toString();
+            String quantityString = edit.getText().toString().trim();
             FrigoDB dbfrigo = new FrigoDB();
 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");

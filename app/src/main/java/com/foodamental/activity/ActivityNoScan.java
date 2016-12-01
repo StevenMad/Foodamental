@@ -158,8 +158,8 @@ public class ActivityNoScan extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.buttonAdd) {
             //ProductDB dbproduct = new ProductDB();
-            String quantityString = edit.getText().toString();
-            String name = editName.getText().toString();
+            String quantityString = edit.getText().toString().trim();
+            String name = editName.getText().toString().trim();
             if (quantityString.equals("") || name.equals("") || quantityString == null
                     || name == null) {
                 Toast.makeText(getApplicationContext(), "Please fill in all the details ", Toast.LENGTH_SHORT).show();
