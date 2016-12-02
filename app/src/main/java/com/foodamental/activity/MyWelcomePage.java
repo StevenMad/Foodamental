@@ -68,29 +68,6 @@ public class MyWelcomePage extends AppCompatActivity {
         day = calendar.get(Calendar.DAY_OF_MONTH);
         showDate(year, month+1, day);
 
-        //db
-        /*-----DB----*/
-        OtherFrigoProductDB frigo = new OtherFrigoProductDB();
-        int id = 1;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date d1 = null;
-        Date d2 = null;
-        Date d3 = null;
-        Date d4 = null;
-        try {
-            d1 = sdf.parse("2012-12-01");
-            d2 = sdf.parse("2015-12-21");
-            d3 = sdf.parse("2016-12-21");
-            d4 = sdf.parse("2012-12-2");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        frigo.addOtherProduct(new FrigoObject("oignon et toto", d1,1,1));
-        frigo.addOtherProduct(new FrigoObject("oeufs",d2, 1,  2));
-        frigo.addOtherProduct(new FrigoObject("poulet", d3, 1,  3));
-        frigo.addOtherProduct(new FrigoObject("tomate", d4,1,  4));
-        List<FrigoObject> list = frigo.getAllOtherProductOrderBy("EXPIRY_DATE");
     }
 
     /**
