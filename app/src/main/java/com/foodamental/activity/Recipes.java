@@ -4,10 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,59 +14,43 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.foodamental.R;
 import com.foodamental.dao.DBHelper;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.dbimpl.ProductDB;
 import com.foodamental.dao.model.FrigoObject;
-import com.foodamental.translator.AdmAccessToken;
 import com.foodamental.util.JsonUtilTools;
 import com.foodamental.util.MyMenu;
-import com.foodamental.dao.dbimpl.ProductDB;
-import com.foodamental.R;
 import com.foodamental.util.RecipeItem;
 import com.foodamental.util.RecipesArrayAdapter;
-import com.foodamental.util.StaticUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Activité des recettes
  */
 public class Recipes extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,OnTaskComplete {
+        implements NavigationView.OnNavigationItemSelectedListener, OnTaskComplete {
 
     ProductDB productDb;
-    private String query;
-    String ingredientsEng="";
+    String ingredientsEng = "";
     TextView tv;
+    private String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +73,7 @@ public class Recipes extends AppCompatActivity
     /**
      * Fonction qui traduit les produits du frigo
      */
-    private void createQuery()
-    {
+    private void createQuery() {
         FrigoDB fdb = new FrigoDB();
         EditText ingredientText = (EditText) findViewById(R.id.ingredientText);
         query = "";
@@ -101,11 +82,13 @@ public class Recipes extends AppCompatActivity
             Toast.makeText(Recipes.this, "Erreur lors de la récuperation des données", Toast.LENGTH_LONG).show();
         else {
             for (int i = 0; i < listDTO.size() && i < 7; i++) {
-                FrigoObject product = listDTO.get(i);
-                query += product.toString() + ",";
+                String Name = listDTO.get(i).getName();
+                String[] word = Name.split(" ");
+                for (String w : word)
+                    query += w + ",";
             }
             query = query.substring(0, query.length() - 1);
-            String url = "https://www.wecook.fr/web-api/recipes/search?q="+query;
+            String url = "https://www.wecook.fr/web-api/recipes/search?q=" + query;
             new RecipeAsyncTask().execute(url);
         }
         //query = query.substring(0,query.length()-3);
@@ -123,10 +106,11 @@ public class Recipes extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-}
+    }
 
     /**
      * Fonction du menu
+     *
      * @param menu
      * @return
      */
@@ -139,6 +123,7 @@ public class Recipes extends AppCompatActivity
 
     /**
      * Fonction du menu
+     *
      * @param item
      * @return
      */
@@ -159,38 +144,37 @@ public class Recipes extends AppCompatActivity
 
     /**
      * Fonction du menu
+     *
      * @param item
      * @return
      */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        return MyMenu.onNavigationItemSelected(this,this,item);
+        return MyMenu.onNavigationItemSelected(this, this, item);
     }
 
     /**
-     *
      * @param output
      */
     @Override
     public void onTaskCompleted(String output) {
         String query = "";
         String[] ingredients = output.split(" ");
-        for(int i=0;i<ingredients.length;i++)
-            query+=ingredients[i]+"%2C";
-        query.substring(0,query.length()-3);
+        for (int i = 0; i < ingredients.length; i++)
+            query += ingredients[i] + "%2C";
+        query.substring(0, query.length() - 3);
         String url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false&ingredients=" + query;
         new RecipeAsyncTask().execute(url);
     }
 
     public class RecipeAsyncTask extends AsyncTask<String, Void, List<RecipeItem>> {
 
-        private ProgressDialog dialog = new ProgressDialog(Recipes.this);
         public OnTaskComplete response = null;
+        private ProgressDialog dialog = new ProgressDialog(Recipes.this);
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             this.dialog.setMessage("Please Wait");
             this.dialog.show();
         }
@@ -204,30 +188,27 @@ public class Recipes extends AppCompatActivity
                 String s = jsonUrlResponse.getString("result");
                 JSONObject jresult = new JSONObject(s);
                 JSONArray listRecipes = jresult.getJSONArray("resources");
-                for(int i=0;i<listRecipes.length() && i<7;i++)
-                {
+                for (int i = 0; i < listRecipes.length() && i < 7; i++) {
                     RecipeItem item = new RecipeItem();
-                        JSONObject json = new JSONObject((String) listRecipes.get(i).toString());
-                        if(json.has("picture_url"))
-                        {
-                            URL imageUrl = new URL(json.getString("picture_url"));
-                            Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
-                            item.setImage(image);
-                        }else
-                        {
-                            int id = getResources().getIdentifier("food_default","drawable",getPackageName());
-                            Bitmap image = BitmapFactory.decodeResource(getResources(),id);
-                            item.setImage(image);
-                        }
-                        item.setName(json.getString("name"));
-                        item.setId(json.getInt("id"));
-                        item.setCookingTime(json.getJSONObject("time").getInt("total"));
-                        item.setNbServe(json.getInt("portions"));
-                        //ajout de l'element dans la liste
-                        liste.add(item);
+                    JSONObject json = new JSONObject((String) listRecipes.get(i).toString());
+                    if (json.has("picture_url")) {
+                        URL imageUrl = new URL(json.getString("picture_url"));
+                        Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
+                        item.setImage(image);
+                    } else {
+                        int id = getResources().getIdentifier("food_default", "drawable", getPackageName());
+                        Bitmap image = BitmapFactory.decodeResource(getResources(), id);
+                        item.setImage(image);
                     }
-                    return liste;
-                } catch (IOException e1) {
+                    item.setName(json.getString("name"));
+                    item.setId(json.getInt("id"));
+                    item.setCookingTime(json.getJSONObject("time").getInt("total"));
+                    item.setNbServe(json.getInt("portions"));
+                    //ajout de l'element dans la liste
+                    liste.add(item);
+                }
+                return liste;
+            } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (JSONException e1) {
                 e1.printStackTrace();
@@ -237,10 +218,10 @@ public class Recipes extends AppCompatActivity
 
         /**
          * apres doInBackGround cette methode est executée
+         *
          * @param result
          */
-        protected void onPostExecute(List<RecipeItem> result)
-        {
+        protected void onPostExecute(List<RecipeItem> result) {
             this.dialog.dismiss();
             //prepare la listeView
             final ListView lv = (ListView) findViewById(R.id.listRecipes);
@@ -255,8 +236,8 @@ public class Recipes extends AppCompatActivity
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     RecipeItem content = (RecipeItem) lv.getItemAtPosition(position);
                     //Toast.makeText(getApplicationContext(),content.toString(),Toast.LENGTH_LONG).show();
-                    Intent intentRecipeContent = new Intent(Recipes.this,RecipeContentActivity.class);
-                    intentRecipeContent.putExtra("id",content.getId());
+                    Intent intentRecipeContent = new Intent(Recipes.this, RecipeContentActivity.class);
+                    intentRecipeContent.putExtra("id", content.getId());
                     startActivity(intentRecipeContent);
                 }
             });
