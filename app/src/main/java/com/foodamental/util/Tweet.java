@@ -4,8 +4,8 @@ package com.foodamental.util;
  * Created by YOUSSEF on 18/07/2016.
  */
 public class Tweet {
-    public int getColor() {
-        return color;
+    public int getAvatar() {
+        return avatar;
     }
 
     public String getPseudo() {
@@ -16,8 +16,8 @@ public class Tweet {
         return text;
     }
 
-    public void setColor(int color) {
-        this.color = color;
+    public void setAvatar(int color) {
+        this.avatar = color;
     }
 
     public void setPseudo(String pseudo) {
@@ -28,10 +28,19 @@ public class Tweet {
         this.text = text;
     }
 
-    private int color;
+    private int avatar;
     private String pseudo;
     private String text;
-    
+
+    public int getCircle() {
+        return circle;
+    }
+
+    public void setCircle(int circle) {
+        this.circle = circle;
+    }
+
+    private int circle;
 
     public Long getId() {
         return id;
@@ -43,11 +52,23 @@ public class Tweet {
 
     private Long id;
 
-    public Tweet(int color, String pseudo, String text, Long id) {
-        this.color = color;
+    public int getTypeOfBase() {
+        return typeOfBase;
+    }
+
+    public void setTypeOfBase(int typeOfBase) {
+        this.typeOfBase = typeOfBase;
+    }
+
+    private int typeOfBase;
+
+    public Tweet(int avatar, String pseudo, String text, Long id, int circle, int typeOfBase) {
+        this.avatar = avatar;
         this.pseudo = pseudo;
         this.text = text;
         this.id = id;
+        this.circle = circle;
+        this.typeOfBase =  typeOfBase;
     }
 
 

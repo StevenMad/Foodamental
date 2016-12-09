@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.foodamental.R;
 import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.dbimpl.OtherFrigoProductDB;
 import com.foodamental.dao.dbimpl.UserDB;
 import com.foodamental.dao.model.FoodUser;
 import com.foodamental.dao.model.FrigoObject;
@@ -67,29 +68,6 @@ public class MyWelcomePage extends AppCompatActivity {
         day = calendar.get(Calendar.DAY_OF_MONTH);
         showDate(year, month+1, day);
 
-        //db
-        /*-----DB----*/
-        FrigoDB frigo = new FrigoDB();
-        int id = 1;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date d1 = null;
-        Date d2 = null;
-        Date d3 = null;
-        Date d4 = null;
-        try {
-            d1 = sdf.parse("2012-12-01");
-            d2 = sdf.parse("2015-12-21");
-            d3 = sdf.parse("2016-12-21");
-            d4 = sdf.parse("2012-12-2");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        frigo.addProduct(new FrigoObject((long) 344344, "oignon", "carrefour", "brand",1, d1));
-        frigo.addProduct(new FrigoObject((long) 344346, "oeufs", "carrefour", "brand", 1, d2));
-        frigo.addProduct(new FrigoObject((long) 344347, "poulet", "carrefour", "brand", 1, d3));
-        frigo.addProduct(new FrigoObject((long) 344348,"tomate", "leader", "brand",1,  d4));
-        List<FrigoObject> list = frigo.getAllProductOrderBy("EXPIRY_DATE");
     }
 
     /**

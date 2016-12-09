@@ -36,6 +36,7 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
             viewHolder.pseudo = (TextView) convertView.findViewById(R.id.pseudo);
             viewHolder.text = (TextView) convertView.findViewById(R.id.text);
             viewHolder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
+            viewHolder.circleForDate = (ImageView) convertView.findViewById(R.id.circleForDate);
             convertView.setTag(viewHolder);
         }
 
@@ -45,7 +46,8 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         //il ne reste plus qu'à remplir notre vue
         viewHolder.pseudo.setText(tweet.getPseudo());
         viewHolder.text.setText(tweet.getText());
-        viewHolder.avatar.setImageDrawable(new ColorDrawable(tweet.getColor()));
+        viewHolder.avatar.setImageResource(tweet.getAvatar());
+        viewHolder.circleForDate.setImageResource((tweet.getCircle()));
 
         return convertView;
     }
@@ -54,5 +56,6 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         public TextView pseudo;
         public TextView text;
         public ImageView avatar;
+        public ImageView circleForDate;
     }
 }
