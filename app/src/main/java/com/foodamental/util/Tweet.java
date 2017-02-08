@@ -31,6 +31,7 @@ public class Tweet {
     private int color;
     private String pseudo;
     private String text;
+    
 
     public Long getId() {
         return id;

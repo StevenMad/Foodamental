@@ -26,6 +26,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.foodamental.Manifest;
 import com.foodamental.R;
+import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.util.MyMenu;
@@ -61,7 +62,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
-
+        DatabaseManager.getInstance();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
