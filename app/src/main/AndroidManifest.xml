@@ -21,13 +21,6 @@
         android:theme="@style/AppTheme"
         android:name=".activity.Foodamental">
         <activity
-            android:name=".activity.MyWelcomePage"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
             android:name=".activity.MyMainPage"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -49,15 +42,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.Profile"
-            android:label="@string/title_activity_profile"
-            android:parentActivityName=".activity.MyMainPage"
+            android:name=".activity.ActivityNoScan"
+            android:label="@string/title_activity_no_scan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MyMainPage" />
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ProductActivity"
             android:label="@string/app_name"
