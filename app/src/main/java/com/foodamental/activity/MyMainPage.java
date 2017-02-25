@@ -14,6 +14,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.Manifest;
 import android.view.Menu;
@@ -21,21 +23,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.foodamental.R;
 import com.foodamental.dao.DatabaseManager;
+import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.dbimpl.ProductDB;
+import com.foodamental.dao.dbimpl.UserDB;
 import com.foodamental.dao.model.FoodUser;
+import com.foodamental.dao.model.FrigoObject;
+import com.foodamental.dao.model.ProductObject;
 import com.foodamental.util.JsonUtilTools;
 import com.foodamental.util.MyMenu;
 import com.foodamental.util.RecipeItem;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,6 +84,12 @@ public class MyMainPage extends AppCompatActivity
 
         DatabaseManager.getInstance();
 
+        UserDB dbuser = new UserDB();
+        List<FoodUser> users = dbuser.getALLUser();
+        if (users.size() == 0) {
+            Intent intent = new Intent(this, MyWelcomePage.class);
+            startActivity(intent);
+        }
         setContentView(R.layout.activity_my_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

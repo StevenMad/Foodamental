@@ -46,7 +46,7 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         //il ne reste plus qu'à remplir notre vue
         viewHolder.pseudo.setText(tweet.getPseudo());
         viewHolder.text.setText(tweet.getText());
-        viewHolder.avatar.setImageResource(tweet.getAvatar());
+        viewHolder.avatar.setImageDrawable(new ColorDrawable(tweet.getAvatar()));
         viewHolder.circleForDate.setImageResource((tweet.getCircle()));
 
         return convertView;

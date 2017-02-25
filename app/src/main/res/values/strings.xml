@@ -20,6 +20,7 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="pseudo">Pseudo</string>
+    <string name="profil">Profil</string>
     <string name="parametres">Setting</string>
     <string name="texte_tweet">my tweet text</string>
     <string name="data_base_manager">DataBase Manager</string>
@@ -44,7 +45,6 @@
         <item>Yahourt</item>
     </string-array>
     <string name="title_activity_recipes">Recipes</string>
-    <string name="title_activity_no_scan">Courses</string>
     <string name="title_activity_profile">Profil</string>
     <string name="title_activity_parametres">Setting</string>
     <string name="sort">sort by</string>

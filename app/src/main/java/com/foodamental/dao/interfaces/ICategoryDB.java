@@ -11,7 +11,7 @@ import java.util.List;
 public interface ICategoryDB {
     public void addCategory(String category);
     public String getCategory(Integer id) throws ParseException;
-    public List<String> getALLCategory() throws ParseException;
+    public List<String> getALLProduct() throws ParseException;
     public int getProductCount();
     public int updateCategory(int number, String category);
     public void deleteCategoryWithId(int number);
