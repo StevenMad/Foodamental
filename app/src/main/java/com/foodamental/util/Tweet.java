@@ -53,23 +53,12 @@ public class Tweet {
 
     private Long id;
 
-    public int getTypeOfBase() {
-        return typeOfBase;
-    }
-
-    public void setTypeOfBase(int typeOfBase) {
-        this.typeOfBase = typeOfBase;
-    }
-
-    private int typeOfBase;
-
-    public Tweet(int avatar, String pseudo, String text, Long id, int circle, int typeOfBase) {
+    public Tweet(int avatar, String pseudo, String text, Long id, int circle) {
         this.avatar = avatar;
         this.pseudo = pseudo;
         this.text = text;
         this.id = id;
         this.circle = circle;
-        this.typeOfBase =  typeOfBase;
     }
 
 
