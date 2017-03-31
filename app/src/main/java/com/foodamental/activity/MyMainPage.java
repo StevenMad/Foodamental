@@ -57,8 +57,7 @@ import java.util.List;
 /**
  * Activité main du démarrage
  */
-public class MyMainPage extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MyMainPage extends AppCompatActivity {
 
     private static Context context;
     private final int MY_PERMISSION_STORAGE = 1;
@@ -105,9 +104,6 @@ public class MyMainPage extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         //add items on the menu
         new TodaysRecipeAsyncTask().execute();
@@ -167,17 +163,6 @@ public class MyMainPage extends AppCompatActivity
     public void openRecipe(View view)
     {
         System.out.println("Hello World");
-    }
-
-    /**
-     * Fonction menu
-     * @param item
-     * @return
-     */
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        return MyMenu.onNavigationItemSelected(this, this, item);
     }
 
     /**

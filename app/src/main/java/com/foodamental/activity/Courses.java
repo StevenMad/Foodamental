@@ -29,6 +29,7 @@ import com.foodamental.R;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
+import com.foodamental.util.BottomMenu;
 import com.foodamental.util.MyMenu;
 import com.foodamental.util.Tweet;
 import com.foodamental.util.TweetAdapter;
@@ -63,18 +64,6 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
         DatabaseManager.getInstance();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
         mListView = (ListView) findViewById(R.id.listviewperso);
 
         tweets = null;
@@ -198,7 +187,6 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
             });
         }
     }
-
     /*-- buttons --*/
     /**
      * Fonction ouverture du scan
@@ -258,8 +246,24 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
     }
 
-    public static Context getContext() {
-        return context;
+    //bottom menu
+
+    public static Context getContext() {return context;}
+
+    public void showFridge(View view) { }
+
+    public void showRecipes(View view) {BottomMenu.showRecipes(this,view);    }
+
+    public void goToHomeScreen(View view) { BottomMenu.goToHomeScreen(this,view);}
+
+    public void goToScan(View view)
+    {
+        BottomMenu.goToScan(this,view);
+    }
+
+    public void goToSettings(View view)
+    {
+        BottomMenu.goToSettings(this,view);
     }
 
 }

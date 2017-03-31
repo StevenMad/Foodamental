@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.foodamental.HomeActivity;
 import com.foodamental.R;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
@@ -177,7 +178,7 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
         }
 
-        Intent intent = new Intent(ProductActivity.this, MyMainPage.class);
+        Intent intent = new Intent(ProductActivity.this, HomeActivity.class);
         startActivity(intent);
 
 

@@ -28,6 +28,7 @@ import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.translator.AdmAccessToken;
+import com.foodamental.util.BottomMenu;
 import com.foodamental.util.JsonUtilTools;
 import com.foodamental.util.MyMenu;
 import com.foodamental.dao.dbimpl.ProductDB;
@@ -75,15 +76,6 @@ public class Recipes extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
         DatabaseManager.getInstance();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
         tv = (TextView) findViewById(R.id.id_recipes);
         createQuery();
     }
@@ -262,5 +254,21 @@ public class Recipes extends AppCompatActivity
             });
         }
     }
+
+
+    //bottom menu
+
+    public void showFridge(View view) { BottomMenu.showFridge(this,view); }
+
+    public void showRecipes(View view) {    }
+
+    public void goToHomeScreen(View view) { BottomMenu.goToHomeScreen(this,view); }
+
+    public void goToScan(View view)
+    {
+        BottomMenu.goToScan(this,view);
+    }
+
+    public void goToSettings(View view) { BottomMenu.goToSettings(this,view); }
 
 }
