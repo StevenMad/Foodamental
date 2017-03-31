@@ -13,6 +13,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.foodamental.HomeActivity;
 import com.foodamental.R;
+import com.foodamental.activity.AlertPage;
 import com.foodamental.activity.Courses;
 import com.foodamental.activity.Parametres;
 import com.foodamental.activity.ProductActivity;
@@ -58,9 +59,9 @@ public class BottomMenu {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static void goToSettings(Activity activity, View view)
     {
-        Intent intentSettings = new Intent(activity, Parametres.class);
-        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
-        activity.startActivity(intentSettings,options.toBundle());
+        Intent intentSettings = new Intent(activity, AlertPage.class);
+        //ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
+        activity.startActivity(intentSettings/*,options.toBundle()*/);
     }
 
     public static void openCamera(Activity activity, View view) {

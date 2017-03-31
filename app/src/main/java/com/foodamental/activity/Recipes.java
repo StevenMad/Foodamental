@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -258,10 +260,12 @@ public class Recipes extends AppCompatActivity
 
     //bottom menu
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void showFridge(View view) { BottomMenu.showFridge(this,view); }
 
     public void showRecipes(View view) {    }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void goToHomeScreen(View view) { BottomMenu.goToHomeScreen(this,view); }
 
     public void goToScan(View view)
@@ -269,6 +273,7 @@ public class Recipes extends AppCompatActivity
         BottomMenu.goToScan(this,view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void goToSettings(View view) { BottomMenu.goToSettings(this,view); }
 
 }

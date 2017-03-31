@@ -7,14 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.Menu;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.foodamental.R;
 import com.foodamental.util.AlarmReceiver;
+import com.foodamental.util.BottomMenu;
 
 import java.util.Calendar;
 
@@ -99,6 +103,25 @@ public class AlertPage extends Activity {
 
         alarmManager.cancel(sender);
     }
+
+    //bottom menu
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void showFridge(View view) { BottomMenu.showFridge(this,view); }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void showRecipes(View view) {  BottomMenu.showRecipes(this,view);  }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void goToHomeScreen(View view) { BottomMenu.goToHomeScreen(this,view); }
+
+    public void goToScan(View view)
+    {
+        BottomMenu.goToScan(this,view);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void goToSettings(View view) {}
 }
 
 
