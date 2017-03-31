@@ -14,10 +14,7 @@
             android:id="@+id/nav_recettes"
             android:title="@string/recettes"
             />
-        <item
-            android:id="@+id/nav_profil"
-            android:title="@string/profil"
-            />
+
         <item
             android:id="@+id/nav_param"
             android:icon="@drawable/ic_menu_manage"
