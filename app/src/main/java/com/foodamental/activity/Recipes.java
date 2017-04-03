@@ -194,6 +194,8 @@ public class Recipes extends AppCompatActivity
             try {
                 List<RecipeItem> liste = new ArrayList<>();
                 JSONObject jsonUrlResponse = JsonUtilTools.getJSONFromRecipesRequest(url[0]);
+                if(jsonUrlResponse==null)
+                    return null;
                 //creation recipeItem
                 String s = jsonUrlResponse.getString("result");
                 JSONObject jresult = new JSONObject(s);
@@ -236,6 +238,10 @@ public class Recipes extends AppCompatActivity
         protected void onPostExecute(List<RecipeItem> result)
         {
             this.dialog.dismiss();
+            if(result==null)
+            {
+                return;
+            }
             //prepare la listeView
             final ListView lv = (ListView) findViewById(R.id.listRecipes);
             //creation de l'adapter avec les recipeItem

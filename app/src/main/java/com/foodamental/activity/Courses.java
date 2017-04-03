@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -55,6 +57,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
     private TweetAdapter adapter;
     private FrigoDB frigo = new FrigoDB();
     private int[] color = {R.drawable.green, R.drawable.yellow, R.drawable.red, R.drawable.black};
+    private int[] categories = {R.drawable.huile,R.drawable.huile,R.drawable.huile,R.drawable.oeuf,R.drawable.steak,R.drawable.legumes};
     private SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String[] arraySpinner;
     private Spinner s;
@@ -129,7 +132,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
         List<FrigoObject> produit = frigo.getAllProduct();
         for (FrigoObject prod : produit) {
-            tweets.add(new Tweet(Color.BLACK, prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo(), getColorByDate(prod.getDatePerempt())));
+            tweets.add(new Tweet(categories[prod.getCategory()], prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo(), getColorByDate(prod.getDatePerempt())));
         }
      return tweets;
     }
@@ -252,8 +255,10 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
     public void showFridge(View view) { }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void showRecipes(View view) {BottomMenu.showRecipes(this,view);    }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void goToHomeScreen(View view) { BottomMenu.goToHomeScreen(this,view);}
 
     public void goToScan(View view)
@@ -261,6 +266,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
         BottomMenu.goToScan(this,view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void goToSettings(View view)
     {
         BottomMenu.goToSettings(this,view);

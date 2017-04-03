@@ -13,7 +13,7 @@
             android:id="@+id/nav_recettes"
             android:layout_height="50dp"
             android:layout_width="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorPrimary"
             android:scaleType="centerInside"
             android:onClick="showRecipes"/>
 
@@ -23,7 +23,7 @@
             android:id="@+id/nav_frigo"
             android:layout_height="50dp"
             android:layout_width="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorPrimary"
             android:scaleType="centerInside"
             android:onClick="showFridge"/>
         <ImageButton
@@ -32,7 +32,7 @@
             android:layout_height="50dp"
             android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="@color/colorPrimary"
             android:scaleType="centerInside"
             android:onClick="goToScan"/>
         <ImageButton
@@ -41,7 +41,7 @@
             android:id="@+id/nav_param"
             android:layout_height="50dp"
             android:layout_width="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorPrimary"
             android:scaleType="centerInside"
             android:onClick="goToSettings"/>
         <ImageButton
@@ -50,7 +50,7 @@
             android:id="@+id/nav_accueil"
             android:layout_height="50dp"
             android:layout_width="wrap_content"
-            android:background="@color/white"
+            android:background="@color/colorPrimary"
             android:scaleType="centerInside"
             android:onClick="goToHomeScreen"/>
 

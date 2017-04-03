@@ -5,12 +5,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,9 +29,20 @@ import com.foodamental.activity.RecipeContentActivity;
 import com.foodamental.activity.Recipes;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.util.BottomMenu;
+import com.foodamental.util.JsonUtilTools;
+import com.foodamental.util.RecipeItem;
 import com.google.android.gms.analytics.ecommerce.Product;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -56,6 +71,9 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_home);
         LinearLayout view = (LinearLayout) findViewById(R.id.nav_view);
+
+        //get the main_recipe
+        new TodaysRecipeAsyncTask().execute();
     }
 
     public void showFridge(View view)
@@ -112,6 +130,66 @@ public class HomeActivity extends AppCompatActivity {
             //
         }
 
+    }
+
+
+    /*--- AsyncTasks ---*/
+    private class TodaysRecipeAsyncTask extends AsyncTask<Void, Void, RecipeItem>
+    {
+
+        private String url = "https://www.wecook.fr/web-api/recipes?id=";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //double rand = Math.random() * 8000;
+            //url = url+(int) rand;
+            url = url+4242;
+        }
+
+        @Override
+        protected RecipeItem doInBackground(Void... params) {
+            try{
+                List<RecipeItem> liste = new ArrayList<>();
+                JSONObject jsonUrlResponse = JsonUtilTools.getJSONFromRecipesRequest(url);
+                if(jsonUrlResponse==null)
+                    return null;
+                //creation recipeItem
+                JSONArray jsonArray = jsonUrlResponse.getJSONArray("result"); //recuperation du json
+                JSONObject json = jsonArray.getJSONObject(0);
+                RecipeItem item = new RecipeItem();
+                if(json.has("picture_url"))
+                {
+                    URL imageUrl = new URL(json.getString("picture_url"));
+                    Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
+                    item.setImage(image);
+                }else
+                {
+                    int id = getResources().getIdentifier("food_default","drawable",getPackageName());
+                    Bitmap image = BitmapFactory.decodeResource(getResources(),id);
+                    item.setImage(image);
+                }
+                item.setName(json.getString("name"));
+                item.setId(json.getInt("id"));
+                //ajout de l'element dans la liste
+                return item;
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(RecipeItem recipeItem) {
+            ImageView image = (ImageView) findViewById(R.id.recipe_image);
+            TextView tv = (TextView) findViewById(R.id.recipe_name);
+            if(recipeItem.getName()==null)
+                return;
+            tv.setText(recipeItem.getName());
+            image.setImageBitmap(recipeItem.getImage());
+        }
     }
 
     /**

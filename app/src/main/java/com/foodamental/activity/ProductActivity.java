@@ -25,6 +25,7 @@ import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.dao.model.ProductObject;
 import com.foodamental.util.DownloadImageTask;
+import com.foodamental.util.StaticUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -142,6 +143,9 @@ public class ProductActivity extends Activity implements View.OnClickListener {
                 String name = produit.getString("product_name");
                 String genericName = produit.getString("generic_name");
                 String brand = produit.getString("brands");
+                String categoriesString = produit.getString("categories");
+                String[] categories = categoriesString.split(",");
+                Integer category = StaticUtil.getCategory(categories);
                 if (produit.has("image_url"))
                     image = produit.getString("image_url");
                 this.frigo = new FrigoObject(Long.valueOf(this.codeBar), genericName, brand, image, 1, new Date());
