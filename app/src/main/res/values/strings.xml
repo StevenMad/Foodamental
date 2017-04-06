@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Foodamental</string>
+    <string name="app_name">Eatelligent</string>
     <string name="action_settings">Add Alert</string>
     <string name="title_activity_my_main_page">MyMainPage</string>
 
@@ -52,5 +52,4 @@
     <string name="todays_recipe">Todays recipe</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

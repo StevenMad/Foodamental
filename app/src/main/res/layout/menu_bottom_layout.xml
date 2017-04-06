@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="wrap_content"
+    android:id="@+id/nav_view"
+    android:layout_width="match_parent"
+    android:weightSum="5"
+    android:layout_alignParentBottom="true"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ImageButton
+            android:src="@drawable/cookbook_xml"
+            android:layout_weight="1"
+            android:id="@+id/nav_recettes"
+            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:background="@color/colorPrimary"
+            android:scaleType="centerInside"
+            android:onClick="showRecipes"/>
+
+        <ImageButton
+            android:src="@drawable/fridge_xml"
+            android:layout_weight="1"
+            android:id="@+id/nav_frigo"
+            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:background="@color/colorPrimary"
+            android:scaleType="centerInside"
+            android:onClick="showFridge"/>
+        <ImageButton
+            android:src="@drawable/barcode"
+            android:id="@+id/nav_scan"
+            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:scaleType="centerInside"
+            android:onClick="goToScan"/>
+        <ImageButton
+            android:src="@drawable/settings_xml"
+            android:layout_weight="1"
+            android:id="@+id/nav_param"
+            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:background="@color/colorPrimary"
+            android:scaleType="centerInside"
+            android:onClick="goToSettings"/>
+        <ImageButton
+            android:src="@drawable/home_xml"
+            android:layout_weight="1"
+            android:id="@+id/nav_accueil"
+            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:background="@color/colorPrimary"
+            android:scaleType="centerInside"
+            android:onClick="goToHomeScreen"/>
+
+</LinearLayout>
+
