@@ -31,7 +31,6 @@ import com.foodamental.R;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.dbimpl.ProductDB;
-import com.foodamental.dao.dbimpl.UserDB;
 import com.foodamental.dao.model.FoodUser;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.dao.model.ProductObject;
@@ -57,8 +56,7 @@ import java.util.List;
 /**
  * Activité main du démarrage
  */
-public class MyMainPage extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MyMainPage extends AppCompatActivity {
 
     private static Context context;
     private final int MY_PERMISSION_STORAGE = 1;
@@ -84,12 +82,6 @@ public class MyMainPage extends AppCompatActivity
 
         DatabaseManager.getInstance();
 
-        UserDB dbuser = new UserDB();
-        List<FoodUser> users = dbuser.getALLUser();
-        if (users.size() == 0) {
-            Intent intent = new Intent(this, MyWelcomePage.class);
-            startActivity(intent);
-        }
         setContentView(R.layout.activity_my_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -105,9 +97,6 @@ public class MyMainPage extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         //add items on the menu
         new TodaysRecipeAsyncTask().execute();
@@ -167,17 +156,6 @@ public class MyMainPage extends AppCompatActivity
     public void openRecipe(View view)
     {
         System.out.println("Hello World");
-    }
-
-    /**
-     * Fonction menu
-     * @param item
-     * @return
-     */
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        return MyMenu.onNavigationItemSelected(this, this, item);
     }
 
     /**

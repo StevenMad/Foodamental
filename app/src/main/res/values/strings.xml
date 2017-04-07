@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Foodamental</string>
+    <string name="app_name">Eatelligent</string>
     <string name="action_settings">Add Alert</string>
     <string name="title_activity_my_main_page">MyMainPage</string>
 
@@ -45,6 +45,7 @@
         <item>Yahourt</item>
     </string-array>
     <string name="title_activity_recipes">Recipes</string>
+    <string name="title_activity_no_scan">Courses</string>
     <string name="title_activity_profile">Profil</string>
     <string name="title_activity_parametres">Setting</string>
     <string name="sort">sort by</string>

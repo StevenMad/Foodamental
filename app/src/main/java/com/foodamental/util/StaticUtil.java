@@ -73,4 +73,26 @@ public class StaticUtil {
         return sb.toString();
 
     }
+
+    public static Integer getCategory(String[] categories)
+    {
+        for(int i=0;i<categories.length;i++)
+        {
+            if(categories[i].substring(0,2).equals("Jus"))
+                return 0;
+            if(categories[i].equals("Pâtes alimentaires"))
+                return 1;
+            if(categories[i].equals("Huiles"))
+                return 2;
+            if(categories[i].equals("Laits"))
+                return 3;
+            if(categories[i].equals("Oeufs"))
+                return 3;
+            if(categories[i].equals("Viandes"))
+                return 3;
+            if(categories[i].substring(0,6).equals("Légumes"))
+                return 4;
+        }
+        return -1;
+    }
 }

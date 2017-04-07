@@ -30,7 +30,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         if (("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) && (interupter)) {
             AlertPage.createNotification(context);
-        } else {
+        } else if (interupter){
             long when = System.currentTimeMillis();
             NotificationManager notificationManager = (NotificationManager) context
                     .getSystemService(Context.NOTIFICATION_SERVICE);

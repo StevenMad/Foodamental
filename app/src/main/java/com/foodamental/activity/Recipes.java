@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,12 +24,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.foodamental.HomeActivity;
+import com.foodamental.R;
 import com.foodamental.dao.DBHelper;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.dbimpl.ProductDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.translator.AdmAccessToken;
+import com.foodamental.util.BottomMenu;
 import com.foodamental.util.JsonUtilTools;
 import com.foodamental.util.MyMenu;
 import com.foodamental.dao.dbimpl.ProductDB;
@@ -66,27 +71,19 @@ public class Recipes extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,OnTaskComplete {
 
     ProductDB productDb;
-    private String query;
     String ingredientsEng="";
     TextView tv;
+    private String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
         DatabaseManager.getInstance();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
         tv = (TextView) findViewById(R.id.id_recipes);
         createQuery();
     }
+
 
     /**
      * Fonction qui traduit les produits du frigo
@@ -101,29 +98,37 @@ public class Recipes extends AppCompatActivity
             Toast.makeText(Recipes.this, "Erreur lors de la récuperation des données", Toast.LENGTH_LONG).show();
         else {
             for (int i = 0; i < listDTO.size() && i < 7; i++) {
-                FrigoObject product = listDTO.get(i);
-                query += product.toString() + ",";
+                String Name = listDTO.get(i).getName();
+                String[] word = Name.split(" ");
+                for (String w : word)
+                    query += w + ",";
             }
             query = query.substring(0, query.length() - 1);
-            String url = "https://www.wecook.fr/web-api/recipes/search?q="+query;
+            String url = "https://www.wecook.fr/web-api/recipes/search?q=" + query;
             new RecipeAsyncTask().execute(url);
         }
         //query = query.substring(0,query.length()-3);
         //String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
     }
 
-    /**
-     * Fonction du menu
-     */
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        /**
+         * Fonction du menu
+         */
+        @Override
+        public void onBackPressed() {
+
+            //Not working
+            /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }*/
+            Intent intent = new Intent(this, HomeActivity.class);
+            finish();
+            startActivity(intent);
+
         }
-}
 
     /**
      * Fonction du menu
@@ -200,6 +205,8 @@ public class Recipes extends AppCompatActivity
             try {
                 List<RecipeItem> liste = new ArrayList<>();
                 JSONObject jsonUrlResponse = JsonUtilTools.getJSONFromRecipesRequest(url[0]);
+                if(jsonUrlResponse==null)
+                    return null;
                 //creation recipeItem
                 String s = jsonUrlResponse.getString("result");
                 JSONObject jresult = new JSONObject(s);
@@ -242,6 +249,10 @@ public class Recipes extends AppCompatActivity
         protected void onPostExecute(List<RecipeItem> result)
         {
             this.dialog.dismiss();
+            if(result==null)
+            {
+                return;
+            }
             //prepare la listeView
             final ListView lv = (ListView) findViewById(R.id.listRecipes);
             //creation de l'adapter avec les recipeItem
@@ -262,5 +273,24 @@ public class Recipes extends AppCompatActivity
             });
         }
     }
+
+
+    //bottom menu
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void showFridge(View view) { BottomMenu.showFridge(this,view); }
+
+    public void showRecipes(View view) {    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void goToHomeScreen(View view) { BottomMenu.goToHomeScreen(this,view); }
+
+    public void goToScan(View view)
+    {
+        BottomMenu.goToScan(this,view);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void goToSettings(View view) { BottomMenu.goToSettings(this,view); }
 
 }

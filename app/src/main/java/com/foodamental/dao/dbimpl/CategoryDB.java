@@ -77,7 +77,7 @@ public class CategoryDB implements ICategoryDB {
      * @throws ParseException
      */
     @Override
-    public List<String> getALLProduct() throws ParseException {
+    public List<String> getALLCategory() throws ParseException {
         List<String> categoryList = new ArrayList<String>();
         // Select all Query
         String selectQuery = "SELECT * FROM " + CATEGORYDB_TABLE_NAME;
