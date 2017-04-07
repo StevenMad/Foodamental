@@ -1,15 +1,21 @@
 package com.foodamental.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,11 +27,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.foodamental.HomeActivity;
 import com.foodamental.R;
+import com.foodamental.dao.dbimpl.CategoryDB;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.dao.model.ProductObject;
+import com.foodamental.util.BottomMenu;
 import com.foodamental.util.DownloadImageTask;
 import com.foodamental.util.StaticUtil;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +44,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by YOUSSEF on 17/06/2016.
@@ -54,11 +64,20 @@ public class ProductActivity extends Activity implements View.OnClickListener {
     private int month;
     private int day;
     private Date date;
+    private Spinner s;
+    private EditText edit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_activity);
+        s = (Spinner) findViewById(R.id.spinner2);
+        edit = (EditText) findViewById(R.id.editText2);
+        CategoryDB dbcate = new CategoryDB();
+        List<String> listcate = dbcate.getALLCategory();
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, listcate);
+        s.setAdapter(adapterSpinner);
         this.codeBar = getIntent().getSerializableExtra("codebar").toString();
         String url = this.URL;
         url += codeBar + ".json";
@@ -118,6 +137,9 @@ public class ProductActivity extends Activity implements View.OnClickListener {
         queue.add(jsObjRequest);
 
     }
+    public void openCamera() {
+        new IntentIntegrator(this).initiateScan();
+    }
 
     /**
      * Fonction qui traite le json
@@ -134,21 +156,38 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
             String status = json.getString("status_verbose");
             if (status.equals("product not found")) {
-                dataText.setText("result " + "pas de produit");
-                btn.setEnabled(false);
+                /*dataText.setText("result " + "pas de produit");
+                btn.setEnabled(false);*/
+
+                AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                adb.setTitle("Pas de Produit");
+                adb.setMessage("Produit introuvable  ou pas alimentaire");
+                adb.setNegativeButton("Ok", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+
+                    }
+                } );
+
+                adb.show();
 
             } else {
                 String image = "";
+                String name= "";
+                String genericName= "";
+                String brand = "";
                 JSONObject produit = json.getJSONObject("product");
-                String name = produit.getString("product_name");
-                String genericName = produit.getString("generic_name");
-                String brand = produit.getString("brands");
-                String categoriesString = produit.getString("categories");
-                String[] categories = categoriesString.split(",");
-                Integer category = StaticUtil.getCategory(categories);
+                if (produit.has("product_name"))
+                 name = produit.getString("product_name").trim();
+                if (produit.has("generic_name"))
+                    genericName =  produit.getString("generic_name").trim();
+                if (produit.has("brands"))
+                    brand = produit.getString("brands").trim();
                 if (produit.has("image_url"))
-                    image = produit.getString("image_url");
-                this.frigo = new FrigoObject(Long.valueOf(this.codeBar), genericName, brand, image, 1, new Date());
+                    image = produit.getString("image_url").trim();
+                if (genericName.equals(""))
+                    genericName = name;
+                this.frigo = new FrigoObject(Long.valueOf(this.codeBar), genericName, brand, image, s.getSelectedItemPosition(), new Date(), Integer.parseInt(edit.getText().toString()));
                 dataText.setText("result " + name + " " + brand + " " + genericName);
                 ImageView imageView = (ImageView) findViewById(R.id.imageViewProduct);
                 new DownloadImageTask(imageView).execute(image);
@@ -169,12 +208,16 @@ public class ProductActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.buttonAdd) {
             //ProductDB dbproduct = new ProductDB();
+            String quantityString = edit.getText().toString().trim();
             FrigoDB dbfrigo = new FrigoDB();
 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             try {
                 Date date_peremp = format.parse((String) dateView.getText());
                 this.frigo.setDatePerempt(date_peremp);
+                this.frigo.setQuantity(Integer.parseInt(quantityString));
+                this.frigo.setCategory(s.getSelectedItemPosition());
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -182,10 +225,38 @@ public class ProductActivity extends Activity implements View.OnClickListener {
 
         }
 
-        Intent intent = new Intent(ProductActivity.this, HomeActivity.class);
-        startActivity(intent);
+        finish();
 
 
+    }
+
+    /**
+     * test if integer
+     * @param str
+     * @return
+     */
+    public static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 
 

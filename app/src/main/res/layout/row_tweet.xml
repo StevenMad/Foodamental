@@ -11,7 +11,9 @@
         android:id="@+id/avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        tools:background="#AAA"
         />
+
     <TextView
         android:id="@+id/pseudo"
         android:layout_width="wrap_content"

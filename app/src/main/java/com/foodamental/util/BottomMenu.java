@@ -48,6 +48,7 @@ public class BottomMenu {
     {
         Intent intentRecipes = new Intent(activity,HomeActivity.class);
         ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
+        intentRecipes.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intentRecipes,options.toBundle());
     }
 
@@ -60,8 +61,8 @@ public class BottomMenu {
     public static void goToSettings(Activity activity, View view)
     {
         Intent intentSettings = new Intent(activity, AlertPage.class);
-        //ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
-        activity.startActivity(intentSettings/*,options.toBundle()*/);
+        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
+        activity.startActivity(intentSettings,options.toBundle());
     }
 
     public static void openCamera(Activity activity, View view) {

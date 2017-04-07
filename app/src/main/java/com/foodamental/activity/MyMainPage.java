@@ -31,7 +31,6 @@ import com.foodamental.R;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.dbimpl.ProductDB;
-import com.foodamental.dao.dbimpl.UserDB;
 import com.foodamental.dao.model.FoodUser;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.dao.model.ProductObject;
@@ -83,12 +82,6 @@ public class MyMainPage extends AppCompatActivity {
 
         DatabaseManager.getInstance();
 
-        UserDB dbuser = new UserDB();
-        List<FoodUser> users = dbuser.getALLUser();
-        if (users.size() == 0) {
-            Intent intent = new Intent(this, MyWelcomePage.class);
-            startActivity(intent);
-        }
         setContentView(R.layout.activity_my_main_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

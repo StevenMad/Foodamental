@@ -24,10 +24,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.foodamental.HomeActivity;
+import com.foodamental.R;
 import com.foodamental.dao.DBHelper;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.dbimpl.ProductDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.translator.AdmAccessToken;
 import com.foodamental.util.BottomMenu;
@@ -69,9 +71,9 @@ public class Recipes extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,OnTaskComplete {
 
     ProductDB productDb;
-    private String query;
     String ingredientsEng="";
     TextView tv;
+    private String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class Recipes extends AppCompatActivity
         tv = (TextView) findViewById(R.id.id_recipes);
         createQuery();
     }
+
 
     /**
      * Fonction qui traduit les produits du frigo
@@ -95,29 +98,37 @@ public class Recipes extends AppCompatActivity
             Toast.makeText(Recipes.this, "Erreur lors de la récuperation des données", Toast.LENGTH_LONG).show();
         else {
             for (int i = 0; i < listDTO.size() && i < 7; i++) {
-                FrigoObject product = listDTO.get(i);
-                query += product.toString() + ",";
+                String Name = listDTO.get(i).getName();
+                String[] word = Name.split(" ");
+                for (String w : word)
+                    query += w + ",";
             }
             query = query.substring(0, query.length() - 1);
-            String url = "https://www.wecook.fr/web-api/recipes/search?q="+query;
+            String url = "https://www.wecook.fr/web-api/recipes/search?q=" + query;
             new RecipeAsyncTask().execute(url);
         }
         //query = query.substring(0,query.length()-3);
         //String url = "http://api.yummly.com/v1/api/recipes?_app_id=80ae101e&_app_key=85289ec3509333e07e8112b54c053726"+query;
     }
 
-    /**
-     * Fonction du menu
-     */
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        /**
+         * Fonction du menu
+         */
+        @Override
+        public void onBackPressed() {
+
+            //Not working
+            /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }*/
+            Intent intent = new Intent(this, HomeActivity.class);
+            finish();
+            startActivity(intent);
+
         }
-}
 
     /**
      * Fonction du menu

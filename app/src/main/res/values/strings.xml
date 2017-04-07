@@ -45,6 +45,7 @@
         <item>Yahourt</item>
     </string-array>
     <string name="title_activity_recipes">Recipes</string>
+    <string name="title_activity_no_scan">Courses</string>
     <string name="title_activity_profile">Profil</string>
     <string name="title_activity_parametres">Setting</string>
     <string name="sort">sort by</string>
@@ -52,4 +53,5 @@
     <string name="todays_recipe">Todays recipe</string>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

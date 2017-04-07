@@ -8,6 +8,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -76,11 +79,13 @@ public class HomeActivity extends AppCompatActivity {
         new TodaysRecipeAsyncTask().execute();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void showFridge(View view)
     {
         BottomMenu.showFridge(this,view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void showRecipes(View view)
     {
         BottomMenu.showRecipes(this,view);
@@ -96,6 +101,7 @@ public class HomeActivity extends AppCompatActivity {
         BottomMenu.goToScan(this,view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void goToSettings(View view)
     {
         BottomMenu.goToSettings(this,view);
@@ -206,6 +212,33 @@ public class HomeActivity extends AppCompatActivity {
             activity.startActivity(intentProduct);
         }
 
+
+    }
+
+    private Boolean exit = false;
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finishAffinity();
+           // finish();
+            System.exit(0);
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
 
     }
 

@@ -1,5 +1,6 @@
 package com.foodamental.activity;
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -26,10 +27,11 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.foodamental.Manifest;
+import com.foodamental.HomeActivity;
 import com.foodamental.R;
 import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
+import com.foodamental.dao.dbimpl.OtherFrigoProductDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.util.BottomMenu;
 import com.foodamental.util.MyMenu;
@@ -51,22 +53,57 @@ import java.util.concurrent.TimeUnit;
  */
 public class Courses extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static Context context;
+    static Context context = getContext();
+    View.OnClickListener actions = new View.OnClickListener() {
+        public void onClick(View v) {
+            AlertDialog.Builder adb = new AlertDialog.Builder(Courses.this);
+            adb.setTitle("Scan?");
+            adb.setMessage("You can scan this product ? ");
+            adb.setNegativeButton("No", new AlertDialog.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intentProduct = new Intent(getApplicationContext(), ActivityNoScan.class);
+                    startActivity(intentProduct);
+
+
+                }
+            });
+            adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    openCamera();
+                }
+            });
+            adb.show();
+        }
+
+    };
     private ListView mListView;
     private List<Tweet> tweets;
     private TweetAdapter adapter;
     private FrigoDB frigo = new FrigoDB();
+    private OtherFrigoProductDB frigoOther = new OtherFrigoProductDB();
     private int[] color = {R.drawable.green, R.drawable.yellow, R.drawable.red, R.drawable.black};
-    private int[] categories = {R.drawable.huile,R.drawable.huile,R.drawable.huile,R.drawable.oeuf,R.drawable.steak,R.drawable.legumes};
+    private int[] category = {R.drawable.fruit, R.drawable.legumes, R.drawable.huile, R.drawable.fromage, R.drawable.oeuf, R.drawable.steak, R.drawable.fish, R.drawable.boisson, R.drawable.cereales};
     private SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String[] arraySpinner;
     private Spinner s;
+    private Button boutonScan;
+
+    public static Context getContext() {
+        return context;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
         DatabaseManager.getInstance();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        boutonScan = (Button) findViewById(R.id.scan_button);
+        boutonScan.setOnClickListener(actions);
+
+
+
         mListView = (ListView) findViewById(R.id.listviewperso);
 
         tweets = null;
@@ -84,13 +121,15 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
             public void onItemClick(AdapterView<?> a, View v, final int position, long id) {
                 AlertDialog.Builder adb = new AlertDialog.Builder(Courses.this);
                 adb.setTitle("Delete?");
-                adb.setMessage("Are you sure you want to delete " + position);
+                adb.setMessage("Are you sure you want to delete " + tweets.get(position).getPseudo());
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d("iddddd", tweets.get(position).getId().toString());
-                        frigo.deleteProductWithId(tweets.get(position).getId());
-
+                        if (tweets.get(position).getTypeOfBase() == 0)
+                            frigo.deleteProductWithId(tweets.get(position).getId());
+                        else if (tweets.get(position).getTypeOfBase() == 1)
+                            frigoOther.deleteOtherProductWithId(tweets.get(position).getId());
                         adapter.remove(adapter.getItem(position));
                         adapter.notifyDataSetChanged();
                     }
@@ -132,9 +171,9 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
         List<FrigoObject> produit = frigo.getAllProduct();
         for (FrigoObject prod : produit) {
-            tweets.add(new Tweet(categories[prod.getCategory()], prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo(), getColorByDate(prod.getDatePerempt())));
+            tweets.add(new Tweet(category[prod.getCategory()], prod.getName(), myFormat.format(prod.getDatePerempt()), prod.getIdFrigo(), getColorByDate(prod.getDatePerempt()), prod.getTypeOFBase()));
         }
-     return tweets;
+        return tweets;
     }
 
     /**
@@ -149,21 +188,23 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
         return MyMenu.onNavigationItemSelected(this, this, item);
     }
 
+    /*-- buttons --*/
+
     private int getColorByDate(Date date) {
         Date dateCurrent = new Date();
         long diff = date.getTime() - dateCurrent.getTime();
         long result = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
         if (result >= 30)
             return color[0];
-        else if (result < 30 && result > 7)
+        else if (result < 30 && result >= 7)
             return color[1];
-        else if (result < 7 && result > 0)
+        else if (result < 7 && result >= 0)
             return color[2];
         else
             return color[3];
     }
 
-    private void triList(String param){
+    private void triList(String param) {
         if (param.equals("A-Z")) {
             adapter.sort(new Comparator<Tweet>() {
                 @Override
@@ -171,8 +212,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
                     return lhs.getPseudo().compareTo(rhs.getPseudo());
                 }
             });
-        }
-        else if (param.equals("Z-A")){
+        } else if (param.equals("Z-A")) {
             adapter.sort(new Comparator<Tweet>() {
                 @Override
                 public int compare(Tweet lhs, Tweet rhs) {
@@ -180,27 +220,37 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
                 }
             });
 
-        }
-        else {
+        } else {
             adapter.sort(new Comparator<Tweet>() {
                 @Override
                 public int compare(Tweet lhs, Tweet rhs) {
-                    return rhs.getText().compareTo(lhs.getText());
+                    Date date1;
+                    Date date2;
+
+                    try {
+                        date1 = myFormat.parse(lhs.getText());
+                        date2 = myFormat.parse(rhs.getText());
+                        return date1.compareTo(date2);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    return lhs.getText().compareTo(rhs.getText());
                 }
             });
         }
     }
-    /*-- buttons --*/
+
     /**
      * Fonction ouverture du scan
-     * @param view
      */
-    public void openCamera(View view) {
+    public void openCamera() {
         new IntentIntegrator(this).initiateScan();
     }
 
     /**
      * Fonction résultat scan
+     *
      * @param requestCode
      * @param resultCode
      * @param intent
@@ -234,6 +284,7 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
     /**
      * Fonction qui envoie une nouvelle activity et le code barre
+     *
      * @param codeBar
      */
     public void sendRequest(String codeBar) {
@@ -249,14 +300,32 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        finish();
+        startActivity(intent);
+    }
+
     //bottom menu
 
-    public static Context getContext() {return context;}
+    @Override
+    public void onResume(){
+        super.onResume();
+        try {
+            tweets = genererTweets();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        adapter = new TweetAdapter(Courses.this, tweets);
+        mListView.setAdapter(adapter);
+    }
 
     public void showFridge(View view) { }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void showRecipes(View view) {BottomMenu.showRecipes(this,view);    }
+    public void showRecipes(View view) {
+        BottomMenu.showRecipes(this,view);    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void goToHomeScreen(View view) { BottomMenu.goToHomeScreen(this,view);}
@@ -271,5 +340,6 @@ public class Courses extends AppCompatActivity implements NavigationView.OnNavig
     {
         BottomMenu.goToSettings(this,view);
     }
+
 
 }

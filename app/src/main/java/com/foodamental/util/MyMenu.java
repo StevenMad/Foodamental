@@ -11,8 +11,6 @@ import com.foodamental.R;
 import com.foodamental.activity.AlertPage;
 import com.foodamental.activity.Courses;
 import com.foodamental.activity.MyMainPage;
-import com.foodamental.activity.Parametres;
-import com.foodamental.activity.ProductActivity;
 import com.foodamental.activity.Recipes;
 
 /**
@@ -49,13 +47,10 @@ public class MyMenu {
                 context.startActivity(intent);
                 break;
             }
-            case R.id.nav_scan:
-            {
-                Intent intent = new Intent(context,ProductActivity.class);
-                context.startActivity(intent);
-                break;
-            }
         }
+
+        DrawerLayout drawer = (DrawerLayout) act.findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }

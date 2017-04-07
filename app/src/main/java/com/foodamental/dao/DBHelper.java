@@ -22,14 +22,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     // Data base name
     public static final String DATABASE_NAME = "Foodb.db";
-    // Contacts table name
-    public static final String FOODB_TABLE_NAME = "FoodUser";
-    //FoodUser table Columns names
-    public static final String FOODB_COLUMN_ID = "ID";
-    public static final String FOODB_COLUMN_USERNAME = "USERNAME";
-    public static final String FOODB_COLUMN_PASSWORD = "PASSWORD";
-    public static final String FOODB_COLUMN_BIRTHDAY = "BIRTHDAY";
-    public static final String FOODB_COLUMN_EMAIL = "MAIL";
 
     public static final String PRODUCTDB_TABLE_NAME = "PRODUCT";
     //product table Columns names
@@ -45,11 +37,21 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String FRIGODB_COLUMN_ID = "ID_FRIGO";
     public static final String FRIGODB_COLUMN_ID_PRODUCT = "IDPRODUCT";
     public static final String FRIGODB_COLUMN_DATE_PEREMPT = "EXPIRY_DATE";
+    public static final String FRIGODB_COLUMN_QUANTITY = "QUANTITY";
 
     public static final String CATEGORYDB_TABLE_NAME = "CATEGORY";
     //CATEGORY table Columns names
     public static final String CATEGORYDB_COLUMN_ID = "ID_CATEGORY";
     public static final String CATEGORYDB_COLUMN_NAME = "NAME_CATEGORY";
+
+    public static final String OTHERFRIGOPRODUCTDB_TABLE_NAME = "OTHERPRODUCT";
+    //OtherFrigoPrudct table Columns names
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_ID = "ID_OTHER_PRODUCT";
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_NAME = "NAME";
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_DATE_PEREMPT = "EXPIRY_DATE";
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_CATEGORY = "CATEGORY_ID";
+    public static final String OTHERFRIGOPRODUCTDB_COLUMN_QUANTITY = "QUANTITY";
+
 
 
 
@@ -63,13 +65,6 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     // Create the data base
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_USER_TABLE = "CREATE TABLE " + FOODB_TABLE_NAME + "("
-                + FOODB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FOODB_COLUMN_USERNAME + " TEXT,"
-                + FOODB_COLUMN_PASSWORD + " TEXT,"
-                + FOODB_COLUMN_BIRTHDAY + " TEXT,"
-                + FOODB_COLUMN_EMAIL + " TEXT"
-                + ")";
         String CREATE_PRODUCT_TABLE = "CREATE TABLE " + PRODUCTDB_TABLE_NAME + "("
                 + PRODUCTDB_COLUMN_ID + " INTEGER PRIMARY KEY, "
                 + PRODUCTDB_COLUMN_NAME + " TEXT,"
@@ -82,16 +77,23 @@ public class DBHelper extends SQLiteOpenHelper {
                 + FRIGODB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FRIGODB_COLUMN_ID_PRODUCT + " INTEGER, "
                 + FRIGODB_COLUMN_DATE_PEREMPT + " TEXT,"
+                + FRIGODB_COLUMN_QUANTITY + " INTEGER,"
                 +" FOREIGN KEY(" + FRIGODB_COLUMN_ID_PRODUCT +") REFERENCES PRODUCT(ID_PRODUCT) " + ")";
 
         String CREATE_CATEGORY_TABLE = "CREATE TABLE " + CATEGORYDB_TABLE_NAME + "("
                 + CATEGORYDB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + CATEGORYDB_COLUMN_NAME + " TEXT )";
 
-        db.execSQL(CREATE_USER_TABLE);
+        String CREATE_OTHER_FRIGO_PRODUCT_TABLE = "CREATE TABLE " + OTHERFRIGOPRODUCTDB_TABLE_NAME + "("
+                + OTHERFRIGOPRODUCTDB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + OTHERFRIGOPRODUCTDB_COLUMN_NAME + " TEXT,"
+                + OTHERFRIGOPRODUCTDB_COLUMN_DATE_PEREMPT + " TEXT,"
+                + OTHERFRIGOPRODUCTDB_COLUMN_CATEGORY + " INTEGER,"
+                + OTHERFRIGOPRODUCTDB_COLUMN_QUANTITY + " INTEGER ) ";
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_PRODUCT_TABLE);
         db.execSQL(CREATE_FRIGO_TABLE);
+        db.execSQL(CREATE_OTHER_FRIGO_PRODUCT_TABLE);
 
 
         db.execSQL("insert into " + CATEGORYDB_TABLE_NAME +" ("+CATEGORYDB_COLUMN_NAME  + ") "+" values('fruit');");
@@ -117,10 +119,10 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d(TAG, String.format("SQLiteDatabase.onUpgrade(%d -> %d)", oldVersion, newVersion));
 
         // Drop older table if existed ;
-        db.execSQL("DROP TABLE IF EXISTS FoodUser");
         db.execSQL("DROP TABLE IF EXISTS PRODUCT");
         db.execSQL("DROP TABLE IF EXISTS FRIGO");
         db.execSQL("DROP TABLE IF EXISTS CATEGORY");
+        db.execSQL("DROP TABLE IF EXISTS OTHERPRODUCT");
         // Create the new table ;
         onCreate(db);
     }
