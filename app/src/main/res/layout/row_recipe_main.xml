@@ -5,40 +5,34 @@
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_height="180dp"
-        android:layout_width="370dp"
+        android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        card_view:cardCornerRadius="5dp"
-        android:layout_margin="6dp"
+        android:layout_marginTop="4dp"
         >
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="showRecipe">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="211dp"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
-                android:id="@+id/recipe_image"/>
+                android:id="@+id/recipe_image"
+                android:layout_above="@+id/recipe_name" />
 
             <TextView
-                android:layout_width="230dp"
-                android:layout_height="50dp"
-                android:text="@string/todays_recipe"
-                android:gravity="center"
-                android:background="#CCDDDDDD"
-                android:layout_gravity="left|top" />
-
-            <TextView
-                android:layout_width="230dp"
-                android:layout_height="70dp"
-                android:padding="6dp"
-                android:background="#DDBBBBBB"
-                android:layout_gravity="right|bottom"
-                android:gravity="center"
-                android:id="@+id/recipe_name"/>
-        </FrameLayout>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Today's recipe"
+                android:textSize="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimaryAccent"
+                android:id="@+id/recipe_name" />
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
 </RelativeLayout>

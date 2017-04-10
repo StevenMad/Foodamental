@@ -10,6 +10,21 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.Parametres"
-    tools:showIn="@layout/activity_parametres">
-
+    tools:showIn="@layout/alert_page">
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add alert "
+        android:id="@+id/switch1"
+        android:layout_alignParentTop="true"
+        android:checked="false" />
+    <TextView
+        android:id="@+id/switchStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/switch1"
+        android:layout_marginTop="22dp"
+        android:text="@string/set_alarm"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>

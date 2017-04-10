@@ -9,55 +9,34 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
+        android:name=".activity.Foodamental"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".activity.Foodamental">
-        <activity
-            android:name=".activity.MyWelcomePage"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".activity.MyMainPage"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme">
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.RecipeContentActivity"
+            android:label="Recipe"
+            />
         <activity
             android:name=".activity.Courses"
             android:label="Courses"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".activity.Recipes"
             android:label="@string/title_activity_recipes"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.Profile"
-            android:label="@string/title_activity_profile"
-            android:parentActivityName=".activity.MyMainPage"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MyMainPage" />
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ProductActivity"
             android:label="@string/app_name"
@@ -65,20 +44,28 @@
         <activity
             android:name=".activity.Parametres"
             android:label="@string/title_activity_parametres"
-            android:parentActivityName=".activity.MyMainPage"
+            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MyMainPage" />
+                android:value=".HomeActivity" />
         </activity>
         <activity
             android:name=".activity.AlertPage"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:label="@string/title_activity_parametres"
+            android:parentActivityName=".HomeActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+            </activity>
 
-
-        <receiver android:name=".util.AlarmReceiver" android:enabled="true" android:exported="false" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+        <receiver
+            android:name=".util.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -92,9 +79,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activity.RecipeContentActivity" />
-
     </application>
-
 
 </manifest>

@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +30,7 @@ import com.foodamental.dao.DatabaseManager;
 import com.foodamental.dao.dbimpl.FrigoDB;
 import com.foodamental.dao.model.FrigoObject;
 import com.foodamental.translator.AdmAccessToken;
+import com.foodamental.util.BottomMenu;
 import com.foodamental.util.JsonUtilTools;
 import com.foodamental.util.MyMenu;
 import com.foodamental.dao.dbimpl.ProductDB;
@@ -75,15 +78,6 @@ public class Recipes extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
         DatabaseManager.getInstance();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
         tv = (TextView) findViewById(R.id.id_recipes);
         createQuery();
     }
@@ -200,6 +194,8 @@ public class Recipes extends AppCompatActivity
             try {
                 List<RecipeItem> liste = new ArrayList<>();
                 JSONObject jsonUrlResponse = JsonUtilTools.getJSONFromRecipesRequest(url[0]);
+                if(jsonUrlResponse==null)
+                    return null;
                 //creation recipeItem
                 String s = jsonUrlResponse.getString("result");
                 JSONObject jresult = new JSONObject(s);
@@ -242,6 +238,10 @@ public class Recipes extends AppCompatActivity
         protected void onPostExecute(List<RecipeItem> result)
         {
             this.dialog.dismiss();
+            if(result==null)
+            {
+                return;
+            }
             //prepare la listeView
             final ListView lv = (ListView) findViewById(R.id.listRecipes);
             //creation de l'adapter avec les recipeItem
@@ -262,5 +262,24 @@ public class Recipes extends AppCompatActivity
             });
         }
     }
+
+
+    //bottom menu
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void showFridge(View view) { BottomMenu.showFridge(this,view); }
+
+    public void showRecipes(View view) {    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void goToHomeScreen(View view) { BottomMenu.goToHomeScreen(this,view); }
+
+    public void goToScan(View view)
+    {
+        BottomMenu.goToScan(this,view);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void goToSettings(View view) { BottomMenu.goToSettings(this,view); }
 
 }
