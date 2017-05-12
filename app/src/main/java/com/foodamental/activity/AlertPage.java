@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.foodamental.HomeActivity;
 import com.foodamental.R;
 import com.foodamental.util.AlarmReceiver;
 import com.foodamental.util.BottomMenu;
@@ -71,6 +72,14 @@ public class AlertPage extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.my_main_page, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        finish();
+        startActivity(intent);
+
     }
 
     /**

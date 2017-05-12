@@ -16,7 +16,6 @@ public class JsonUtilTools {
     public static JSONObject getJSONFromRecipesRequest(String url) throws IOException, JSONException {
         URL requestURL = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) requestURL.openConnection();
-        //insertion de la cle
         conn.setRequestProperty("Authorization","Bearer amAcSq_b6QGPjlCDhSbwCg");
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept","application/json");

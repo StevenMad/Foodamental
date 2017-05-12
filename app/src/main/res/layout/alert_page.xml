@@ -6,42 +6,39 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".activity.Parametres">
-<!--    <ToggleButton
+    <!--    <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/set_alarm"
+                android:id="@+id/alarmToggle"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/alarmTimePicker"
+                android:onClick="onToggleClicked" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text=""
+                android:id="@+id/alarmText"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/alarmToggle" />
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/set_alarm"
-            android:id="@+id/alarmToggle"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/alarmTimePicker"
-            android:onClick="onToggleClicked" />
-
-        <TextView
+            android:text="add new alert"
+            android:id="@+id/addAlert"
+            android:layout_above="@+id/alarmTimePicker"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/alarmTimePicker" />
+        <TimePicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=""
-            android:id="@+id/alarmText"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/alarmToggle" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="add new alert"
-        android:id="@+id/addAlert"
-        android:layout_above="@+id/alarmTimePicker"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/alarmTimePicker" />
-
-    <TimePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/alarmTimePicker"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />-->
+            android:id="@+id/alarmTimePicker"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />-->
     <include layout="@layout/content_parametres"/>
     <include layout="@layout/menu_bottom_layout"/>
 
-    </RelativeLayout>
+</RelativeLayout>
