@@ -183,6 +183,10 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(RecipeItem recipeItem) {
+            if(recipeItem==null)
+            {
+                return;
+            }
             ImageView image = (ImageView) findViewById(R.id.recipe_image);
             TextView tv = (TextView) findViewById(R.id.recipe_name);
             if(recipeItem.getName()==null)
