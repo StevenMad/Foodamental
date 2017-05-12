@@ -17,7 +17,7 @@ public class JsonUtilTools {
         URL requestURL = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) requestURL.openConnection();
         //insertion de la cle
-        conn.setRequestProperty("Authorization","Bearer 0VxU5I__nxIzBlJSVGATJQ");
+        conn.setRequestProperty("Authorization","Bearer amAcSq_b6QGPjlCDhSbwCg");
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept","application/json");
         JSONObject jsonResult = new JSONObject();
