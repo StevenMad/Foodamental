@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '25.0.0'
 
 
     defaultConfig {
-        applicationId "com.foodamental"
+        applicationId "com.eatelligent"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.1"
+        versionCode 4
+        versionName "1.2"
         // Enabling multidex support.
         multiDexEnabled true
     }
@@ -28,9 +28,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
     compile 'com.android.support:cardview-v7:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:design:23.0.0'
     compile 'com.google.android.gms:play-services:9.2.1'
     compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
     compile 'com.google.zxing:core:3.2.0'
