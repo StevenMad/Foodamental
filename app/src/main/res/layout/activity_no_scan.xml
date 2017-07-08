@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:weightSum="1">
 
     <TextView
         android:id="@+id/dataText"
         android:layout_width="344dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.29"
         android:layout_above="@+id/button1"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0.29" />
 
     <Button
+        android:id="@+id/buttonCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
 
-        android:id="@+id/buttonCancel"
+        android:layout_alignEnd="@+id/dataText"
+        android:layout_alignTop="@+id/buttonAdd"
         android:layout_gravity="right|center_vertical"
         android:background="@color/colorAccent"
-        android:layout_alignTop="@+id/buttonAdd"
-        android:layout_alignEnd="@+id/dataText"
+        android:text="Cancel"
         android:textColor="#FFFFFF" />
 
 
@@ -36,89 +37,88 @@
         android:layout_alignEnd="@+id/dataText" />
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView4"
-        tools:text="Category"
-        android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:layout_marginStart="11dp"
-        android:text="Category" />
+        android:text="Category"
+        tools:text="Category" />
 
     <Spinner
+        android:id="@+id/spinner2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner2"
         android:layout_alignTop="@+id/textView4"
         android:layout_toEndOf="@+id/button1" />
 
     <TextView
-        android:text="Quantity"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_below="@+id/spinner2"
         android:layout_alignEnd="@+id/textView4"
-        android:layout_marginTop="20dp" />
+        android:layout_below="@+id/spinner2"
+        android:layout_marginTop="20dp"
+        android:text="Quantity" />
 
     <EditText
+        android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:text="1"
-        android:singleLine="true"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:selectAllOnFocus="false"
-        android:layout_marginStart="15dp"
         android:layout_alignBaseline="@+id/textView2"
         android:layout_alignBottom="@+id/textView2"
-        android:layout_alignStart="@+id/spinner2" />
+        android:layout_alignStart="@+id/spinner2"
+        android:layout_marginStart="15dp"
+        android:ems="10"
+        android:inputType="number"
+        android:selectAllOnFocus="false"
+        android:singleLine="true"
+        android:text="1"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
 
     <Button
+        android:id="@+id/buttonAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="add"
-        android:id="@+id/buttonAdd"
-        android:layout_gravity="left|center_vertical"
-
-        android:background="@color/green"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="59dp"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/editText2" />
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginBottom="59dp"
+        android:layout_toStartOf="@+id/editText2"
+        android:background="@color/green"
+        android:text="add"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="setDate"
-        android:text="@string/date_button_product"
+        android:layout_above="@+id/textView4"
+        android:layout_alignStart="@+id/textView2"
         android:layout_gravity="left|center_vertical"
         android:layout_marginBottom="120dp"
-        android:layout_above="@+id/textView4"
-        android:layout_alignStart="@+id/textView2" />
+        android:onClick="setDate"
+        android:text="@string/date_button_product" />
 
     <TextView
-        android:text="Name Of Product"
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/button1"
         android:layout_marginTop="42dp"
-        android:id="@+id/textView5" />
+        android:text="Name Of Product" />
 
     <EditText
+        android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/dataText"
+        android:layout_alignParentTop="true"
         android:layout_marginEnd="14dp"
         android:layout_marginTop="28dp"
-        android:id="@+id/editText"
-        android:hint="add a product" />
+        android:ems="10"
+        android:hint="add a product"
+        android:inputType="textPersonName" />
 
 </RelativeLayout>

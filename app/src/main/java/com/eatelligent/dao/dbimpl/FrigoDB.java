@@ -4,9 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-
-import com.eatelligent.dao.DatabaseManager;
 import com.eatelligent.dao.DBHelper;
+import com.eatelligent.dao.DatabaseManager;
 import com.eatelligent.dao.interfaces.IFrigoDB;
 import com.eatelligent.dao.model.FrigoObject;
 
@@ -45,6 +44,7 @@ public class FrigoDB implements IFrigoDB {
 
     /**
      * Fonction qui ajoute un produit dans bdd
+     *
      * @param frigo
      */
     @Override
@@ -77,6 +77,7 @@ public class FrigoDB implements IFrigoDB {
 
     /**
      * Fonction qui renvoie un produit par rapport à un ID
+     *
      * @param id
      * @return
      * @throws ParseException
@@ -86,12 +87,12 @@ public class FrigoDB implements IFrigoDB {
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
         Cursor cursor = db.query(FRIGODB_TABLE_NAME, new String[]{FRIGODB_COLUMN_ID, FRIGODB_COLUMN_ID_PRODUCT
-                , FRIGODB_COLUMN_DATE_PEREMPT, FRIGODB_COLUMN_QUANTITY}, FRIGODB_COLUMN_ID + "=?", new String[]{String.valueOf(id)},
+                        , FRIGODB_COLUMN_DATE_PEREMPT, FRIGODB_COLUMN_QUANTITY}, FRIGODB_COLUMN_ID + "=?", new String[]{String.valueOf(id)},
                 null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
-        FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), (Date) dateFormat.parse(cursor.getString(2)),Integer.parseInt(cursor.getString(3)) );
+        FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), (Date) dateFormat.parse(cursor.getString(2)), Integer.parseInt(cursor.getString(3)));
         product.setTypeOFBase(0);
         // Return frigo object
         DatabaseManager.getInstance().closeDatabase();
@@ -101,6 +102,7 @@ public class FrigoDB implements IFrigoDB {
 
     /**
      * Fonction qui envoie tous les produits
+     *
      * @return
      * @throws ParseException
      */
@@ -116,7 +118,7 @@ public class FrigoDB implements IFrigoDB {
         //looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), (Date) dateFormat.parse(cursor.getString(2)),Integer.parseInt(cursor.getString(3)));
+                FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), Long.parseLong(cursor.getString(1)), (Date) dateFormat.parse(cursor.getString(2)), Integer.parseInt(cursor.getString(3)));
                 product.setTypeOFBase(0);
 
                 // Adding product to list
@@ -133,6 +135,7 @@ public class FrigoDB implements IFrigoDB {
 
     /**
      * Fonction qui renvoie le nombre de produits
+     *
      * @return
      */
     @Override
@@ -148,6 +151,7 @@ public class FrigoDB implements IFrigoDB {
 
     /**
      * Fonction qui met à jour un produit
+     *
      * @param frigo
      * @return
      */
@@ -171,6 +175,7 @@ public class FrigoDB implements IFrigoDB {
 
     /**
      * Fonction qui efface un produit
+     *
      * @param frigo
      */
     @Override
@@ -184,6 +189,7 @@ public class FrigoDB implements IFrigoDB {
 
     /**
      * Fonction qui efface un produit avec son ID
+     *
      * @param id
      */
     @Override
@@ -197,13 +203,14 @@ public class FrigoDB implements IFrigoDB {
 
     /**
      * Fonction qui renvoie les produits du frigo
+     *
      * @return
      */
     @Override
     public List<FrigoObject> getAllProduct() {
         List<FrigoObject> listproduct = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY_ID, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " +  "NAME, IMAGE_URL, BRAND " + " , " + FRIGODB_COLUMN_QUANTITY + " FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT;
+        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " + " CATEGORY_ID, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " + "NAME, IMAGE_URL, BRAND " + " , " + FRIGODB_COLUMN_QUANTITY + " FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT;
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         //looping through all rows and adding to list
@@ -211,7 +218,7 @@ public class FrigoDB implements IFrigoDB {
             do {
                 FrigoObject product = null;
                 try {
-                    product = new FrigoObject(Long.parseLong(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),(Date) dateFormat.parse(cursor.getString(2)),cursor.getString(3) ,cursor.getString(4) , cursor.getString(5),Integer.parseInt(cursor.getString(6)) );
+                    product = new FrigoObject(Long.parseLong(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), (Date) dateFormat.parse(cursor.getString(2)), cursor.getString(3), cursor.getString(4), cursor.getString(5), Integer.parseInt(cursor.getString(6)));
                     product.setTypeOFBase(0);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -232,7 +239,46 @@ public class FrigoDB implements IFrigoDB {
     }
 
     /**
+     * Fonction qui renvoie les produits du frigo selon la date
+     *
+     * @return
+     */
+    @Override
+    public List<FrigoObject> getAllProduct(int day) {
+        List<FrigoObject> listproduct = new ArrayList<>();
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " + " CATEGORY_ID, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " + "NAME, IMAGE_URL, BRAND " + " , " + FRIGODB_COLUMN_QUANTITY + " FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT;
+        selectQuery += " WHERE " + FRIGODB_COLUMN_DATE_PEREMPT + " - date('now') < " + day;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                FrigoObject product = null;
+                try {
+                    product = new FrigoObject(Long.parseLong(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), (Date) dateFormat.parse(cursor.getString(2)), cursor.getString(3), cursor.getString(4), cursor.getString(5), Integer.parseInt(cursor.getString(6)));
+                    product.setTypeOFBase(0);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                // Adding contact to list
+                listproduct.add(product);
+            } while (cursor.moveToNext());
+        }
+        OtherFrigoProductDB otherProduct = new OtherFrigoProductDB();
+        List<FrigoObject> allOtherObject = null;
+        try {
+            allOtherObject = otherProduct.getALLOtherProduct(day);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        listproduct.addAll(allOtherObject);
+        return listproduct;
+    }
+
+    /**
      * Fonction qui renvoie les produits frigo selon un order by
+     *
      * @param order
      * @return
      */
@@ -240,7 +286,7 @@ public class FrigoDB implements IFrigoDB {
     public List<FrigoObject> getAllProductOrderBy(String order) {
         List<FrigoObject> listproduct = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
-        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " +  " CATEGORY_ID, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " +  "NAME, IMAGE_URL, BRAND " + " , " +FRIGODB_COLUMN_QUANTITY + " FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT
+        String selectQuery = "SELECT " + FRIGODB_COLUMN_ID + ", " + " CATEGORY_ID, " + FRIGODB_COLUMN_DATE_PEREMPT + " , " + "NAME, IMAGE_URL, BRAND " + " , " + FRIGODB_COLUMN_QUANTITY + " FROM " + FRIGODB_TABLE_NAME + " JOIN PRODUCT ON ID_PRODUCT =  " + FRIGODB_COLUMN_ID_PRODUCT
                 + " ORDER BY " + order + ";";
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -249,7 +295,7 @@ public class FrigoDB implements IFrigoDB {
             do {
                 FrigoObject product = null;
                 try {
-                    product = new FrigoObject(Long.parseLong(cursor.getString(0)),Integer.parseInt(cursor.getString(1)),(Date) dateFormat.parse(cursor.getString(2)),cursor.getString(3) ,cursor.getString(4) , cursor.getString(5),Integer.parseInt(cursor.getString(6)));
+                    product = new FrigoObject(Long.parseLong(cursor.getString(0)), Integer.parseInt(cursor.getString(1)), (Date) dateFormat.parse(cursor.getString(2)), cursor.getString(3), cursor.getString(4), cursor.getString(5), Integer.parseInt(cursor.getString(6)));
                     product.setTypeOFBase(0);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -271,26 +317,23 @@ public class FrigoDB implements IFrigoDB {
     }
 
     /**
-     *
      * @return
      * @throws ParseException
      */
     @Override
-    public List<FrigoObject> getDistinctProductList() throws ParseException
-    {
+    public List<FrigoObject> getDistinctProductList() throws ParseException {
         List<FrigoObject> list = getAllProduct();
         List<FrigoObject> newList = new ArrayList<>();
-        boolean flag=false;
-        for(FrigoObject produit:list)
-        {
-            for(int i=0;i<newList.size();i++) {
+        boolean flag = false;
+        for (FrigoObject produit : list) {
+            for (int i = 0; i < newList.size(); i++) {
                 flag = false;
                 if (!produit.getName().equals(newList.get(i).getName()) && flag != true) {
                     flag = false;
                 } else
                     flag = true;
             }
-            if(flag==false)
+            if (flag == false)
                 newList.add(produit);
         }
         return newList;
