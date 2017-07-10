@@ -192,7 +192,7 @@ public class Recipes extends AppCompatActivity
                 {
                     RecipeItem item = new RecipeItem();
                         JSONObject json = new JSONObject((String) listRecipes.get(i).toString());
-                        if(json.has("picture_url"))
+                        if(json.has("picture_url") && !json.isNull("picture_url"))
                         {
                             URL imageUrl = new URL(json.getString("picture_url"));
                             Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());

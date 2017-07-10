@@ -7,12 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.eatelligent.activity.ProductActivity;
+import com.eatelligent.activity.RecipeContentActivity;
 import com.eatelligent.dao.DatabaseManager;
 import com.eatelligent.util.BottomMenu;
 import com.eatelligent.util.JsonUtilTools;
@@ -42,20 +43,22 @@ public class HomeActivity extends AppCompatActivity {
 
     private final int MY_PERMISSION_STORAGE = 1;
     private final int MY_PERMISSION_CAMERA = 2;
+    private int id = 4242;
+    private Boolean exit = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //checkPermission
-        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-        {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.CAMERA},
                     MY_PERMISSION_CAMERA);
         }
-        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-        {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     MY_PERMISSION_STORAGE);
@@ -69,37 +72,33 @@ public class HomeActivity extends AppCompatActivity {
         //get the main_recipe
         new TodaysRecipeAsyncTask().execute();
     }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void showFridge(View view)
-    {
-        BottomMenu.showFridge(this,view);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void showRecipes(View view)
-    {
-        BottomMenu.showRecipes(this,view);
+    public void showFridge(View view) {
+        BottomMenu.showFridge(this, view);
     }
-
-    public void goToHomeScreen(View view)
-    {
-
-    }
-
-    public void goToScan(View view)
-    {
-        BottomMenu.goToScan(this,view);
-    }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void goToSettings(View view)
-    {
-        BottomMenu.goToSettings(this,view);
+    public void showRecipes(View view) {
+        BottomMenu.showRecipes(this, view);
+    }
+
+    public void goToHomeScreen(View view) {
+
+    }
+
+    public void goToScan(View view) {
+        BottomMenu.goToScan(this, view);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void goToSettings(View view) {
+        BottomMenu.goToSettings(this, view);
     }
 
     /**
      * Fonction résultat scan
+     *
      * @param requestCode
      * @param resultCode
      * @param intent
@@ -129,10 +128,52 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Fonction qui envoie une nouvelle activity et le code barre
+     *
+     * @param codeBar
+     */
+    public void sendRequest(Activity activity, String codeBar) {
+        RequestQueue queue = Volley.newRequestQueue(activity);
+
+        final TextView scan_content = (TextView) activity.findViewById(R.id.scan_content);
+        if (codeBar != null) {
+            Intent intentProduct = new Intent(activity, ProductActivity.class);
+            intentProduct.putExtra("codebar", codeBar);
+            activity.startActivity(intentProduct);
+        }
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finishAffinity();
+            // finish();
+            System.exit(0);
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
+
+    }
 
     /*--- AsyncTasks ---*/
-    private class TodaysRecipeAsyncTask extends AsyncTask<Void, Void, RecipeItem>
-    {
+    private class TodaysRecipeAsyncTask extends AsyncTask<Void, Void, RecipeItem> {
 
         private String url = "https://www.wecook.fr/web-api/recipes?id=";
 
@@ -141,29 +182,27 @@ public class HomeActivity extends AppCompatActivity {
             super.onPreExecute();
             //double rand = Math.random() * 8000;
             //url = url+(int) rand;
-            url = url+4242;
+            url = url + id;
         }
 
         @Override
         protected RecipeItem doInBackground(Void... params) {
-            try{
+            try {
                 List<RecipeItem> liste = new ArrayList<>();
                 JSONObject jsonUrlResponse = JsonUtilTools.getJSONFromRecipesRequest(url);
-                if(jsonUrlResponse==null)
+                if (jsonUrlResponse == null)
                     return null;
                 //creation recipeItem
                 JSONArray jsonArray = jsonUrlResponse.getJSONArray("result"); //recuperation du json
                 JSONObject json = jsonArray.getJSONObject(0);
                 RecipeItem item = new RecipeItem();
-                if(json.has("picture_url"))
-                {
+                if (json.has("picture_url")) {
                     URL imageUrl = new URL(json.getString("picture_url"));
                     Bitmap image = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
                     item.setImage(image);
-                }else
-                {
-                    int id = getResources().getIdentifier("food_default","drawable",getPackageName());
-                    Bitmap image = BitmapFactory.decodeResource(getResources(),id);
+                } else {
+                    int id = getResources().getIdentifier("food_default", "drawable", getPackageName());
+                    Bitmap image = BitmapFactory.decodeResource(getResources(), id);
                     item.setImage(image);
                 }
                 item.setName(json.getString("name"));
@@ -180,60 +219,22 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(RecipeItem recipeItem) {
-            if(recipeItem==null)
-            {
+            if (recipeItem == null) {
                 return;
             }
             ImageView image = (ImageView) findViewById(R.id.recipe_image);
             TextView tv = (TextView) findViewById(R.id.recipe_name);
-            if(recipeItem.getName()==null)
+            if (recipeItem.getName() == null)
                 return;
             tv.setText(recipeItem.getName());
             image.setImageBitmap(recipeItem.getImage());
         }
     }
 
-    /**
-     * Fonction qui envoie une nouvelle activity et le code barre
-     * @param codeBar
-     */
-    public void sendRequest(Activity activity, String codeBar) {
-        RequestQueue queue = Volley.newRequestQueue(activity);
-
-        final TextView scan_content = (TextView) activity.findViewById(R.id.scan_content);
-        if (codeBar != null) {
-            Intent intentProduct = new Intent(activity, ProductActivity.class);
-            intentProduct.putExtra("codebar", codeBar);
-            activity.startActivity(intentProduct);
-        }
-
-
-    }
-
-    private Boolean exit = false;
-    @Override
-    public void onBackPressed() {
-        if (exit) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finishAffinity();
-           // finish();
-            System.exit(0);
-        } else {
-            Toast.makeText(this, "Press Back again to Exit.",
-                    Toast.LENGTH_SHORT).show();
-            exit = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    exit = false;
-                }
-            }, 3 * 1000);
-
-        }
-
+    public void showRecipe(View view) {
+        //Toast.makeText(getApplicationContext(),content.toString(),Toast.LENGTH_LONG).show();
+        Intent intentRecipeContent = new Intent(this, RecipeContentActivity.class);
+        intentRecipeContent.putExtra("id", this.id);
+        startActivity(intentRecipeContent);
     }
 }

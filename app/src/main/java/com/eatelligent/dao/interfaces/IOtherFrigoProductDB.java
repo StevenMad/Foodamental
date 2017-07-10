@@ -19,4 +19,5 @@ public interface IOtherFrigoProductDB {
     public void deleteOtherProduct(FrigoObject frigo);
     public void deleteOtherProductWithId(Long id);
     public List<FrigoObject> getAllOtherProductOrderBy(String order);
+    public List<FrigoObject> getALLOtherProduct(int day )throws ParseException;
 }

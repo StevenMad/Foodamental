@@ -18,6 +18,12 @@
     <string name="title_activity_parametres">Setting</string>
     <string name="sort">sort by</string>
     <string name="scanTitle">Add a product</string>
+    <string name="choiceNoAlert">Alert OFF</string>
+    <string name="choiceAlertAuto">Alert Auto</string>
+    <string name="choiceAlertPerso">Alert Perso</string>
+    <string name="newNotif">Choose Date</string>
+    <string name="ok">OK</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

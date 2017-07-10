@@ -115,6 +115,36 @@ public class OtherFrigoProductDB implements IOtherFrigoProductDB {
         return frigoList;
     }
 
+    /**
+     * Fonction qui envoie tous les autres produits selon date
+     *
+     * @return
+     * @throws ParseException
+     */
+    @Override
+    public List<FrigoObject> getALLOtherProduct(int day) throws ParseException {
+        List<FrigoObject> frigoList = new ArrayList<FrigoObject>();
+        // Select all Query
+        String selectQuery = "SELECT * FROM " + OTHERFRIGOPRODUCTDB_TABLE_NAME;
+        selectQuery += " WHERE " + OTHERFRIGOPRODUCTDB_COLUMN_DATE_PEREMPT + " - date('now') < " + day;
+
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                FrigoObject product = new FrigoObject(Long.parseLong(cursor.getString(0)), cursor.getString(1), ((Date) dateFormat.parse(cursor.getString(2))), Integer.parseInt(cursor.getString(3)), Integer.parseInt(cursor.getString(4)));
+                product.setTypeOFBase(1);
+                // Adding product to list
+                frigoList.add(product);
+            } while (cursor.moveToNext());
+        }
+        // return frigo other products list
+        DatabaseManager.getInstance().closeDatabase();
+        return frigoList;
+    }
+
     @Override
     public int getOtherProductCount() {
         String countQuery = "SELECT * FROM" + OTHERFRIGOPRODUCTDB_TABLE_NAME;

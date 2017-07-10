@@ -18,4 +18,10 @@
     <string name="title_activity_parametres">Parametres</string>
     <string name="sort">trier par</string>
     <string name="scanTitle">Ajouter un produit</string>
+    <string name="choiceNoAlert">Alert OFF</string>
+    <string name="choiceAlertAuto">Alert Auto</string>
+    <string name="choiceAlertPerso">Alert Perso</string>
+    <string name="newNotif">Choix Date</string>
+    <string name="ok">OK</string>
+
 </resources>

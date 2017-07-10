@@ -23,5 +23,5 @@ public interface IFrigoDB {
     public List<FrigoObject> getAllProduct();
     public List<FrigoObject> getDistinctProductList() throws ParseException;
     public List<FrigoObject> getAllProductOrderBy(String order);
-
+    public List<FrigoObject> getAllProduct(int date);
 }

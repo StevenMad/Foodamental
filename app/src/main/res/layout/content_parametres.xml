@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -11,20 +12,88 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.Parametres"
     tools:showIn="@layout/alert_page">
-    <Switch
-        android:layout_width="wrap_content"
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="add alert "
-        android:id="@+id/switch1"
-        android:layout_alignParentTop="true"
-        android:checked="false" />
-    <TextView
-        android:id="@+id/switchStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/switch1"
-        android:layout_marginTop="22dp"
-        android:text="@string/set_alarm"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-</RelativeLayout>
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/choiceNoAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioClicked"
+            android:text="@string/choiceNoAlert" />
+
+        <RadioButton
+            android:id="@+id/choiceAlertAuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioClicked"
+            android:text="@string/choiceAlertAuto" />
+
+        <RadioButton
+            android:id="@+id/choiceAlertPerso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioClicked"
+            android:text="@string/choiceAlertPerso" />
+
+    </RadioGroup>
+
+    <RelativeLayout
+        android:id="@+id/layoutForPerso"
+        android:layout_width="match_parent"
+        android:layout_height="402dp"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/button1"
+            style="@android:style/Widget.Holo.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textViewDate"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginStart="12dp"
+            android:onClick="setDate"
+            android:text="@string/newNotif" />
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="150dp"
+            android:layout_height="39dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="55dp" />
+
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/textViewDate"
+            android:layout_marginEnd="29dp"
+            android:layout_marginTop="144dp"
+            android:background="@color/green"
+            android:text="@string/ok"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/buttonTime"
+            style="@android:style/Widget.Holo.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/button1"
+            android:layout_below="@+id/button1"
+            android:layout_marginTop="59dp"
+            android:text="choose time" />
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="150dp"
+            android:layout_height="39dp"
+            android:layout_alignBottom="@+id/buttonTime"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+</LinearLayout>
