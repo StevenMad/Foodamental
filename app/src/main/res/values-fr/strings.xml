@@ -1,53 +1,27 @@
 <resources>
     <string name="app_name">Eatelligent</string>
     <string name="action_settings">Ajouter Alerte</string>
-    <string name="title_activity_my_main_page">MyMainPage</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="Inscription">Inscription</string>
-    <string name="date_button_set">Date de naissance</string>
     <string name="date_button_product">Date de peremption</string>
-    <string name="date_selected"></string>
-    <string name="inscription">inscris toi</string>
 
-    <string name="prenom">Prénoms</string>
-    <string name="accueil">Accueil</string>
-    <string name="mon_frigo">Mon frigo</string>
-    <string name="recettes">Les recettes</string>
-    <string name="text_color">#FFFFFF</string>
-    <string name="add">Ajouter</string>
-    <string name="cancel">Annuler</string>
     <string name="pseudo">Pseudo</string>
-    <string name="profil">Profile</string>
-    <string name="parametres">Paramètres</string>
     <string name="texte_tweet">Texte de mon tweet</string>
-    <string name="data_base_manager">DataBase Manager</string>
     <string name="scan">Scan</string>
     <string name="set_alarm">Alarm On/Off</string>
-    <string name="android_studio">Android Studio</string>
-    <string name="android_com">android.studio@android.com</string>
-    <string name="camera">Lancer la camera</string>
 
-    <string name="reslabel">produit1</string>
-    <string name="resbtn">Ajouter produit</string>
-    <string name="test">Tester</string>
-    <string name="menu_help">aide</string>
-    <string name="menu_about">à propos de</string>
-    <string name="menu_settings">paramètres</string>
-    <string name="title_activity_setting_page">titleSetting</string>
-    <string name="toast_settings">oui</string>
     <string name="action_recette">compte recette</string>
-    <string-array name="mon_frigo">
-        <item>Tomate</item>
-        <item>Canette</item>
-        <item>Yahourt</item>
-    </string-array>
     <string name="title_activity_recipes">Recettes</string>
-    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_no_scan">Courses</string>
     <string name="title_activity_parametres">Parametres</string>
     <string name="sort">trier par</string>
     <string name="scanTitle">Ajouter un produit</string>
-    <string name="todays_recipe">La recette du jour</string>
+    <string name="choiceNoAlert">Alert OFF</string>
+    <string name="choiceAlertAuto">Alert Auto</string>
+    <string name="choiceAlertPerso">Alert Perso</string>
+    <string name="newNotif">Choix Date</string>
+    <string name="ok">OK</string>
+
 </resources>

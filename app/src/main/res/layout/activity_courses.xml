@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_courses"
-    tools:context="com.foodamental.activity.Courses"
+    tools:context=".activity.Courses"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

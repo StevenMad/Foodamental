@@ -1,0 +1,88 @@
+package com.eatelligent.util;
+
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.view.View;
+import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.eatelligent.HomeActivity;
+import com.eatelligent.activity.AlertPage;
+import com.eatelligent.activity.Courses;
+import com.eatelligent.activity.ProductActivity;
+import com.eatelligent.activity.Recipes;
+import com.eatelligent.R;
+import com.google.zxing.integration.android.IntentIntegrator;
+
+/**
+ * Created by dijib on 29/03/2017.
+ */
+
+public class BottomMenu {
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void showFridge(Activity activity, View view)
+    {
+        Intent intentProducts = new Intent(activity,Courses.class);
+        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
+        activity.startActivity(intentProducts,options.toBundle());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void showRecipes(Activity activity, View view)
+    {
+        Intent intentRecipes = new Intent(activity,Recipes.class);
+        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
+        activity.startActivity(intentRecipes,options.toBundle());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void goToHomeScreen(Activity activity, View view)
+    {
+        Intent intentRecipes = new Intent(activity,HomeActivity.class);
+        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
+        intentRecipes.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(intentRecipes,options.toBundle());
+    }
+
+    public static void goToScan(Activity activity, View view)
+    {
+        openCamera(activity,view);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void goToSettings(Activity activity, View view)
+    {
+        Intent intentSettings = new Intent(activity, AlertPage.class);
+        //ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
+        activity.startActivity(intentSettings/*,options.toBundle()*/);
+        ActivityOptions options = ActivityOptions.makeClipRevealAnimation(view, 0,100, view.getWidth(),view.getHeight());
+        activity.startActivity(intentSettings,options.toBundle());
+    }
+
+    public static void openCamera(Activity activity, View view) {
+        new IntentIntegrator(activity).initiateScan();
+    }
+
+
+    /**
+     * Fonction qui envoie une nouvelle activity et le code barre
+     * @param codeBar
+     */
+    public void sendRequest(Activity activity, String codeBar) {
+        RequestQueue queue = Volley.newRequestQueue(activity);
+
+        final TextView scan_content = (TextView) activity.findViewById(R.id.scan_content);
+        if (codeBar != null) {
+            Intent intentProduct = new Intent(activity, ProductActivity.class);
+            intentProduct.putExtra("codebar", codeBar);
+            activity.startActivity(intentProduct);
+        }
+
+
+    }
+}
